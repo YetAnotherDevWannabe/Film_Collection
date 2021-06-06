@@ -49,7 +49,6 @@
 				<a class="navbar-brand my-2 my-lg-0" href="{{ path('main_home') }}">
 					<img src="{{ asset('img/logo.png') }}"
 						 alt="logo"
-							{# class="main-navbar-logo" #}
 						 loading="lazy"
 						 height="55"
 					>
@@ -60,32 +59,34 @@
 
 					{# Boutton ACCUEIL #}
 					<li class="nav-item">
-						<a class="btn btn-lg nav-btn-hover{{ route == 'main_home' ? ' nav-btnn' : ' text-dark' }}"
+						<a class="btn btn-lg nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
 						   href="{{ path('main_home') }}"
 						   data-mdb-ripple-color="#195DDB"
+						   data-mdb-ripple-centered="true"
 						>
 							<i class="fas fa-home mx-1"></i>Accueil
 						</a>
 					</li>
-♣
+
 
 					{# Dropdown de gauche: Collections #}
 					<li class="nav-item dropdown">
 						{# TODO: route #}
-						<a class="nav-link dropdown-toggle{# {{ (route == 'blog_article_list' or route == 'blog_new_article') ? ' nav-btn' : ' text-dark' }} #}"
+						<a class="nav-link btn btn-lg dropdown-toggle{# {{ (route == 'blog_article_list' or route == 'blog_new_article') ? ' nav-btn' : ' text-dark' }} #}"
 						   href="#"
 						   id="navbarDropdownMenuLink"
 						   role="button"
 						   data-mdb-toggle="dropdown"
 						   aria-expanded="false"
 						>
-							<i class="fas fa-newspaper me-1"></i>Collections
+							<i class="fas fa-film me-1"></i></i>Collections
 						</a>
 						<ul class="dropdown-menu" style="background-color: #dbe2ee" aria-labelledby="navbarDropdownMenuLink">
 
 							{# TODO: href #}
 							<li>
-								<a class="dropdown-item nav-drop-hover" href="{# {{ path('blog_article_list') }} #}"><i class="fas fa-list-ul me-1"></i></i>Listes de collections</a>
+								<a class="dropdown-item nav-drop-hover" href="{# {{ path('blog_article_list') }} #}"><i class="fas fa-list-ul me-1"></i></i>Listes de
+									collections</a>
 							</li>
 
 							{# Bouton vers la création d'une nouvelle collection si l'utilisateur possède le rôle admin #}
@@ -130,7 +131,7 @@
 							{# {{ app.user.nickname }} #}
 						</a>
 
-						<ul class="dropdown-menu" aria-labelledby="profilDropdownMenuLink">
+						<ul class="dropdown-menu" style="background-color: #dbe2ee" aria-labelledby="profilDropdownMenuLink">
 
 							{# TODO: href #}
 							<li>
@@ -149,11 +150,12 @@
 					{# TODO: if #}
 					{# {% else %} #}{# si l' utilisateur n' est pas connecté #}
 
-					<li class="nav-item">
+					<li class="nav-item d-inline-block">
 						{# TODO: href, route #}
 						<a class="btn btn-lg nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
 						   href="{# {{ path('main_register') }} #}"
 						   data-mdb-ripple-color="#195DDB"
+						   data-mdb-ripple-centered="true"
 						>
 							<i class="fas fa-user-plus mx-1"></i>Inscription
 						</a>
@@ -163,6 +165,7 @@
 						<a class="btn btn-lg nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
 						   href="{# {{ path('main_login') }} #}"
 						   data-mdb-ripple-color="#195DDB"
+						   data-mdb-ripple-centered="true"
 						>
 							<i class="fas fa-sign-in-alt mx-1"></i>Connexion
 						</a>
@@ -177,8 +180,11 @@
 				{# Recherche #}
 				{# TODO: action #}
 				<form class="d-flex" method="GET" action="{# {{ path('blog_search') }} #}">
-					<input class="form-control me-2 search-outline" type="search" placeholder="Trouver une collection" aria-label="Search" name="q">
-					<button class="btn nav-outline-btn" type="submit">
+					<input class="form-control mx-2 search-outline" type="search" placeholder="Trouver une collection" aria-label="Search" name="q">
+					<button class="btn nav-outline-btn"
+							type="submit"
+							data-mdb-ripple-color="#FFFFFF"
+							data-mdb-ripple-centered="true">
 						<i class="fas fa-search"></i>
 					</button>
 				</form>
