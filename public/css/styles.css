@@ -1,0 +1,111 @@
+:root
+{
+	--basecolor  : #6883b5;
+	--compliment : #b59a68;
+}
+
+/* Navbar principale */
+/*-------------------*/
+.main-navbar-logo
+{
+	/*width        : 55px;*/
+	/*margin-right : 2rem;*/
+}
+
+.gradient-custom
+{
+	background : #6a85b6;
+	background : linear-gradient(to right, #6A85B6CC, rgba(186, 200, 224, 0.5));
+	background : -webkit-linear-gradient(to right, #6A85B6CC, rgba(186, 200, 224, 0.5));
+}
+
+.gradient-custom-reverse
+{
+	background : #6a85b6;
+	background : linear-gradient(to right, rgba(186, 200, 224, 0.5), #6A85B6CC);
+	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 0.5), #6A85B6CC);
+}
+
+.gradient-custom-reverse-50
+{
+	background : #6a85b6;
+	background : linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.25));
+	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.25));
+}
+
+.text-basecolor
+{
+	color : var(--basecolor) !important;
+}
+
+.text-compliment
+{
+	color : var(--compliment) !important;
+}
+
+.nav-btn
+{
+	background-color : var(--compliment);
+	color            : var(--basecolor);
+	margin           : 0 0.25rem;
+}
+
+.nav-btn:hover
+{
+	background-color : #977c4a;
+	color            : #4b6799;
+}
+
+.nav-btn-hover
+{
+	margin : 0 0.25rem;
+}
+
+.nav-btn-hover:hover
+{
+	background-color : #977c4a;
+	color            : #4b6799 !important;
+}
+
+.nav-outline-btn
+{
+	background-color : transparent;
+	border           : .125rem solid var(--compliment);
+	color            : var(--compliment);
+	box-shadow       : none;
+	text-decoration  : none;
+	padding          : .625rem 1.5625rem .5625rem;
+	font-size        : .875rem;
+	line-height      : 1.6;
+	padding          : 10px 15px;
+}
+
+.nav-outline-btn:hover
+{
+	background-color : var(--compliment);
+	color            : #ffffff;
+}
+
+.dropdown-hr
+{
+	height     : 0;
+	margin     : .5rem 0;
+	overflow   : hidden;
+	border-top : 1px solid rgba(0, 0, 0, .15);
+}
+
+.nav-drop-hover:hover
+{
+	background-color : #ebe4d6 !important;
+}
+
+.search-outline
+{
+	border : .125rem solid var(--compliment) !important;
+}
+
+.search-outline:focus
+{
+	border  : .125rem solid var(--compliment) !important;
+	outline : 0;
+}

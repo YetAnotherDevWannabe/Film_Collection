@@ -1,0 +1,10 @@
+{% for message in app.flashes('warning') %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="alert alert-warning text-center col-12 col-md-8 offset-md-2 my-2 alert-dismissible fade show" role="alert">
+				<i class="fas fa-exclamation-triangle me-3"></i>{{ message }}
+				<button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
+	</div>
+{% endfor %}

@@ -9,12 +9,18 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
-###< symfony/phpunit-bridge ###
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
 ###< phpunit/phpunit ###
+
+
+###> Ignorer le dossier .idea de PhpStorm ###
+/.idea/
+###< Ignorer le dossier .idea de PhpStorm ###
+
+
+###> Ignorer les fichiers de migration ###
+/migrations/*.php
+###< Ignorer les fichiers de migration ###
