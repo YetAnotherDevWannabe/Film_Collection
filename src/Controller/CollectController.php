@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CollectionController extends AbstractController
+class CollectController extends AbstractController
 {
     /**
-     * @Route("/collection", name="collection")
+     * @Route("/collect", name="collect")
      */
     public function index(): Response
     {
-        return $this->render('collection/index.html.twig', [
-            'controller_name' => 'CollectionController',
+        return $this->render('collect/index.html.twig', [
+            'controller_name' => 'CollectController',
         ]);
     }
 }
