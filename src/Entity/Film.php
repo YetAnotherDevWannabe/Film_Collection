@@ -65,9 +65,15 @@ class Film
 	 */
 	private $commentFilms;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity=Collect::class, mappedBy="film_collect")
+	 */
+	private $collects;
+
 	public function __construct()
 	{
 		$this->commentFilms = new ArrayCollection();
+		$this->collects = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -199,6 +205,35 @@ class Film
 			{
 				$commentFilm->setFilm(null);
 			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection|Collect[]
+	 */
+	public function getCollects(): Collection
+	{
+		return $this->collects;
+	}
+
+	public function addCollect(Collect $collect): self
+	{
+		if ( !$this->collects->contains($collect) )
+		{
+			$this->collects[] = $collect;
+			$collect->addFilmCollect($this);
+		}
+
+		return $this;
+	}
+
+	public function removeCollect(Collect $collect): self
+	{
+		if ( $this->collects->removeElement($collect) )
+		{
+			$collect->removeFilmCollect($this);
 		}
 
 		return $this;

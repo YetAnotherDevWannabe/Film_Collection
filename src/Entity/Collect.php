@@ -40,9 +40,15 @@ class Collect
 	 */
 	private $commentCollects;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity=Film::class, inversedBy="collects")
+	 */
+	private $film_collect;
+
 	public function __construct()
 	{
 		$this->commentCollects = new ArrayCollection();
+		$this->film_collect = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -115,6 +121,31 @@ class Collect
 				$commentCollect->setCollect(null);
 			}
 		}
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection|Film[]
+	 */
+	public function getFilmCollect(): Collection
+	{
+		return $this->film_collect;
+	}
+
+	public function addFilmCollect(Film $filmCollect): self
+	{
+		if ( !$this->film_collect->contains($filmCollect) )
+		{
+			$this->film_collect[] = $filmCollect;
+		}
+
+		return $this;
+	}
+
+	public function removeFilmCollect(Film $filmCollect): self
+	{
+		$this->film_collect->removeElement($filmCollect);
 
 		return $this;
 	}
