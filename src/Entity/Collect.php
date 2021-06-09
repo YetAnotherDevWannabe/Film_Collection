@@ -27,7 +27,7 @@ class Collect
 	/**
 	 * @ORM\Column(type="datetime")
 	 */
-	private $publication_date;
+	private $publicationDate;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity=User::class, inversedBy="collects")
@@ -43,12 +43,12 @@ class Collect
 	/**
 	 * @ORM\ManyToMany(targetEntity=Film::class, inversedBy="collects")
 	 */
-	private $film_collect;
+	private $filmCollect;
 
 	public function __construct()
 	{
 		$this->commentCollects = new ArrayCollection();
-		$this->film_collect = new ArrayCollection();
+		$this->filmCollect = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -70,12 +70,12 @@ class Collect
 
 	public function getPublicationDate(): ?\DateTimeInterface
 	{
-		return $this->publication_date;
+		return $this->publicationDate;
 	}
 
-	public function setPublicationDate(\DateTimeInterface $publication_date): self
+	public function setPublicationDate(\DateTimeInterface $publicationDate): self
 	{
-		$this->publication_date = $publication_date;
+		$this->publicationDate = $publicationDate;
 
 		return $this;
 	}
@@ -130,14 +130,14 @@ class Collect
 	 */
 	public function getFilmCollect(): Collection
 	{
-		return $this->film_collect;
+		return $this->filmCollect;
 	}
 
 	public function addFilmCollect(Film $filmCollect): self
 	{
-		if ( !$this->film_collect->contains($filmCollect) )
+		if ( !$this->filmCollect->contains($filmCollect) )
 		{
-			$this->film_collect[] = $filmCollect;
+			$this->filmCollect[] = $filmCollect;
 		}
 
 		return $this;
@@ -145,7 +145,7 @@ class Collect
 
 	public function removeFilmCollect(Film $filmCollect): self
 	{
-		$this->film_collect->removeElement($filmCollect);
+		$this->filmCollect->removeElement($filmCollect);
 
 		return $this;
 	}

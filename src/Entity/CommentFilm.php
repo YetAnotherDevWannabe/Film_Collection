@@ -26,7 +26,7 @@ class CommentFilm
 	/**
 	 * @ORM\Column(type="integer")
 	 */
-	private $film_note;
+	private $filmNote;
 
 	/**
 	 * @ORM\Column(type="text")
@@ -36,7 +36,7 @@ class CommentFilm
 	/**
 	 * @ORM\Column(type="datetime")
 	 */
-	private $publication_date;
+	private $publicationDate;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity=Film::class, inversedBy="commentFilms")
@@ -63,12 +63,12 @@ class CommentFilm
 
 	public function getFilmNote(): ?int
 	{
-		return $this->film_note;
+		return $this->filmNote;
 	}
 
-	public function setFilmNote(int $film_note): self
+	public function setFilmNote(int $filmNote): self
 	{
-		$this->film_note = $film_note;
+		$this->filmNote = $filmNote;
 
 		return $this;
 	}
@@ -87,12 +87,12 @@ class CommentFilm
 
 	public function getPublicationDate(): ?\DateTimeInterface
 	{
-		return $this->publication_date;
+		return $this->publicationDate;
 	}
 
-	public function setPublicationDate(\DateTimeInterface $publication_date): self
+	public function setPublicationDate(\DateTimeInterface $publicationDate): self
 	{
-		$this->publication_date = $publication_date;
+		$this->publicationDate = $publicationDate;
 
 		return $this;
 	}

@@ -22,7 +22,7 @@ class Film
 	/**
 	 * @ORM\Column(type="string", length=15)
 	 */
-	private $tmdb_id;
+	private $tmdbId;
 
 	/**
 	 * @ORM\Column(type="string", length=200)
@@ -83,12 +83,12 @@ class Film
 
 	public function getTmdbId(): ?string
 	{
-		return $this->tmdb_id;
+		return $this->tmdbId;
 	}
 
-	public function setTmdbId(string $tmdb_id): self
+	public function setTmdbId(string $tmdbId): self
 	{
-		$this->tmdb_id = $tmdb_id;
+		$this->tmdbId = $tmdbId;
 
 		return $this;
 	}

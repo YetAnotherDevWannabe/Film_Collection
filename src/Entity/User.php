@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	/**
 	 * @ORM\Column(type="datetime")
 	 */
-	private $registration_date;
+	private $registrationDate;
 
 	/**
 	 * @ORM\Column(type="string", length=255, nullable=true)
@@ -188,12 +188,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	public function getRegistrationDate(): ?\DateTimeInterface
 	{
-		return $this->registration_date;
+		return $this->registrationDate;
 	}
 
-	public function setRegistrationDate(\DateTimeInterface $registration_date): self
+	public function setRegistrationDate(\DateTimeInterface $registrationDate): self
 	{
-		$this->registration_date = $registration_date;
+		$this->registrationDate = $registrationDate;
 
 		return $this;
 	}
