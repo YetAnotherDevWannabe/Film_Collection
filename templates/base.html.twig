@@ -1,4 +1,4 @@
-{# la variable Twig "route" contiendra le nom de la route actuellement chargée #}
+{# The Twig variable "route" will contains the name of the currently loaded route #}
 {% set route = app.request.attributes.get('_route') %}
 <!DOCTYPE HTML>
 <html lang="fr">
@@ -13,20 +13,18 @@
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 	<![endif]-->
-	{# Inclusion du CSS de FontAwesome #}
+	{# FontAwesome CSS file #}
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	{# Inclusion du CSS de MDBootstrap #}
+	{# MDBootstrap CSS file #}
 	<link rel="stylesheet" href="{{ asset('css/mdbootstrap.min.css') }}">
-	{# Inclusion du CSS de Booststrap : #}
-	{# <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"> #}
-	{# Inclusion du CSS personnel : #}
+	{# Custom CSS file #}
 	<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-	{# Inclusion des fichiers/code CSS individuel des pages qui en ont besoin #}
+	{# Custom CSS block if needed #}
 	{% block css %}{% endblock %}
 </head>
 
 <body>
-	{# Navbar principal #}
+	{# Navbar #}
 	<nav class="navbar navbar-expand-lg navbar-light gradient-custom">
 		<div class="container-fluid">
 
@@ -45,7 +43,7 @@
 			{# div collapsable #}
 			<div class="collapse navbar-collapse mb-0" id="navbarSupportedContent">
 
-				{# Logo et titre du site #}
+				{# LOGO & TITLE #}
 				<a class="navbar-brand my-2 my-lg-0" href="{{ path('main_home') }}">
 					<img src="{{ asset('img/logo.png') }}"
 						 alt="logo"
@@ -54,14 +52,14 @@
 					>
 				</a>
 
-				{# Boutons de gauche #}
+				{# Left side buttons #}
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-					{# Boutton ACCUEIL #}
+					{# HOME button #}
 					<li class="nav-item">
 						<a class="btn btn-lg nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
 						   href="{{ path('main_home') }}"
-						   data-mdb-ripple-color="#195DDB"
+						   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
 						   data-mdb-ripple-centered="true"
 						>
 							<i class="fas fa-home mx-1"></i>Accueil
@@ -69,122 +67,133 @@
 					</li>
 
 
-					{# Dropdown de gauche: Collections #}
+					{# Left side dropdown #}
 					<li class="nav-item dropdown">
 						{# TODO: route #}
-						<a class="nav-link btn btn-lg dropdown-toggle{# {{ (route == 'blog_article_list' or route == 'blog_new_article') ? ' nav-btn' : ' text-dark' }} #}"
+						<a class="nav-link btn btn-lg dropdown-toggle nav-btn-hover{# {{ (route == 'XXXXX' or route == 'XXXXX') ? ' nav-btn' : ' text-dark' }} #}"
 						   href="#"
 						   id="navbarDropdownMenuLink"
 						   role="button"
 						   data-mdb-toggle="dropdown"
 						   aria-expanded="false"
 						>
-							<i class="fas fa-film me-1"></i></i>Collections
+							<i class="fas fa-film me-1"></i>Collections
 						</a>
-						<ul class="dropdown-menu" style="background-color: #dbe2ee" aria-labelledby="navbarDropdownMenuLink">
+						<ul class="dropdown-menu dropdown-menu-bg" aria-labelledby="navbarDropdownMenuLink">
 
 							{# TODO: href #}
 							<li>
-								<a class="dropdown-item nav-drop-hover" href="{# {{ path('blog_article_list') }} #}"><i class="fas fa-list-ul me-1"></i></i>Listes de
+								<a class="dropdown-item nav-drop-hover" href="{# {{ path('XXXXX') }} #}"><i class="fas fa-list-ul me-1"></i></i>Listes de
 									collections</a>
 							</li>
 
-							{# Bouton vers la création d'une nouvelle collection si l'utilisateur possède le rôle admin #}
-							{# TODO: is_granted #}
-							{# {% if is_granted('ROLE_ADMIN') %} #}
-							<li class="dropdown-hr"></li>
-							{# TODO: href #}
-							<li>
-								<a class="dropdown-item nav-drop-hover" href="{# {{ path('blog_new_article') }} #}"><i class="far fa-plus-square me-1"></i>Nouvelle collection</a>
-							</li>
-							{# {% endif %} #}
+							{# Only shown if a user is logged in #}
+							{% if is_granted('ROLE_USER') %}
+								<li class="dropdown-hr"></li>
+								{# TODO: href #}
+								<li>
+									<a class="dropdown-item nav-drop-hover" href="{# {{ path('XXXXX') }} #}"><i class="far fa-plus-square me-1"></i>Nouvelle collection</a>
+								</li>
+							{% endif %}
 
 						</ul>
 					</li>
 				</ul>
 
 
-				{# Boutons de droite #}
+				{# Right side buttons #}
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-					{# TODO: if #}
-					{# {% if app.user %} #}{# si l' utilisateur est connecté #}
+
+					{% if app.user %}{# if user is connected #}
+
+						{# Dropdown de droite: User #}
+						<li class="nav-item dropdown">
+							<a class="nav-link btn dropdown-toggle nav-btn-hover{{ (route == 'main_profil' or route == 'main_logout') ? ' nav-btn' : ' text-dark' }}"
+							   href="#"
+							   id="profilDropdownMenuLink"
+							   role="button"
+							   data-mdb-toggle="dropdown"
+							   aria-expanded="false"
+							>
+								{% if app.user.avatar is not null %}
+
+									<img src="{{ asset('img/uploads/avatar/' ~ app.user.avatar) }}"
+										 class="rounded-circle"
+										 height="28"
+										 width="28"
+										 alt="avatar"
+										 loading="lazy"
+									/>
+								{% else %}
+
+									<img src="{{ asset('img/default_avatar.png') }}"
+										 class="rounded-circle"
+										 height="28"
+										 width="28"
+										 alt="avatar"
+										 loading="lazy"
+									/>
+
+								{% endif %}
 
 
-					{# Dropdown de droite: User #}
-					<li class="nav-item dropdown">
-						{# TODO: route #}
-						<a class="nav-link dropdown-toggle{# {{ (route == 'main_profil' or route == 'main_logout') ? ' nav-btn' : ' text-dark' }} #}"
-						   href="#"
-						   id="profilDropdownMenuLink"
-						   role="button"
-						   data-mdb-toggle="dropdown"
-						   aria-expanded="false"
-						>
-							<img src="https://mdbootstrap.com/img/new/avatars/2.jpg"
-								 class="rounded-circle"
-								 height="40"
-								 alt="avatar"
-								 loading="lazy"
-							/>
-							{# TODO: app.user #}
-							{# {{ app.user.nickname }} #}
-						</a>
+								{# TODO: app.user #}
+								{# {{ app.user.nickname }} #}
+							</a>
 
-						<ul class="dropdown-menu" style="background-color: #dbe2ee" aria-labelledby="profilDropdownMenuLink">
+							<ul class="dropdown-menu dropdown-menu-bg" aria-labelledby="profilDropdownMenuLink">
 
-							{# TODO: href #}
-							<li>
-								<a class="dropdown-item nav-drop-hover" href="{# {{ path('main_profil') }} #}"><i class="fa fa-user-cog me-1"></i>Mon profil</a>
-							</li>
-							<li class="dropdown-hr"></li>
-							{# TODO: href #}
-							<li>
-								<a class="dropdown-item nav-drop-hover" href="{# {{ path('main_logout') }} #}"><i class="fas fa-sign-out-alt me-1"></i>Déconnexion</a>
-							</li>
+								<li>
+									<a class="dropdown-item nav-drop-hover" href="{{ path('main_profil') }}"><i class="fa fa-user-cog me-1"></i>Mon profil</a>
+								</li>
 
-						</ul>
-					</li>
+								<li class="dropdown-hr"></li>
+
+								<li>
+									<a class="dropdown-item nav-drop-hover" href="{{ path('main_logout') }}"><i class="fas fa-sign-out-alt me-1"></i>Déconnexion</a>
+								</li>
+
+							</ul>
+						</li>
 
 
-					{# TODO: if #}
-					{# {% else %} #}{# si l' utilisateur n' est pas connecté #}
+					{% else %}{# if user is not connected #}
 
-					<li class="nav-item d-inline-block">
-						{# TODO: href, route #}
-						<a class="btn btn-lg nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
-						   href="{# {{ path('main_register') }} #}"
-						   data-mdb-ripple-color="#195DDB"
-						   data-mdb-ripple-centered="true"
-						>
-							<i class="fas fa-user-plus mx-1"></i>Inscription
-						</a>
-					</li>
-					<li class="nav-item">
-						{# TODO: href, route #}
-						<a class="btn btn-lg nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
-						   href="{# {{ path('main_login') }} #}"
-						   data-mdb-ripple-color="#195DDB"
-						   data-mdb-ripple-centered="true"
-						>
-							<i class="fas fa-sign-in-alt mx-1"></i>Connexion
-						</a>
-					</li>
+						<li class="nav-item d-inline-block">
+							<a class="btn btn-lg nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
+							   href="{{ path('main_register') }}"
+							   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
+							   data-mdb-ripple-centered="true"
+							>
+								<i class="fas fa-user-plus mx-1"></i>Inscription
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="btn btn-lg nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
+							   href="{{ path('main_login') }}"
+							   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
+							   data-mdb-ripple-centered="true"
+							>
+								<i class="fas fa-sign-in-alt mx-1"></i>Connexion
+							</a>
+						</li>
 
-					{# TODO: if #}
-					{# {% endif %} #}
+
+					{% endif %}
 
 				</ul>
 
 
-				{# Recherche #}
+				{# Search #}
 				{# TODO: action #}
-				<form class="d-flex" method="GET" action="{# {{ path('blog_search') }} #}">
+				<form class="d-flex" method="GET" action="{# {{ path('collect_search') }} #}">
 					<input class="form-control mx-2 search-outline" type="search" placeholder="Trouver une collection" aria-label="Search" name="q">
 					<button class="btn nav-outline-btn"
 							type="submit"
-							data-mdb-ripple-color="#FFFFFF"
-							data-mdb-ripple-centered="true">
+							data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
+							data-mdb-ripple-centered="true"
+					>
 						<i class="fas fa-search"></i>
 					</button>
 				</form>
@@ -193,27 +202,25 @@
 	</nav>
 
 
-	{# Affichage des messages flashs de succès s' il y en a #}
+	{# Success flash messages #}
 	{% include 'partials/flash-success.html.twig' %}
-	{# Affichage des messages flashs d' info s' il y en a #}
+	{# Info flash messages #}
 	{% include 'partials/flash-info.html.twig' %}
-	{# Affichage des messages flashs de warning s' il y en a #}
+	{# Warning flash messages #}
 	{% include 'partials/flash-warning.html.twig' %}
-	{# Affichage des messages flashs d' erreur s' il y en a #}
+	{# Error flash messages #}
 	{% include 'partials/flash-error.html.twig' %}
 
-	{# <body></body> de la page #}
+	{# <body></body> #}
 	{% block body %}{% endblock %}
 
-	{# footer de la page #}
+	{# footer #}
 	{% block footer %}{% endblock %}
 
 
-	{# Inclusion du JS de MDBooststrap #}
+	{# MDBooststrap JS file #}
 	<script type="text/javascript" src="{{ asset('js/mdbootstrap.min.js') }}"></script>
-	{# Inclusion du JS de Booststrap : #}
-	{# <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script> #}
-	{# Inclusion des fichiers JS individuel des pages qui en ont besoin #}
+	{# Custom JS file/block if needed #}
 	{% block js %}{% endblock %}
 </body>
 </html>

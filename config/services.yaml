@@ -8,7 +8,8 @@ parameters:
     google_recaptcha_private_key: '%env(GOOGLE_RECAPTCHA_PRIVATE_KEY)%'
     hompage_collection_number: 5
     articles_collection_by_page: 10
-    users_uploaded_avatar_dir: '%kernel.project_dir%/public/img/avatar'
+    # %kernel.project_dir% = "public" folder
+    users_uploaded_avatar_dir: '%kernel.project_dir%/public/img/uploads/avatar/'
 
 services:
     # default configuration for services in *this* file
