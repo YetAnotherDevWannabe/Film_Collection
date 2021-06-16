@@ -1,0 +1,24 @@
+{# Using the "base.html.twig" page template #}
+{% extends 'base.html.twig' %}
+
+{# Title of the page #}
+{% block title %}Error 404 : Page Not Found<{% endblock %}
+
+{# page content #}
+{% block body %}
+
+    <div class="row">
+
+        <div class="col-12">
+            {# Image 404 #}
+            <img style="width: 100%; height: auto; padding-left:0; " src="{{ asset('img/error_404.jpg') }}" class="img-fluid" title="fille avec lunettes 3D et un gros pot de pop-corn" alt="Erreur 404, Page Not Found">
+        </div>
+        
+        {# Text 404 #}
+        <div class="col-12" style=" color:white; font-size:28px; text-align: center; position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); ">
+            Page 404 Not Found
+        </div>
+
+    </div>
+
+{% endblock %}
