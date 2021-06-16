@@ -4,3 +4,5 @@ twig:
     globals:
         site_name: '%site_name%'
         google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+        ripple_color_white: '#FFFFFF'
+        ripple_color_blue: '#195DDB'

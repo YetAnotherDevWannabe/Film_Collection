@@ -16,14 +16,22 @@
 
 
 
-###> Ignorer le dossier .idea de PhpStorm ###
+###> Ignore PhpStorm's .idea folder ###
 /.idea/
-###< Ignorer le dossier .idea de PhpStorm ###
+###< Ignore PhpStorm's .idea folder ###
 
-###> Ignorer les fichiers de migration ###
+###> Ignore migration files ###
 /migrations/*.php
-###< Ignorer les fichiers de migration ###
+###< Ignore migration files ###
 
-###> Ignorer le fichier .env pour ne pas partager les variables environnementales inclues ###
+###> Ignore user uploaded avatars ###
+/public/img/uploads/avatar/*.gif
+/public/img/uploads/avatar/*.jpg
+/public/img/uploads/avatar/*.png
+###< Ignore user uploaded avatars ###
+
+###> Ignore .env file sor security purposes (Personnal keys etc) ###
+# not working WTF ?
 /.env
-###< Ignorer le fichier .env pour ne pas partager les variables environnementales inclues ###
+/*.env
+###< Ignore .env file sor security purposes (Personnal keys etc) ###

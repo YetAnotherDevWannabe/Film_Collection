@@ -1,36 +1,54 @@
+{# Base for Twig page #}
 {% extends 'base.html.twig' %}
 
+{# Page title #}
 {% block title %}Accueil{% endblock %}
 
+{# Page CSS #}
 {% block css %}{% endblock %}
 
+{# Page content #}
 {% block body %}
 
-	<div class="container-fluid">
-		<div class="row">
+<div class="container-fluid">
 
-			<div class="col-12 col-md-8 offset-md-2">
-				<h1 class="text-center">Bienvenue chez le film collector !</h1>
+	{# Titre H1 #}
+	<div class="row">
+		<h1 class="col-12 text-center my-5">Bienvenue chez <span class="ms-2 text-compliment">{{ site_name }}</span></h1>
+	</div>
+
+	<div class="row">
+		<div class="col-12 col-md-8 offset-md-2">
+			<div class="row">
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae rerum
-					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi, quia
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
+					rerum
+					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
+					quia
 					tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae rerum
-					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi, quia
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
+					rerum
+					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
+					quia
 					tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae rerum
-					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi, quia
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
+					rerum
+					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
+					quia
 					tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
 				</p>
 			</div>
 
 		</div>
+
 	</div>
 
-{% endblock %}
+	{% endblock %}
 
-{% block footer %}
-	{% include 'partials/footer-small.html.twig' %}
-{% endblock %}
+	{# Page footer #}
+	{% block footer %}
+		{% include 'partials/footer-full.html.twig' %}
+	{% endblock %}
 
-{% block js %}{% endblock %}
+	{# Page JS #}
+	{% block js %}{% endblock %}
