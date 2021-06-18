@@ -1,0 +1,60 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Suppression du compte{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	{# TODO: Use our flash error message if needed #}
+{#	#}{# If there is an error we display it using flash messages #}
+{#	{% if error %}#}
+{#		{{ flash_message('error', error.messageKey) }}#}
+{#	{% endif %}#}
+
+{#	#}{# Success flash messages #}
+{#	{% include 'partials/flash-success.html.twig' %}#}
+{#	#}{# Info flash messages #}
+{#	{% include 'partials/flash-info.html.twig' %}#}
+{#	#}{# Warning flash messages #}
+{#	{% include 'partials/flash-warning.html.twig' %}#}
+{#	#}{# Error flash messages #}
+{#	{% include 'partials/flash-error.html.twig' %}#}
+
+	<div class="container-fluid">
+
+		{# Titre H1 #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Suppression du compte</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2">
+				<div class="row">
+
+					<div class="col-12 col-md-6 offset-md-3">
+
+						{{ form(profilDeleteForm) }}
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

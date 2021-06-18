@@ -1,0 +1,25 @@
+{% for message in app.flashes('error') %}
+	<div class="container-fluid mt-1">
+		<div class="row">
+
+			{# MDBootstrap alert #}
+			{#<div class="alert alert-danger text-center col-12 col-md-8 offset-md-2 my-2 alert-dismissible fade show" role="alert">#}
+			{#	<i class="fas fa-times-circle me-3"></i>{{ message }}#}
+			{#	<button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>#}
+			{#</div>#}
+
+			{# Tailwind alert #}
+			<div class="col-8 offset-2 d-flex overflow-hidden rounded-start rounded-end alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="text-center d-flex align-items-center justify-content-center col-1 shadow-custom bg-tw-danger bg-icon" style="border-radius: .6rem 0 0 .6rem !important;">
+					<i class="fas fa-times-circle fs-3 text-white"></i>
+				</div>
+				<div class="text-start bg-white px-3 pt-2 col-11 shadow-custom" style="border-radius: 0 .6rem .6rem 0 !important;">
+					<span class="fa-5 color-tw-danger">Erreur</span>
+					<p class="fa-5 text-dark">{{ message }}</p>
+					<button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close" style="vertical-align: middle"></button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{% endfor %}

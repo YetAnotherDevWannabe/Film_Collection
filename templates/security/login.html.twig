@@ -1,0 +1,87 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Connexion{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	{# TODO: Use our flash error message if needed #}
+	{# If there is an error we display it using flash messages #}
+	{% if error %}
+		{{ flash_message('error', error.messageKey) }}
+	{% endif %}
+
+	{# Success flash messages #}
+	{% include 'partials/flash-success.html.twig' %}
+	{# Info flash messages #}
+	{% include 'partials/flash-info.html.twig' %}
+	{# Warning flash messages #}
+	{% include 'partials/flash-warning.html.twig' %}
+	{# Error flash messages #}
+	{% include 'partials/flash-error.html.twig' %}
+
+	<div class="container-fluid">
+
+		{# H1 Title #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Connexion</h1>
+		</div>
+
+		{# Login form #}
+		<div class="row">
+
+			<div class="col-12 col-md-4 offset-md-4">
+
+				<form action="{{ path('main_login') }}" method="POST">
+
+					{# Email field #}
+					<div class="mb-3">
+						<label for="inputEmail" class="form-label">Email</label>
+						<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+					</div>
+
+					{# Password field #}
+					<div class="mb-5">
+						<label for="inputPassword" class="form-label">Password</label>
+						<input type="password" name="password" id="inputPassword" class="form-control" required>
+					</div>
+
+					{# Invisible security token anti CSRF #}
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+					{# Submit button #}
+					<input type="submit" class="btn btn-block gradient-custom-reverse nav-btn-hover mx-0" value="Connexion au compte">
+
+				</form>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	{# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality. #}
+	{# See https://symfony.com/doc/current/security/remember_me.html #}
+	{#
+	<div class="checkbox mb-3">
+		<label>
+			<input type="checkbox" name="_remember_me"> Remember me
+		</label>
+	</div>
+	#}
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

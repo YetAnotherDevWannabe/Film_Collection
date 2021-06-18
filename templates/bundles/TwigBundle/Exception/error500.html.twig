@@ -1,0 +1,31 @@
+{# Using the "base.html.twig" page template #}
+{% extends 'base.html.twig' %}
+
+{# Title of the page #}
+{% block title %}Erreur 500: Erreur interne du serveur{% endblock %}
+
+{# page content #}
+{% block body %}
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<div class="col-12 p-0">
+				{# Image 500 #}
+				<img style="width: 100%; height: auto; padding-left:0;"
+					 src="{{ asset('img/errors/error_500.jpg') }}"
+					 class="img-fluid"
+					 alt="Erreur 500, Erreur interne du serveur"
+					 title="pellicule de cinéma"
+				>
+			</div>
+
+			{# Text 500 #}
+			<div class="col-12" style=" color:white; font-size:28px; text-align: center; position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); ">
+				Page 500: Erreur interne du serveur
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}

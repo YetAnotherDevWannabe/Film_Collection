@@ -1,0 +1,218 @@
+:root
+{
+	--basecolor  : #6883b5;
+	--compliment : #b59a68;
+}
+
+/*body*/
+/*{*/
+/*	background-color: #e6e6e6;*/
+/*	color: #191919;*/
+/*}*/
+
+
+/* Navbar */
+/*--------*/
+/* TODO: Régler problème du bouton SEARCH qui rétrécit  quand on le click */
+.gradient-custom
+{
+	background : #6a85b6;
+	background : linear-gradient(to right, rgba(106, 133, 182, 0.8), rgba(186, 200, 224, 0.5));
+	background : -webkit-linear-gradient(to right, rgba(106, 133, 182, 0.8), rgba(186, 200, 224, 0.5));
+}
+
+.gradient-custom-reverse
+{
+	background : #6a85b6;
+	background : linear-gradient(to right, rgba(186, 200, 224, .5), rgba(106, 133, 182, 0.8));
+	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, .5), rgba(106, 133, 182, 0.8));
+}
+
+.gradient-custom-reverse-50
+{
+	background : #6a85b6;
+	background : linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
+	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
+}
+
+.text-basecolor
+{
+	color : var(--basecolor) !important;
+}
+
+.text-compliment
+{
+	color : var(--compliment) !important;
+}
+
+.nav-btn
+{
+	background-color : var(--compliment);
+	color            : rgba(0, 0, 0, .55); /*var(--basecolor)*/
+	margin           : 0 0.25rem;
+}
+
+.nav-btn:hover
+{
+	background-color : #977c4a;
+	color            : #4b6799;
+}
+
+.nav-btn-hover
+{
+	margin : 0 0.25rem;
+}
+
+.nav-btn-hover:hover
+{
+	background-color : #977c4a;
+	color            : #4b6799 !important;
+}
+
+.nav-outline-btn
+{
+	background-color : transparent;
+	border           : .125rem solid var(--compliment);
+	color            : var(--compliment);
+	box-shadow       : none;
+	text-decoration  : none;
+	padding          : .625rem 1.5625rem .5625rem;
+	font-size        : .875rem;
+	line-height      : 1.6;
+	padding          : 10px 15px;
+}
+
+.nav-outline-btn:hover
+{
+	background-color : var(--compliment);
+	color            : #ffffff;
+}
+
+.dropdown-hr
+{
+	height     : 0;
+	margin     : .5rem 0;
+	overflow   : hidden;
+	border-top : 1px solid rgba(0, 0, 0, .15);
+}
+
+.nav-drop-hover:hover
+{
+	background-color : #ebe4d6 !important;
+}
+
+.search-outline
+{
+	border : .125rem solid var(--compliment) !important;
+}
+
+.search-outline:focus
+{
+	border  : .125rem solid var(--compliment) !important;
+	outline : 0;
+}
+
+.dropdown-menu-bg
+{
+	background-color: #dbe2ee
+}
+
+
+/* Flash messages */
+/*----------------*/
+.bg-tw-success
+{
+	background-color : #10B981;
+}
+
+.color-tw-success
+{
+	font-weight      : bold;
+	color : #10B981;
+}
+
+.bg-tw-info
+{
+	background-color : #3B82F6;
+}
+
+.color-tw-info
+{
+	font-weight      : bold;
+	color : #3B82F6;
+}
+
+.bg-tw-warning
+{
+	background-color : #FBBF24;
+}
+
+.color-tw-warning
+{
+	font-weight      : bold;
+	color : #FBBF24;
+}
+
+.bg-tw-danger
+{
+	background-color : #EF4444;
+}
+
+.color-tw-danger
+{
+	font-weight      : bold;
+	color : #EF4444;
+}
+
+.tw-close
+{
+	position: relative;
+}
+
+.shadow-custom
+{
+	box-shadow : 2px 0 5px 0 rgba(0, 0, 0, .25) !important;
+}
+
+.bg-icon
+{
+	width: 70px;
+}
+
+
+/* Register */
+/*----------*/
+/* TODO: Régler problème couleur bouton INSCRIPTION qui garde le gradient-custom-reverse */
+
+
+/* Collect Cards */
+/*---------------*/
+.border-basecolor
+{
+	border-color: var(--basecolor) !important;
+}
+
+.rounded-4
+{
+	border-radius: .4rem !important;
+}
+
+.rounded-5
+{
+	border-radius: .5rem !important;
+}
+
+.rounded-6
+{
+	border-radius: .6rem !important;
+}
+
+.text-modify
+{
+	color: #eb960f !important;
+}
+
+.text-delete
+{
+	color: #eb3255 !important;
+}

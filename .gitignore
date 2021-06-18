@@ -1,0 +1,37 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< phpunit/phpunit ###
+
+
+
+###> Ignore PhpStorm's .idea folder ###
+/.idea/
+###< Ignore PhpStorm's .idea folder ###
+
+###> Ignore migration files ###
+/migrations/*.php
+###< Ignore migration files ###
+
+###> Ignore user uploaded avatars ###
+/public/img/uploads/avatar/*.gif
+/public/img/uploads/avatar/*.jpg
+/public/img/uploads/avatar/*.png
+###< Ignore user uploaded avatars ###
+
+###> Ignore .env file sor security purposes (Personnal keys etc) ###
+# not working WTF ?
+/.env
+/*.env
+###< Ignore .env file sor security purposes (Personnal keys etc) ###
