@@ -1,7 +1,7 @@
 {# The Twig variable "route" will contains the name of the currently loaded route #}
 {% set route = app.request.attributes.get('_route') %}
 <!DOCTYPE HTML>
-<html lang="fr">
+<html class="h-100" lang="fr">
 <head>
 	<title>{% block title %}Nouvelle page{% endblock %} - {{ site_name }}</title>
 	<meta charset="UTF-8">
@@ -23,7 +23,8 @@
 	{% block css %}{% endblock %}
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
+	<main class="flex-shrink-0">
 	{# Navbar #}
 	<nav class="navbar navbar-expand-lg navbar-light gradient-custom">
 		<div class="container-fluid">
@@ -217,6 +218,8 @@
 	{# <body></body> #}
 	{% block body %}{% endblock %}
 
+
+	</main>
 	{# footer #}
 	{% block footer %}{% endblock %}
 

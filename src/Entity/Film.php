@@ -61,198 +61,159 @@ class Film
 	private $user;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=CommentFilm::class, mappedBy="film")
-	 */
-	private $commentFilms;
-
-	/**
 	 * @ORM\ManyToMany(targetEntity=Collect::class, mappedBy="film_collect")
 	 */
 	private $collects;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $trailer;
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $trailer;
 
 	public function __construct()
-         	{
-         		$this->commentFilms = new ArrayCollection();
-         		$this->collects = new ArrayCollection();
-         	}
+	{
+		$this->collects = new ArrayCollection();
+	}
 
 	public function getId(): ?int
-         	{
-         		return $this->id;
-         	}
+	{
+		return $this->id;
+	}
 
 	public function getTmdbId(): ?string
-         	{
-         		return $this->tmdbId;
-         	}
+	{
+		return $this->tmdbId;
+	}
 
 	public function setTmdbId(string $tmdbId): self
-         	{
-         		$this->tmdbId = $tmdbId;
-         
-         		return $this;
-         	}
+	{
+		$this->tmdbId = $tmdbId;
+
+		return $this;
+	}
 
 	public function getName(): ?string
-         	{
-         		return $this->name;
-         	}
+	{
+		return $this->name;
+	}
 
 	public function setName(string $name): self
-         	{
-         		$this->name = $name;
-         
-         		return $this;
-         	}
+	{
+		$this->name = $name;
+
+		return $this;
+	}
 
 	public function getYear(): ?\DateTimeInterface
-         	{
-         		return $this->year;
-         	}
+	{
+		return $this->year;
+	}
 
 	public function setYear(\DateTimeInterface $year): self
-         	{
-         		$this->year = $year;
-         
-         		return $this;
-         	}
+	{
+		$this->year = $year;
+
+		return $this;
+	}
 
 	public function getGenre(): ?string
-         	{
-         		return $this->genre;
-         	}
+	{
+		return $this->genre;
+	}
 
 	public function setGenre(string $genre): self
-         	{
-         		$this->genre = $genre;
-         
-         		return $this;
-         	}
+	{
+		$this->genre = $genre;
+
+		return $this;
+	}
 
 	public function getSynopsis(): ?string
-         	{
-         		return $this->synopsis;
-         	}
+	{
+		return $this->synopsis;
+	}
 
 	public function setSynopsis(string $synopsis): self
-         	{
-         		$this->synopsis = $synopsis;
-         
-         		return $this;
-         	}
+	{
+		$this->synopsis = $synopsis;
+
+		return $this;
+	}
 
 	public function getPoster(): ?string
-         	{
-         		return $this->poster;
-         	}
+	{
+		return $this->poster;
+	}
 
 	public function setPoster(?string $poster): self
-         	{
-         		$this->poster = $poster;
-         
-         		return $this;
-         	}
+	{
+		$this->poster = $poster;
+
+		return $this;
+	}
 
 	public function getNote(): ?int
-         	{
-         		return $this->note;
-         	}
+	{
+		return $this->note;
+	}
 
 	public function setNote(?int $note): self
-         	{
-         		$this->note = $note;
-         
-         		return $this;
-         	}
+	{
+		$this->note = $note;
+
+		return $this;
+	}
 
 	public function getUser(): ?User
-         	{
-         		return $this->user;
-         	}
+	{
+		return $this->user;
+	}
 
 	public function setUser(?User $user): self
-         	{
-         		$this->user = $user;
-         
-         		return $this;
-         	}
+	{
+		$this->user = $user;
 
-	/**
-	 * @return Collection|CommentFilm[]
-	 */
-	public function getCommentFilms(): Collection
-         	{
-         		return $this->commentFilms;
-         	}
-
-	public function addCommentFilm(CommentFilm $commentFilm): self
-         	{
-         		if ( !$this->commentFilms->contains($commentFilm) )
-         		{
-         			$this->commentFilms[] = $commentFilm;
-         			$commentFilm->setFilm($this);
-         		}
-         
-         		return $this;
-         	}
-
-	public function removeCommentFilm(CommentFilm $commentFilm): self
-         	{
-         		if ( $this->commentFilms->removeElement($commentFilm) )
-         		{
-         			// set the owning side to null (unless already changed)
-         			if ( $commentFilm->getFilm() === $this )
-         			{
-         				$commentFilm->setFilm(null);
-         			}
-         		}
-         
-         		return $this;
-         	}
+		return $this;
+	}
 
 	/**
 	 * @return Collection|Collect[]
 	 */
 	public function getCollects(): Collection
-         	{
-         		return $this->collects;
-         	}
+	{
+		return $this->collects;
+	}
 
 	public function addCollect(Collect $collect): self
-         	{
-         		if ( !$this->collects->contains($collect) )
-         		{
-         			$this->collects[] = $collect;
-         			$collect->addFilmCollect($this);
-         		}
-         
-         		return $this;
-         	}
+	{
+		if ( !$this->collects->contains($collect) )
+		{
+			$this->collects[] = $collect;
+			$collect->addFilmCollect($this);
+		}
+
+		return $this;
+	}
 
 	public function removeCollect(Collect $collect): self
-         	{
-         		if ( $this->collects->removeElement($collect) )
-         		{
-         			$collect->removeFilmCollect($this);
-         		}
-         
-         		return $this;
-         	}
+	{
+		if ( $this->collects->removeElement($collect) )
+		{
+			$collect->removeFilmCollect($this);
+		}
 
-    public function getTrailer(): ?string
-    {
-        return $this->trailer;
-    }
+		return $this;
+	}
 
-    public function setTrailer(?string $trailer): self
-    {
-        $this->trailer = $trailer;
+	public function getTrailer(): ?string
+	{
+		return $this->trailer;
+	}
 
-        return $this;
-    }
+	public function setTrailer(?string $trailer): self
+	{
+		$this->trailer = $trailer;
+
+		return $this;
+	}
 }

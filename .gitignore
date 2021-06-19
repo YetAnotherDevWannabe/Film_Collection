@@ -29,9 +29,3 @@
 /public/img/uploads/avatar/*.jpg
 /public/img/uploads/avatar/*.png
 ###< Ignore user uploaded avatars ###
-
-###> Ignore .env file sor security purposes (Personnal keys etc) ###
-# not working WTF ?
-/.env
-/*.env
-###< Ignore .env file sor security purposes (Personnal keys etc) ###

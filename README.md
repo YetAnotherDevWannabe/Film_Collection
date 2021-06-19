@@ -2,34 +2,34 @@
 
 ## Installation
 
-### Cloner le projet
+### 1. Cloner le projet
 
 ```
 git clone https://github.com/YetAnotherDevWannabe/Film_Collection.git
 ```
 
-### Modifier les paramètres d'environnement dans le fichier .env :
+### 2. Créer un fichier ```.env.local``` à la racine du projet
 
-- Dé-commenter la ligne ```# DATABASE_URL="mysql:..."```
-- Mettre en commentaire ('#') la ligne ```DATABASE_URL="postgresql:..."```
-- Changer ```user_db```, ```password_db``` et ```db_name```
+### 3. Modifier les paramètres d'environnement dans le fichier ```.env.local``` :
 
-```
-DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7"
-# DATABASE_URL="postgresql://db_user:db_password@127.0.0.1:5432/db_name?serverVersion=13&charset=utf8"
+- Copier le texte ci-dessous dans le fichier ```.env.local```
+	```
+	###> Accès BDD à modifier ###
+	DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7"
+	
+	###> Clés Google reCAPTCHA à changer ###
+	GOOGLE_RECAPTCHA_SITE_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+	GOOGLE_RECAPTCHA_PRIVATE_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+	```
+- Changer ```db_user```, ```db_password``` et ```db_name```
+- Modifier les clés Google reCAPTCHA publique et privée
 
-# Clés Google Recaptcha à changer
-GOOGLE_RECAPTCHA_SITE_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
-GOOGLE_RECAPTCHA_PRIVATE_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
-```
+### 4. Préparer Symfony
 
-### Déplacer le terminal dans le projet cloné
-
-```
-cd Film_Collection
-```
-
-### Tapper les commandes suivantes :
+- Déplacer le terminal dans le projet cloné
+	```
+	cd Film_Collection
+	```
 
 - Réinitialiser vendor et var
   ```
@@ -52,7 +52,7 @@ cd Film_Collection
   ```
 
 
-### Démarrer le server web de Symfony
+### 5. Démarrer le server web de Symfony
 
 ```
 symfony serve

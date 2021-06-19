@@ -71,11 +71,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	private $collects;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=CommentFilm::class, mappedBy="user")
-	 */
-	private $commentFilms;
-
-	/**
 	 * @ORM\OneToMany(targetEntity=CommentCollect::class, mappedBy="user")
 	 */
 	private $commentCollects;
@@ -84,7 +79,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	{
 		$this->films = new ArrayCollection();
 		$this->collects = new ArrayCollection();
-		$this->commentFilms = new ArrayCollection();
 		$this->commentCollects = new ArrayCollection();
 	}
 
@@ -285,39 +279,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 			if ( $collect->getAuthor() === $this )
 			{
 				$collect->setAuthor(null);
-			}
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @return Collection|CommentFilm[]
-	 */
-	public function getCommentFilms(): Collection
-	{
-		return $this->commentFilms;
-	}
-
-	public function addCommentFilm(CommentFilm $commentFilm): self
-	{
-		if ( !$this->commentFilms->contains($commentFilm) )
-		{
-			$this->commentFilms[] = $commentFilm;
-			$commentFilm->setUser($this);
-		}
-
-		return $this;
-	}
-
-	public function removeCommentFilm(CommentFilm $commentFilm): self
-	{
-		if ( $this->commentFilms->removeElement($commentFilm) )
-		{
-			// set the owning side to null (unless already changed)
-			if ( $commentFilm->getUser() === $this )
-			{
-				$commentFilm->setUser(null);
 			}
 		}
 
