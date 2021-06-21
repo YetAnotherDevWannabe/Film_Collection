@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du profil{% endblock %}
+
+{% block body %}
+    {# Title #}
+    <div class="row">
+        <h1 class="col-12 text-center my-5">Modifiez ci-dessous vos données si vous le souhaitez</h1>
+    </div>
+
+    {# Form to modify information #}
+    <div class="row col-md-10">
+        <div class="col-12 col-md-8 offset-md-3">
+            {{ form(editDataForm) }}
+        </div>
+    </div>
+
+{% endblock %}
