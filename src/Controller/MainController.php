@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\DeleteAvatarFormType;
-use App\Form\EditAvatarFormType;
+use App\Form\AvatarEditFormType;
 use App\Form\ProfilDeleteFormType;
 use App\Form\ProfilEditFormType;
 use App\Form\RegistrationFormType;
@@ -63,14 +62,61 @@ class MainController extends AbstractController
 
 
 	/**
-	 * Controller for the avatar edition page
-	 * @Route("/profil/avatar/edit/", name="main_avatar_edit")
+	 * @Route("/profil/edit/avatar/", name="main_avatar_edit")
+	 * 
 	 */
-	public function avatarEdit(): Response
+	public function editAvatar(Request $request): Response
 	{
-		return $this->render('main/profil-edit-avatar.html.twig');
-	}
 
+		$form = $this->createForm(AvatarEditFormType::class);
+
+		$form->handleRequest($request);
+
+
+		if($form->isSubmitted() && $form->isValid())
+		{
+
+
+
+			$avatar = $form->get('avatar')->getData();
+
+			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
+
+			$connectedUser = $this->getUser();
+
+			// TODO : à décommenter quand l'upload à l'inscription fonctionnera
+			// if($connectedUser->getAvatar() != null){
+			// 	unlink( $profilAvatarDir . $connectedUser->getAvatar() );
+
+			// }
+
+			do{
+
+				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
+
+			
+			} while( file_exists( $profilAvatarDir . $newFileName) );
+
+			$connectedUser->setAvatar($newFileName);
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+
+			$avatar->move(
+				$profilAvatarDir,
+				$newFileName
+			);
+
+			$this->addFlash('succès', 'Votre avatar a été modifié !');
+
+			return $this->redirectToRoute('main_profil');
+
+		}
+
+		return $this->render('main/avatar.edit.html.twig', [
+			'avatarForm' => $form->createView(),
+		]);
+
+	}
 
 	/**
 	 * Controller for the avatar suppression page
