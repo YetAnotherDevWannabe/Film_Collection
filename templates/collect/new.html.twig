@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Page title #}
-{% block title %}Ajouter film{% endblock %}
+{% block title %}Nouvelle collection{% endblock %}
 
 {# Page CSS #}
 {% block css %}{% endblock %}
@@ -12,13 +12,25 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<h1 class="col-12 text-center my-5">Ajouter un film à la collection</h1>
+			<h1 class="col-12 text-center my-5">Nouvelle Collection</h1>
 		</div>
 
 		<div class="row">
 			<div class="col-12 col-md-8 offset-md-2">
+
 				{# Formulaire #}
-				{{ form(filmForm) }}
+				{{ form_start(collectForm) }}
+
+					<div class="form-outline my-4">
+						{{ form_widget(collectForm.name) }}
+						{{ form_label(collectForm.name) }}
+						{{ form_errors(collectForm.name) }}
+					</div>
+
+					{{ form_row(collectForm.save) }}
+
+				{{ form_end(collectForm) }}
+
 			</div>
 		</div>
 	</div>

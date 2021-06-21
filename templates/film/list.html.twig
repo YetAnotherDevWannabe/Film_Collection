@@ -1,0 +1,78 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Liste des films{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+
+		{# H1 Title #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Liste des films</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2 list-group">
+
+				{# Admin films list #}
+				{% for film in films %}
+
+					{% if loop.index % 2 != 0 %}
+
+						<a href="{{ path('film_view', {slug: film.slug}) }}"
+						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover"
+						   aria-current="true"
+						>
+							<div class="d-flex w-100 justify-content-between pt-2">
+								<h5 class="mb-1">{{ film.name }}</h5>
+								<small>{{ film.year }}</small>
+							</div>
+							<p class="pt-1 mb-1">
+								{{ film.synopsis|excerpt(150) }}
+							</p>
+							<small class="text-black-50">{{ film.genre }}</small>
+						</a>
+
+					{% endif %}
+
+					{% if loop.index % 2 == 0 %}
+
+						<a href="{{ path('film_view', {slug: film.slug}) }}"
+						   class="list-group-item list-group-item-action list-group-item-light"
+						   aria-current="true"
+						>
+							<div class="d-flex w-100 justify-content-between pt-2">
+								<h5 class="mb-1">{{ film.name }}</h5>
+								<small>{{ film.year }}</small>
+							</div>
+							<p class="pt-1 mb-1">
+								{{ film.synopsis|excerpt(150) }}
+							</p>
+							<small class="text-black-50">{{ film.genre }}</small>
+						</a>
+
+					{% endif %}
+
+				{% endfor %}
+
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

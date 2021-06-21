@@ -1,6 +1,6 @@
 :root
 {
-	--basecolor  : #6883b5;
+	--basecolor  : #6883B5;
 	--compliment : #b59a68;
 }
 
@@ -13,26 +13,52 @@
 
 /* Navbar */
 /*--------*/
-/* TODO: Régler problème du bouton SEARCH qui rétrécit  quand on le click */
-.gradient-custom
+.gradient-basecolor
 {
 	background : #6a85b6;
 	background : linear-gradient(to right, rgba(106, 133, 182, 0.8), rgba(186, 200, 224, 0.5));
 	background : -webkit-linear-gradient(to right, rgba(106, 133, 182, 0.8), rgba(186, 200, 224, 0.5));
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.2),0 2px 10px 0 rgba(0,0,0,.1);
 }
 
-.gradient-custom-reverse
+.gradient-basecolor-reverse
 {
 	background : #6a85b6;
 	background : linear-gradient(to right, rgba(186, 200, 224, .5), rgba(106, 133, 182, 0.8));
 	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, .5), rgba(106, 133, 182, 0.8));
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.2),0 2px 10px 0 rgba(0,0,0,.1);
 }
 
-.gradient-custom-reverse-50
+.gradient-basecolor-reverse-50
 {
 	background : #6a85b6;
 	background : linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
 	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.2),0 2px 10px 0 rgba(0,0,0,.1);
+}
+
+.gradient-compliment:hover
+{
+	background : #b39865;
+	background : linear-gradient(to right, rgba(151, 124, 74, 0.8), rgba(198, 177, 139, 0.5));
+	background : -webkit-linear-gradient(to right, rgba(151, 124, 74, 0.8), rgba(198, 177, 139, 0.5));
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.2),0 2px 10px 0 rgba(0,0,0,.1);
+}
+
+.gradient-compliment-reverse:hover
+{
+	background : #b39865;
+	background : linear-gradient(to right, rgba(198, 177, 139, 0.5), rgba(151, 124, 74, 0.8));
+	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 0.5), rgba(151, 124, 74, 0.8));
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.2),0 2px 10px 0 rgba(0,0,0,.1);
+}
+
+.gradient-compliment-reverse-50:hover
+{
+	background : #b39865;
+	background : linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
+	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.2),0 2px 10px 0 rgba(0,0,0,.1);
 }
 
 .text-basecolor
@@ -99,6 +125,7 @@
 .nav-drop-hover:hover
 {
 	background-color : #ebe4d6 !important;
+	border-radius    : .25rem !important;
 }
 
 .search-outline
@@ -114,7 +141,27 @@
 
 .dropdown-menu-bg
 {
-	background-color: #dbe2ee
+	background-color : #dbe2ee
+}
+
+.btn-nav
+{
+	padding : .735rem 1.75rem !important;
+}
+
+.dropdown-menu-end
+{
+	right : 4px !important;
+}
+
+.dropdown-menu-start
+{
+	left : 4px !important;
+}
+
+.ripple-surface
+{
+	overflow : initial !important;
 }
 
 
@@ -127,8 +174,8 @@
 
 .color-tw-success
 {
-	font-weight      : bold;
-	color : #10B981;
+	font-weight : bold;
+	color       : #10B981;
 }
 
 .bg-tw-info
@@ -138,8 +185,8 @@
 
 .color-tw-info
 {
-	font-weight      : bold;
-	color : #3B82F6;
+	font-weight : bold;
+	color       : #3B82F6;
 }
 
 .bg-tw-warning
@@ -149,8 +196,8 @@
 
 .color-tw-warning
 {
-	font-weight      : bold;
-	color : #FBBF24;
+	font-weight : bold;
+	color       : #FBBF24;
 }
 
 .bg-tw-danger
@@ -160,13 +207,13 @@
 
 .color-tw-danger
 {
-	font-weight      : bold;
-	color : #EF4444;
+	font-weight : bold;
+	color       : #EF4444;
 }
 
 .tw-close
 {
-	position: relative;
+	position : relative;
 }
 
 .shadow-custom
@@ -176,43 +223,65 @@
 
 .bg-icon
 {
-	width: 70px;
+	width : 70px;
 }
 
 
 /* Register */
 /*----------*/
-/* TODO: Régler problème couleur bouton INSCRIPTION qui garde le gradient-custom-reverse */
+/* TODO: Régler problème couleur bouton INSCRIPTION qui garde le gradient-basecolor-reverse */
+
+
+/* Film list */
+/*----------*/
+.list-group
+{
+	padding-left : .75rem !important;
+}
+
+.list-group-gradient-reverse-50
+{
+	background : #6a85b6;
+	background : linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
+	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
+}
+
+.list-group-gradient-reverse-50-hover:hover
+{
+	background : #b39865;
+	background : linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
+	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
+}
 
 
 /* Collect Cards */
 /*---------------*/
 .border-basecolor
 {
-	border-color: var(--basecolor) !important;
+	border-color : var(--basecolor) !important;
 }
 
 .rounded-4
 {
-	border-radius: .4rem !important;
+	border-radius : .4rem !important;
 }
 
 .rounded-5
 {
-	border-radius: .5rem !important;
+	border-radius : .5rem !important;
 }
 
 .rounded-6
 {
-	border-radius: .6rem !important;
+	border-radius : .6rem !important;
 }
 
 .text-modify
 {
-	color: #eb960f !important;
+	color : #eb960f !important;
 }
 
 .text-delete
 {
-	color: #eb3255 !important;
+	color : #eb3255 !important;
 }

@@ -5,10 +5,13 @@ namespace App\Entity;
 use App\Repository\FilmRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=FilmRepository::class)
+ * @UniqueEntity(fields={"tmdbId"}, message="Cet ID TMDB est déjà utilisé")
  */
 class Film
 {
@@ -70,6 +73,12 @@ class Film
 	 */
 	private $trailer;
 
+	/**
+	 * @ORM\Column(type="string", length=255, unique=true)
+	 * @Gedmo\Slug(fields={"name"})
+	 */
+	private $slug;
+
 	public function __construct()
 	{
 		$this->collects = new ArrayCollection();
@@ -104,12 +113,12 @@ class Film
 		return $this;
 	}
 
-	public function getYear(): ?\DateTimeInterface
+	public function getYear(): ?int
 	{
 		return $this->year;
 	}
 
-	public function setYear(\DateTimeInterface $year): self
+	public function setYear(int $year): self
 	{
 		$this->year = $year;
 
@@ -213,6 +222,18 @@ class Film
 	public function setTrailer(?string $trailer): self
 	{
 		$this->trailer = $trailer;
+
+		return $this;
+	}
+
+	public function getSlug(): ?string
+	{
+		return $this->slug;
+	}
+
+	public function setSlug(string $slug): self
+	{
+		$this->slug = $slug;
 
 		return $this;
 	}

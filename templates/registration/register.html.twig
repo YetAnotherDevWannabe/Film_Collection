@@ -2,59 +2,16 @@
 {% extends 'base.html.twig' %}
 
 {# Page title #}
-{% block title %}Créer un compte{% endblock %}
+{% block title %}{% endblock %}
 
 {# Page CSS #}
-{# We use the CSS block for the Google reCAPTCHA JS file as it needs to be in the <head> of the HTML #}
-{% block css %}
-	<script src="https://www.google.com/recaptcha/api.js"></script>
-{% endblock %}
+{% block css %}{% endblock %}
 
 {# Page content #}
-{% block body %}
-
-{#	#}{# TODO: Use our flash error message for reCatpcha #}
-{#	#}{# If there is an error we display it using flash messages #}
-{#	{% if errors %}#}
-{#		{{  }}#}
-{#	{% endif %}#}
-
-	{% for error in registrationForm.vars.errors %}
-		{{ flash_message('error', error.message) }}
-	{% endfor %}
-
-	 {#Error flash messages #}
-	{% include 'partials/flash-error.html.twig' %}
-
-	<div class="container-fluid">
-
-		{# H1 Title #}
-		<div class="row">
-			<h1 class="col-12 text-center my-5">Créer un compte</h1>
-		</div>
-
-		<div class="row">
-			<div class="col-12 col-md-4 offset-md-4">
-				{{ form_start(registrationForm) }}
-				{{ form_row(registrationForm.nickname) }}
-				{{ form_row(registrationForm.email) }}
-				{{ form_row(registrationForm.plainPassword) }}
-				<div class="my-4 d-flex justify-content-center">
-					<div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
-				</div>
-				{{ form_row(registrationForm.save) }}
-				{{ form_end(registrationForm) }}
-			</div>
-		</div>
-
-	</div>
-
-{% endblock %}
+{% block body %}{% endblock %}
 
 {# Page footer #}
-{% block footer %}
-	{% include 'partials/footer-small.html.twig' %}
-{% endblock %}
+{% block footer %}{% endblock %}
 
 {# Page JS #}
 {% block js %}{% endblock %}

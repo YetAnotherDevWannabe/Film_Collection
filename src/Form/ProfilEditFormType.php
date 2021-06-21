@@ -21,63 +21,7 @@ class ProfilEditFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('nickname', TextType::class,
-				[
-					'label'       => 'Nom d\'utilisateur',
-					'constraints' =>
-						[
-							new NotBlank(['message' => 'Merci de renseigner un nom d\'utilisateur']),
-							new Length(
-								[
-									'min'        => '2',
-									'max'        => '50',
-									'minMessage' => 'Votre nom d\'utilisateur doit contenir au moins {{ limit }} caractères.',
-									'maxMessage' => 'Votre nom d\'utilisateur doit contenir au maximum {{ limit }} caractères.',
-								]
-							),
-						],
-					// In case of error 'Expected argument of type "string", "null" given at property path "username".'
-					// 'empty_data' => '',
-				])
-			->add('email', EmailType::class,
-				[
-					'label'       => 'Adresse email',
-					'constraints' =>
-						[
-							new Email(['message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide.']),
-							new NotBlank(['message' => 'L\'adresse email ne peut pas être vide.']),
-						],
-				])
-			->add('plainPassword', RepeatedType::class,
-				[
-					'mapped'          => false,
-					'type'            => PasswordType::class,
-					'invalid_message' => 'La confirmation du mot de passe ne correspond pas.',
-					'first_options'   => ['label' => 'Mot de passe'],
-					'second_options'  => ['label' => 'Confirmation du mot de passe'],
-					// 'attr'        => ['autocomplete' => 'new-password'],
-					'constraints'     =>
-						[
-							new NotBlank(['message' => 'Merci de renseigner un mot de passe']),
-							new Regex(
-								[
-									'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#\$%&\'()*+,\-.\/:;<=>?@[\\\\\]\^_`{\|}~]).{8,4096}$/',
-									'message' => 'Votre mot de passe doit contenir au minimum 8 caractères, et obligatoirement une minuscule, une majuscule, un chiffre et un caractère spécial',
-								]),
-						],
-				])
-			->add('confirm', SubmitType::class,
-				[
-					'label_html' => true,
-					'label'      => '<i class="fas fa-check me-2"></i>Confirmer la modification',
-					'attr'       => ['class' => 'btn btn-block btn-lg gradient-custom-reverse',], //<i class="fas fa-check"></i>
-				])
-			->add('cancel', SubmitType::class,
-				[
-					'label_html' => true,
-					'label'      => '<i class="fas fa-chevron-left"></i><i class="fas fa-chevron-left me-2"></i>Annuler la modification',
-					'attr'       => ['class' => 'btn btn-block btn-lg btn-success',], //<i class="fas fa-angle-left"></i>
-				])
+			->add('exemple')
 		;
 	}
 
@@ -85,7 +29,7 @@ class ProfilEditFormType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => User::class,
-			'attr'       => ['novalidate' => 'novalidate'],
+			'attr' => ['novalidate' => 'novalidate']
 		]);
 	}
 }

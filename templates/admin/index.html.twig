@@ -1,0 +1,44 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Administration{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+
+		{# H1 Title #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Administration</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2">
+
+				{# Admin links #}
+				<a class="btn btn-lg gradient-basecolor-reverse gradient-compliment-reverse my-3 py-2 col-8 offset-2 col-md-6 offset-md-3" href="{{ path('film_add') }}">
+					<i class="fas fa-plus me-3"></i>Ajouter un film
+				</a>
+				<a class="btn btn-lg gradient-basecolor-reverse gradient-compliment-reverse my-3 py-2 col-8 offset-2 col-md-6 offset-md-3" href="{{ path('film_list') }}">
+					<i class="fas fa-bars me-3"></i>Liste des films
+				</a>
+
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

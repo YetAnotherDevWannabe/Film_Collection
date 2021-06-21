@@ -33,7 +33,7 @@ class CollectFormType extends AbstractType
 			->add('save', SubmitType::class,
 				[
 					'label' => 'Créer ma collection',
-					'attr'  => ['class' => 'btn btn-block gradient-custom-reverse nav-btn-hover mx-0'],
+					'attr'  => ['class' => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0'],
 				]
 			);;
 	}

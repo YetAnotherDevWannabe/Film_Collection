@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Film;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -75,8 +74,8 @@ class FilmFormType extends AbstractType
 					'label'       => 'Description',
 					'attr'        =>
 						[
-							'rows' => 4,
-							'placeholder' => 'A cold and mysterious new security guard for a Los Angeles cash truck company surprises his co-workers when he unleashes precision skills during a heist. The crew is left wondering who he is and where he came from. Soon, the marksman\'s ultimate motive becomes clear as he takes dramatic and irrevocable steps to settle a score.'
+							'rows'        => 4,
+							'placeholder' => 'A cold and mysterious new security guard for a Los Angeles cash truck company surprises his co-workers when he unleashes precision skills during a heist. The crew is left wondering who he is and where he came from. Soon, the marksman\'s ultimate motive becomes clear as he takes dramatic and irrevocable steps to settle a score.',
 						],
 					'constraints' =>
 						[
@@ -111,6 +110,7 @@ class FilmFormType extends AbstractType
 					'label'       => 'Note du film',
 					'type'        => 'integer', // to be stored as int (0 to 100) in DB instead of fraction (0 to 1)
 					'scale'       => 0,
+					'symbol'      => false,
 					// TODO: '%' in twig page not correct height
 					'attr'        =>
 						[
@@ -145,6 +145,7 @@ class FilmFormType extends AbstractType
 			->add('trailer', UrlType::class,
 				[
 					'label'       => 'Bande annonce',
+					'label_attr'  => ['help' => ' : champs obligatoires',],
 					'attr'        => ['placeholder' => 'https://www.youtube.com/watch?v=EFYEni2gsK0',],
 					'constraints' =>
 						[
@@ -160,7 +161,7 @@ class FilmFormType extends AbstractType
 			->add('save', SubmitType::class,
 				[
 					'label' => 'Ajouter film',
-					'attr'  => ['class' => 'btn btn-block gradient-custom-reverse nav-btn-hover mx-0'],
+					'attr'  => ['class' => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0'],
 				]
 			);
 	}
@@ -169,7 +170,6 @@ class FilmFormType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => Film::class,
-			// TODO: à enlever à la fin
 			'attr'       => ['novalidate' => 'novalidate',],
 		]);
 	}

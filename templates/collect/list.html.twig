@@ -25,7 +25,7 @@
 				</div>
 
 				{# Show sorting & pagination if any collection is present #}
-				{% if collects is not empty %}
+				{% if collects is not empty and collects.getTotalItemCount > 1 %}
 					<div class="row">
 						<div class="col-12 my-1 text-center tri">
 
@@ -50,7 +50,7 @@
 						</div>
 					</div>
 
-					{% if collects.getTotalItemCount > 10 %}
+					{% if collects.getTotalItemCount > collection_number_by_page %}
 
 						<div class="row">
 							<div class="col-12 my-1 text-center">
@@ -74,12 +74,13 @@
 
 						<div class="col-12">
 							{# each collection will be in a card #}
-							<div class="card my-3 border border-basecolor gradient-custom-reverse-50 txt-deco-none rounded-6">
+							<div class="card my-3 border border-basecolor gradient-basecolor-reverse-50 txt-deco-none rounded-6">
 
 								{# Collect name #}
 								<div class="card-header">
-									<a class="text-compliment fw-bold" href="{# {{ path('blog_article_view', {slug: article.slug}) }} #}"><i
-												class="fas fa-film me-2"></i></i>{{ collect.name }}</a>
+									<a class="text-compliment fw-bold" href="{{ path('collect_view', {slug: collect.slug}) }}">
+										<i class="fas fa-film me-2"></i>{{ collect.name }}
+									</a>
 								</div>
 
 								{# Collect body #}
@@ -89,14 +90,18 @@
 										Most likely a number of film in the list
 											and median film note
 										#}
-										<p class="text-basecolor mb-0 mt-2">Nombre de films : <span
-													class="text-compliment">{# {{ collect.content|striptags|slice(0, 150) }} #}</span></p>
-										<p class="text-basecolor mb-0 mt-1">Note moyenne des films : <span class="text-compliment">{# {{ collect }} #}</span></p>
+{#										{% dump(collect.film) %}#}
+										<p class="text-basecolor mb-0 mt-2">Nombre de films :
+											<span class="text-compliment">{{ collect.name }}{# {{ collect.film|length }} #}</span>
+										</p>
+										<p class="text-basecolor mb-0 mt-1">Note moyenne des films :
+											<span class="text-compliment">{{ collect.name }}</span>
+										</p>
 										<div class="blockquote-footer my-1 py-0 ms-2">
 											<small class="text-muted">
-												publié le <strong class="text-compliment">{{ collect.publicationDate|date('d/m/Y') }}</strong> à <strong
-														class="text-compliment">{{ collect.publicationDate|date('H\\hi') }}</strong> par
-												<strong class="text-compliment">{{ collect.author.nickname }}</strong>
+												publié le <strong class="text-compliment">{{ collect.publicationDate|date('d/m/Y') }}</strong>
+												à <strong class="text-compliment">{{ collect.publicationDate|date('H\\hi') }}</strong>
+												par <strong class="text-compliment">{{ collect.author.nickname }}</strong>
 											</small>
 										</div>
 									</div>

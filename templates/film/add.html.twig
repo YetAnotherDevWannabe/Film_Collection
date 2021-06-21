@@ -1,0 +1,110 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Ajouter film{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Ajouter un film</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2">
+
+				{# Formulaire #}
+				{{ form_start(filmForm) }}
+
+				<div class="ms-3 my-3"><span class="text-danger">*</span>{{ filmForm.trailer.vars.label_attr.help }}</div>
+
+				<div class="form-outline mb-4">
+					{{ form_widget(filmForm.tmdbId) }}
+{#					{{ form_label(filmForm.tmdbId) }}#}
+					{% block tmdbId_label %}
+						<label for="{{ filmForm.tmdbId.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ filmForm.tmdbId.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(filmForm.tmdbId) }}
+				</div>
+
+				<div class="form-outline my-4">
+					{{ form_widget(filmForm.name) }}
+{#					{{ form_label(filmForm.name) }}#}
+					{% block name_label %}
+						<label for="{{ filmForm.name.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ filmForm.name.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(filmForm.name) }}
+				</div>
+
+				<div class="form-outline my-4">
+					{{ form_widget(filmForm.year) }}
+					{# {{ form_label(filmForm.year) }} #}
+					{% block year_label %}
+						<label for="{{ filmForm.year.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ filmForm.year.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(filmForm.year) }}
+				</div>
+
+				<div class="form-outline my-4">
+					{{ form_widget(filmForm.synopsis) }}
+					{# {{ form_label(filmForm.synopsis) }} #}
+					{% block synopsis_label %}
+						<label for="{{ filmForm.synopsis.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ filmForm.synopsis.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(filmForm.synopsis) }}
+				</div>
+
+				<div class="form-outline my-4">
+					{{ form_widget(filmForm.genre) }}
+{#					{{ form_label(filmForm.genre) }}#}
+					{% block genre_label %}
+						<label for="{{ filmForm.genre.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ filmForm.genre.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(filmForm.genre) }}
+				</div>
+
+				<div class="form-outline my-4">
+					{{ form_widget(filmForm.note) }}
+					{{ form_label(filmForm.note) }}
+					{{ form_errors(filmForm.note) }}
+				</div>
+
+				<div class="form-outline my-4">
+					{{ form_widget(filmForm.poster) }}
+					{{ form_label(filmForm.poster) }}
+					{{ form_errors(filmForm.poster) }}
+				</div>
+
+				<div class="form-outline my-4">
+					{{ form_widget(filmForm.trailer) }}
+					{{ form_label(filmForm.trailer) }}
+					{{ form_errors(filmForm.trailer) }}
+				</div>
+
+				{{ form_row(filmForm.save) }}
+
+				{{ form_end(filmForm) }}
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

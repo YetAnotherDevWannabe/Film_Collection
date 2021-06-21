@@ -42,7 +42,7 @@ class AppExtension extends AbstractExtension
 	 */
 	public function excerpt(string $value, int $maxSize): string
 	{
-		return mb_strimwidth($value, 0, $maxSize + 3, '...');
+		return mb_strimwidth($value, 0, $maxSize + 4, ' ...');
 	}
 
 

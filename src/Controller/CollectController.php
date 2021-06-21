@@ -15,14 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/collect", name="collect_")
+ * @Route("/collection", name="collect_")
  */
 class CollectController extends AbstractController
 {
 
 	/**
 	 * Page controller to create a new collection
-	 * @Route("/nouvelle-collection/", name="new")
+	 * @Route("/nouvelle/", name="new")
 	 * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function createCollect(Request $request): Response
@@ -50,66 +50,15 @@ class CollectController extends AbstractController
 			$this->addFlash('success', 'Votre collection a bien été créé.');
 
 			// Redirect the user to the 'add_film' page
-			return $this->redirectToRoute('main_home');
+			return $this->redirectToRoute('collect_list');
 		}
 
-		return $this->render('collect/New.html.twig',
-			[
-				'collectForm' => $collectForm->createView(),
-			]);
-	}
-
-	/**
-	 * Page controller to add a film to collect
-	 * @Route("/ajouter-film/", name="add_film")
-	 * @Security ("is_granted('ROLE_ADMIN')")
-	 */
-	public function filmAdd(Request $request): Response
-	{
-		// Create a new instance of film
-		$newFilm = new Film();
-		$filmForm = $this->createForm(FilmFormType::class, $newFilm);
-		$filmForm->handleRequest($request);
-
-		// If no error and form submitted
-		if ( $filmForm->isSubmitted() && $filmForm->isValid() )
-		{
-			// Deactivate account in DB but keep it in the DB
-			$newFilm
-				// ->setTmdbId($filmForm->get('tmdbId')->getData())
-				// ->setName($filmForm->get('name')->getData())
-				// ->setYear($filmForm->get('year')->getData())
-				// ->setGenre($filmForm->get('genre')->getData())
-				// ->setSynopsis($filmForm->get('synopsis')->getData())
-				// ->setPoster($filmForm->get('poster')->getData())
-				// ->setNote($filmForm->get('note')->getData())
-				// ->setTrailer($filmForm->get('trailer')->getData())
-				->setUser($this->getUser())
-			;
-
-			// Save the new film data in the DB via the entity manager
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($newFilm);
-			$em->flush();
-
-			if ( $filmForm->getClickedButton() === $filmForm->get('addNext') )
-			{
-				// TODO: redirect to added film page
-				// TODO: ajouter un lien pour rajouter un autre film dans le message flash
-				$this->addFlash('success', 'Le film a bien été ajouté.');
-				return $this->redirectToRoute('main_home');
-			}
-		}
-
-		return $this->render('collect/AddFilm.html.twig',
-			[
-				'filmForm' => $filmForm->createView(),
-			]);
+		return $this->render('collect/new.html.twig', [ 'collectForm' => $collectForm->createView(), ]);
 	}
 
 	/**
 	 * Controller for the collect list page
-	 * @Route("/collection-list/", name="list")
+	 * @Route("/liste/", name="list")
 	 */
 	public function listCollect(Request $request, PaginatorInterface $paginator): Response
 	{
@@ -127,9 +76,34 @@ class CollectController extends AbstractController
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
 
-		return $this->render('collect/List.html.twig',
-		[
-			'collects' => $collects,
-		]);
+		return $this->render('collect/list.html.twig', [ 'collects' => $collects, ]);
+	}
+
+	/**
+	 * Controller for the collect view page
+	 * @Route("/detail/{slug}/", name="view")
+	 */
+	public function collectView(Collect $collect): Response
+	{
+		// TODO: JS hover qui affiche le poster
+		// TODO: récupérer la liste des films de la collection
+		$em = $this->getDoctrine()->getManager();
+		$filmRepo = $em->getRepository(Film::class);
+		$films = $filmRepo->findAll();
+
+		return $this->render('collect/view.html.twig',
+			[
+				'collect' => $collect,
+				'films' => $films,
+			]);
+	}
+
+	/**
+	 * Controller for the search page
+	 * @Route("/rechercher/", name="search")
+	 */
+	public function search(Request $request): Response
+	{
+		return $this->render('collect/search.html.twig');
 	}
 }

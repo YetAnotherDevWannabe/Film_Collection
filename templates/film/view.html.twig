@@ -2,7 +2,7 @@
 {% extends 'base.html.twig' %}
 
 {# Page title #}
-{% block title %}Nouvelle collection{% endblock %}
+{% block title %}{{ film.name }}{% endblock %}
 
 {# Page CSS #}
 {% block css %}{% endblock %}
@@ -11,16 +11,22 @@
 {% block body %}
 
 	<div class="container-fluid">
+
+		{# H1 Title #}
 		<div class="row">
-			<h1 class="col-12 text-center my-5">Nouvelle Collection</h1>
+			<h1 class="col-12 text-center my-5">{{ film.name }}</h1>
 		</div>
 
 		<div class="row">
 			<div class="col-12 col-md-8 offset-md-2">
-				{# Formulaire #}
-				{{ form(collectForm) }}
+
+				{# Films detail #}
+				div.col-
+
 			</div>
+
 		</div>
+
 	</div>
 
 {% endblock %}
