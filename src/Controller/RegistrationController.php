@@ -2,81 +2,85 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\RegistrationFormType;
-use App\Recaptcha\RecaptchaValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use \DateTime;
+use App\Entity\User;
+use App\Form\UserRegistrationType;
+use App\Recaptcha\RecaptchaValidator;
+use Symfony\Component\Form\FormError;
+
 
 class RegistrationController extends AbstractController
 {
-	/**
-	 * Controller for the register page
-	 * @Route("/inscription/", name="main_register")
-	 */
-	public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha): Response
-	{
-		// Force redirection if user is already connected
-		if ( $this->getUser() )
-		{
-			return $this->redirectToRoute('main_home');
-		}
+    /**
+     * @Route("/inscription/", name="main_register")
+     */
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha): Response
+    {
+        //This is the redirection of the user to homepage if he is already connected
+        if($this->getUser()){
+            return redirectToRoute('main_home');
+        }
 
-		// Create a new user
-		$user = new User();
-		// Create a new form that plugs itself on the newly created user
-		$form = $this->createForm(RegistrationFormType::class, $user);
-		// Hydrate the form with the $request object ( $_POST[] )
-		$form->handleRequest($request);
+        //We create a new user
+        $user = new User();
 
-		// If form is submitted
-		if ( $form->isSubmitted() )
-		{
+        //This is a form linked to this new user
+        $registrationForm = $this->createForm(UserRegistrationType::class, $user);
 
-			// Get the Google ReCAPTCHA response from the form ( $_POST['g-captcha-response'] )
-			$captchaResponse = $request->request->get('g-recaptcha-response', null);
+        //We fill the form with  POST data obtained from $request object
+        $registrationForm->handleRequest($request);
 
-			// Check if Google ReCAPTCHA response is correct
-			if ( !$recaptcha->verify($captchaResponse, $request->server->get('REMOTE_ADDR')) || $captchaResponse == null )
-			{
-				$form->addError(new FormError('Veuillez remplir le captcha de sécurité'));
-			}
+        //Conditions if the form was succesffully filled in
+        if($registrationForm->isSubmitted()){
 
-			// If no error
-			if ( $form->isValid() )
-			{
-				// Hydrate the user with the missing data (not coming from the form)
-				$user
-					->setActive(true)
-					->setRegistrationDate(new \DateTime())
-					->setPassword(
-						$passwordEncoder->encodePassword(
-							$user,
-							$form->get('plainPassword')->getData()
-						)
-					);
+            //Verification of the recaptcha validity
+            if(!$recaptcha->verify( $request->request->get('g-recaptcha-response'), $request->server->get('REMOTE_ADDR') )){
+                //Inclusion of an error message if the recaptcha is empty
+                $registrationForm->addError(new formError('Veuillez valider le recaptcha s\'il-vous-plaît.'));
+            }
 
-				// Save the new user in the DB via the entity manager
-				$entityManager = $this->getDoctrine()->getManager();
-				$entityManager->persist($user);
-				$entityManager->flush();
 
-				// Success flash message
-				$this->addFlash('success', 'Votre compte a bien été créé.');
 
-				// Redirect the user to the 'main_home' page
-				return $this->redirectToRoute('main_login');
+            if($registrationForm->isValid()){
 
-			}
-		}
+                //User table gets filled in with encoded password and registration date
+                $user
+                ->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $registrationForm->get('plainPassword')->getData()
+                    )
+                )
+                ->setActive(true)
 
-		return $this->render('registration/register.html.twig',
-			[
-				'registrationForm' => $form->createView(),
-			]);
-	}
+                ->setRegistrationDate(new DateTime())
+                ;
+
+
+                //We use the entity manager to save the new user in the database
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                //Succes message when the account has been created and the user has been registered
+                $this->addFlash('success', 'Votre compte a bien été bien créé');
+
+
+                //We redirect the user to the login page
+                return $this->redirectToRoute('main_home');
+            }
+        }
+
+
+        //We display the view with the "render" function and generate the form view
+
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $registrationForm->createView()
+        ]);
+    }
 }

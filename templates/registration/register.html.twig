@@ -1,17 +1,57 @@
-{# Base for Twig page #}
 {% extends 'base.html.twig' %}
 
-{# Page title #}
-{% block title %}{% endblock %}
+{% block title %}Page d'inscription{% endblock %}
 
-{# Page CSS #}
-{% block css %}{% endblock %}
+{% block body %}
 
-{# Page content #}
-{% block body %}{% endblock %}
 
-{# Page footer #}
-{% block footer %}{% endblock %}
+    <div class="container">
+        <div class="row">
+            <h1 class="col-12 text-center my-5">Page d'inscription</h1>
+        </div>
+    </div>
 
-{# Page JS #}
-{% block js %}{% endblock %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-4 offset-md-4">
+                {# We open the form #}
+                {{ form_start(registrationForm) }}
+
+                {# Display of form errors #}
+                {{ form_errors(registrationForm) }}
+
+                {# Display of the email field #}
+                {{ form_row(registrationForm.email) }}
+
+                {# Display of the password field #}
+                {{ form_row(registrationForm.plainPassword) }}
+
+                {# Display of nickname field #}
+                {{ form_row(registrationForm.nickname) }}
+
+                {# Display of the user-image or avatar field #}
+                {{ form_row(registrationForm.avatar) }}
+
+                {# Display of recaptcha with the site key variable which is gotten from .env file #}
+                <div class="form-group">
+                    <div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
+                </div>
+
+                {# Display of validation or save button #}
+                {{ form_row(registrationForm.save) }}
+
+                {# This is the end of the form #}
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+{# This is the javascript file which is necesssary to display the google recaptcha #}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
