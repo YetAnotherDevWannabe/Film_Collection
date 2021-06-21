@@ -62,7 +62,7 @@
 					</a>
 
 					{# Left side buttons #}
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<ul class="navbar-nav me-auto mb-lg-0">
 
 						{# HOME button #}
 						<li class="nav-item mx-lg-1">
@@ -88,7 +88,7 @@
 							>
 								<i class="fas fa-layer-group me-2"></i>Collections
 							</a>
-							<ul class="dropdown-menu dropdown-menu-bg dropdown-menu-end" aria-labelledby="collectsDropdownMenuLink">
+							<ul class="dropdown-menu dropdown-menu-bg dropdown-menu-start dropdown-menu-lg-end" aria-labelledby="collectsDropdownMenuLink">
 
 								{# TODO: href #}
 								<li>
@@ -150,7 +150,7 @@
 
 					{# Right side buttons #}
 					{# TODO: Menu hors ecran en mode mobile (gauche) #}
-					<ul class="navbar-nav ms-auto mb-2 mb-lg-0 dropstart">
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 
 						{% if app.user %}{# if user is connected #}
@@ -188,7 +188,7 @@
 									{% endif %}
 								</a>
 
-								<ul class="dropdown-menu dropdown-menu-bg" aria-labelledby="profilDropdownMenuLink">
+								<ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end dropdown-menu-bg" aria-labelledby="profilDropdownMenuLink">
 
 									<li>
 										<a class="dropdown-item nav-drop-hover" href="{{ path('main_profil') }}"><i class="fa fa-user-cog me-2"></i>Mon profil</a>

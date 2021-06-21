@@ -216,6 +216,16 @@
 	width : 70px;
 }
 
+.custom-border-radius
+{
+	border-radius: .6rem !important;
+}
+
+.border-radius-start
+{
+	border-radius: .6rem 0 0 .6rem !important;
+}
+
 
 /* Register */
 /*----------*/
@@ -274,4 +284,16 @@
 .text-delete
 {
 	color : #eb3255 !important;
+}
+
+
+
+/* Responsive */
+/*------------*/
+@media screen and (min-width: 768px)
+{
+	.custom-border-radius
+	{
+		border-radius: 0 .6rem .6rem 0 !important;
+	}
 }
