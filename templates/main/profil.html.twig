@@ -1,17 +1,37 @@
-{# Base for Twig page #}
 {% extends 'base.html.twig' %}
 
 {# Page title #}
-{% block title %}{% endblock %}
+{% block title %}Profil{% endblock %}
 
-{# Page CSS #}
-{% block css %}{% endblock %}
+{% block body %}
 
-{# Page content #}
-{% block body %}{% endblock %}
+<div class="container-fluid">
 
-{# Page footer #}
-{% block footer %}{% endblock %}
+    {# Title #}
+    <div class="row">
+        <h1 class="col-12 text-center my-5">Gestion du profil</h1>
+    </div>
 
-{# Page JS #}
-{% block js %}{% endblock %}
+
+    {# Account information #}
+    <div class="row text-center col-md-10">
+        <div class="col-12 col-md-8 offset-md-5">
+
+            <ul class="list-group col-12 col-md-8">
+                <li class="list-group-item">Adresse Email : <span class="text-info">{{ app.user.email }}</span></li>
+                <li class="list-group-item">Pseudonyme : <span class="text-info">{{ app.user.nickname }}</span></li>
+                <li class="list-group-item">Date d'inscription : <span class="text-info">{{ app.user.registrationDate|date('d/m/Y à H\\hi') }}</span></li>
+                <li class="list-group-item">Compte : <span class="text-info">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
+                <li style="list-style-type:none;"><a class="btn-primary btn-block mt-3" href="{{ path('main_profil_edit') }}" role="button">Modifier le profil</a></li>
+                <li style="list-style-type:none"><a class="btn-warning btn-block mt-3" href="#" >Supprimer le profil</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
