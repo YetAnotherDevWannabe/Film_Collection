@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\EditProfileFormType;
 
 class MainController extends AbstractController
 {
@@ -43,13 +44,83 @@ class MainController extends AbstractController
 
 
 	/**
-	 * Controller for the profil edition page
-	 * @Route("/profil/edit/", name="main_profil_edit")
-	 */
-	public function profilEdit(): Response
-	{
-		return $this->render('main/profil-edit.html.twig');
-	}
+     * @Route("/profil/edit/", name="main_profil_edit")
+     */
+    public function profilEdit(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+
+        //This is a form to modify data
+        $editDataForm = $this->createForm(EditProfileFormType::class);
+
+        //We fill the form with  POST data obtained from $request object
+        $editDataForm->handleRequest($request);
+
+        //Conditions if the form was succesffully filled in
+        if($editDataForm->isSubmitted()){
+            if($editDataForm->isValid()){
+
+
+                $user = $this->getUser();
+
+                /*$user
+                    ->setNickname($editDataForm->get('nickname')->getData())
+                    ->setEmail($editDataForm->get('email')->getData())
+					->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $editDataForm->get('password')->getData()
+                    )
+                )
+                ;*/
+
+				//We test below if any field is not blank, we set the new data filled in by the current connected user
+
+				$emailField = $editDataForm->get('email');
+
+				if(!$emailField->isEmpty()){
+
+					$user->setEmail( $emailField->getData() );
+
+				}
+
+				$nicknameField = $editDataForm->get('nickname');
+
+				if(!$nicknameField->isEmpty()) {
+					$user->setNickname($nicknameField->getData());
+
+				}
+
+				$passwordField = $editDataForm->get('password');
+
+				if(!$passwordField->isEmpty()){
+					$user->setPassword(
+						$passwordEncoder->encodePassword(
+							$user,
+							$editDataForm->get('password')->getData()
+						)
+					)
+					;
+
+				}
+
+                //We use the entity manager to save the new user in the database
+                $em = $this->getDoctrine()->getManager();
+
+                $em->flush();
+
+				$em->refresh($user);
+
+                //Succes message when the account has been created and the user has been registered
+                $this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+
+            }
+
+        }
+
+        return $this->render('main/edit.html.twig', [
+            'editDataForm' => $editDataForm->createView(),
+        ]);
+    }
 
 
 	/**
