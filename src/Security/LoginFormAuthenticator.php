@@ -20,18 +20,21 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
-	// TODO: Check if active account before login
-
-
 	use TargetPathTrait;
 	public const LOGIN_ROUTE = 'main_login';
 	private UrlGeneratorInterface $urlGenerator;
+	private $session;
+	private $security;
 
 	public function __construct(
-		UrlGeneratorInterface $urlGenerator
+		UrlGeneratorInterface $urlGenerator,
+		SessionInterface $session,
+		Security $security
 	)
 	{
 		$this->urlGenerator = $urlGenerator;
+		$this->session = $session;
+		$this->security = $security;
 	}
 
 
@@ -58,10 +61,24 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 			return new RedirectResponse($targetPath);
 		}
 
+		// Get user to check if account activated
+		$user = $this->security->getUser();
 
-		return new RedirectResponse($this->urlGenerator->generate('main_home'));
-
-
+		if ( !$user->getActive() )
+		{
+			// TODO: error message not showing
+			// Error flash message
+			$this->session->getFlashBag()->add('error', 'Compte désactivé');
+			// Redirect the user to the 'main_logout' page after connection
+			return new RedirectResponse($this->urlGenerator->generate('main_logout'));
+		}
+		else
+		{
+			// Success flash message
+			$this->session->getFlashBag()->add('success', 'Connexion réussie !');
+			// Redirect the user to the 'main_home' page after connection
+			return new RedirectResponse($this->urlGenerator->generate('main_home'));
+		}
 	}
 
 

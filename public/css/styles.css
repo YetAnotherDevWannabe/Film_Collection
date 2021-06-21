@@ -75,7 +75,7 @@
 {
 	background-color : var(--compliment);
 	color            : rgba(0, 0, 0, .55); /*var(--basecolor)*/
-	margin           : 0 0.25rem;
+	/*margin           : 0 0.25rem;*/
 }
 
 .nav-btn:hover
@@ -86,13 +86,13 @@
 
 .nav-btn-hover
 {
-	margin : 0 0.25rem;
+	/*margin : 0 0.25rem;*/
 }
 
 .nav-btn-hover:hover
 {
-	background-color : #977c4a;
-	color            : #4b6799 !important;
+	background-color : #a7803d;
+	color            : #214e97 !important;
 }
 
 .nav-outline-btn
@@ -147,16 +147,6 @@
 .btn-nav
 {
 	padding : .735rem 1.75rem !important;
-}
-
-.dropdown-menu-end
-{
-	right : 4px !important;
-}
-
-.dropdown-menu-start
-{
-	left : 4px !important;
 }
 
 .ripple-surface
