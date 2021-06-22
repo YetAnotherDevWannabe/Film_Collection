@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Form\UserRegistrationType;
 use App\Recaptcha\RecaptchaValidator;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class RegistrationController extends AbstractController
@@ -19,7 +20,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/inscription/", name="main_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha, SluggerInterface $slugger): Response
     {
         //This is the redirection of the user to homepage if he is already connected
         if($this->getUser()){
@@ -48,7 +49,31 @@ class RegistrationController extends AbstractController
 
             if($registrationForm->isValid()){
 
-                //User table gets filled in with encoded password and registration date
+                //We get the avatar field
+                $avatar = $registrationForm->get('avatar')->getData();
+
+                //Condition if the avatar field is used, since it is not required
+                if($avatar){
+                    $originalFileName = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFileName = $slugger->slug($originalFileName);
+                    $newFileName = $safeFileName . '-' . uniqid() . '.' . $avatar->guessExtension();
+
+                    $avatar->move(
+                        $this->getParameter('users_uploaded_avatar_dir'),
+                        $newFileName
+                    );
+                }
+
+
+                    /* //We get the path of the avatar file
+               $avatarFilePath = $this->getParameter('users_uploaded_avatar_dir');
+                }
+                //We generate the file uploaded as the avatar
+                do{
+                    $newAvatarFileName = md5($user . random_bytes(100)) . '.' . $avatar->guessExtension();
+                } while( file_exists($avatarFilePath . $newAvatarFileName) );*/
+
+                //We fill in User table with encoded password, registration date and avatar
                 $user
                 ->setPassword(
                     $passwordEncoder->encodePassword(
@@ -59,6 +84,8 @@ class RegistrationController extends AbstractController
                 ->setActive(true)
 
                 ->setRegistrationDate(new DateTime())
+
+                ->setAvatar($newFileName)
                 ;
 
 

@@ -23,7 +23,7 @@
                 <li class="list-group-item">Date d'inscription : <span class="text-info">{{ app.user.registrationDate|date('d/m/Y à H\\hi') }}</span></li>
                 <li class="list-group-item">Compte : <span class="text-info">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
                 <li style="list-style-type:none;"><a class="btn-primary btn-block mt-3" href="{{ path('main_profil_edit') }}" role="button">Modifier le profil</a></li>
-                <li style="list-style-type:none"><a class="btn-warning btn-block mt-3" href="#" >Supprimer le profil</a></li>
+                <li style="list-style-type:none" onclick = "return confirm('Voulez-vous vraiment supprimer votre compte ?')" ><a class="btn-danger btn-block mt-3" href="{{ path('main_profil_delete') }}" >Supprimer le profil</a></li>
             </ul>
         </div>
     </div>

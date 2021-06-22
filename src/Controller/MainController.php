@@ -129,7 +129,17 @@ class MainController extends AbstractController
 	 */
 	public function profilDelete(): Response
 	{
-		return $this->render('main/profil-delete.html.twig');
+		$user = $this->getUser();
+
+		$user
+			->setActive(false);
+
+		$em = $this->getDoctrine()->getManager();
+		$em->flush();
+
+		$this->addFlash('success', 'Votre compte a bien été supprimé');
+
+		return $this->render('main/index.html.twig');
 	}
 
 
