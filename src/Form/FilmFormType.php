@@ -142,7 +142,7 @@ class FilmFormType extends AbstractType
 								]),
 						],
 				])
-			->add('trailer', UrlType::class,
+			->add('trailer', TextType::class,
 				[
 					'label'       => 'Bande annonce',
 					'label_attr'  => ['help' => ' : champs obligatoires',],
