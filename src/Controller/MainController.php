@@ -103,15 +103,17 @@ class MainController extends AbstractController
 
 				}
 
-                //We use the entity manager to save the new user in the database
+                //We use the entity manager to save changes
                 $em = $this->getDoctrine()->getManager();
 
                 $em->flush();
 
 				$em->refresh($user);
 
-                //Succes message when the account has been created and the user has been registered
-                $this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+                //Success message when the user successfully edited at least one field
+				if(!$emailField->isEmpty() || !$nicknameField->isEmpty() || !$passwordField->isEmpty()){
+					$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+				}
 
             }
 
