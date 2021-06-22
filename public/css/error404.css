@@ -4,11 +4,10 @@
 body
 {
     font-family: 'Montserrat', sans-serif;
-    /*color: var(--basecolordark);*/
-    color: #3B5886; 
 }
 
-p {
+p
+{
     font-family: 'Open Sans', sans-serif; 
     color: var(--basecolordark); 
 }
