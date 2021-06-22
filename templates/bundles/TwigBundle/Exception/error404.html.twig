@@ -2,42 +2,42 @@
 {% extends 'base.html.twig' %}
 
 {# Title of the page #}
-{% block title %}Error 404 : Page Introuvable{% endblock %}
+{% block title %}Erreur 404 : Page introuvable{% endblock %}
 
-{# Page CSS 
+{# Page CSS #}
 {% block css %}{% endblock %}
-#}
-
-{# Page CSS personal #}
-{% block css %}
-<link rel="stylesheet" href="{{ asset('css/error404.css') }}">
-{% endblock css %}
 
 {# Page content #}
 {% block body %}
 
-    <div class="row">
+	<div class="container-fluid">
+		<div class="row">
 
-        {# Text 404 #}
-        <div class="col-12">
-            <h3 class="mt-3 mt-md-4 text-center fs-3" style="color: #3B5886;">Page 404 Introuvable</h3>
-        </div>
+			{# Text 404 #}
+			<div class="col-12 text-center">
+				<h3 class="mt-3 mt-md-4 text-center fs-3 text-basecolor">Erreur 404 : Page introuvable</h3>
+			</div>
 
-        {# Text 404 explication #}
-        <div class="col-12">
-            <p class="mt-2 mb-3 mb-md-4 text-center fs-4" style="color: #3B5886;">La page que vous tentiez d'atteindre n'a pas pu être trouvé sur le serveur</p>
-        </div>
+			{# Text 404 explication #}
+			<div class="col-12 text-center">
+				<p class="mt-2 mb-3 mb-md-4 text-center fs-4 text-basecolor">La page que vous tentiez d'atteindre n'a pas pu être trouvé</p>
+			</div>
 
-        {# Image 404 #}
-        <div class="col-12">
-            <img src="{{ asset('img/errors/404.gif') }}" class="img-fluid col-12 col-md-8 col-sm-8 offset-md-2 offset-sm-2" id="for-copyright-two" title="un numéro 404 avec une étrange horloge" alt="Erreur 404, Page Introuvable">
-        </div>
+			{# Image 404 #}
+			<div class="col-12 text-center">
+				<img class="img-fluid m-0 col-12 col-md-8 col-sm-8 offset-md-2 offset-sm-2"
+					 style="max-width: 800px;"
+					 src="{{ asset('img/errors/404.gif') }}"
+					 title="Erreur 404 : Page introuvable"
+					 alt="Erreur 404 : Page introuvable">
+			</div>
 
-    </div>
+		</div>
+	</div>
 
 {% endblock %}
 
 {# Page footer #}
 {% block footer %}
-{% include 'partials/footer-full.html.twig' %}
+	{% include 'partials/footer-small.html.twig' %}
 {% endblock %}

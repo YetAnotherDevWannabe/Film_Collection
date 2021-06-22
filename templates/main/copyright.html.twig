@@ -1,67 +1,66 @@
-{# Page CSS 
-{% block css %}{% endblock %}
-#}
-{% block css %}
-<link rel="stylesheet" href="{{ asset('css/copyright.css') }}">
-{% endblock css %}
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
 
-{# Page base #}
-{% block menu %}
-{% include 'base.html.twig' %}
-{% endblock %}
+{# Page title #}
+{% block title %}Copyright{% endblock %}
 
-{# page content #}
-{% block body  %}
+{# Page CSS #}
+{% block css %}{% endblock css %}
 
-    <div class="container-fluid" id="beige-background">
-   
-        <div class="row">
-            <div class="col-12 col-md-8 col-sm-8 offset-md-2 offset-sm-2 mt-4" id="for-copyright-one">
-                <div class="row" id="for-copyright-two" style="font-family: 'Open Sans', sans-serif;">
-                    <p>
-                        Le site www.XXXXXXXX est édité et hébergé par :
-                    </p>
-                    <p>
-                        YYYYYYYYYYYYY, Société en nom collectif, dont le siège social est au YYYYYYYYYYYY, 89000 YYYYYYY, immatriculée au RCS CRETEIL sous le n° YYY YYY YYY, code NAF YYYYY. 
-                    </p>
-                    <p>
-                        SIRET L Commerce : ZZZZZZZZZZZZZZ
-                    </p>
-                    <p>
-                        TVA L Commerce : FR ZZ ZZZZZZZZZ
-                    </p>
-                    <p>
-                        Directeur de Publication du site : ZZZZZZZZ ZZZZZZZZZ
-                    </p>
-                    <p>Numéro de Téléphone pour nous contacter : ZZZZZZZZZZZZZZ (appel non surtaxé)</p>
-                    <p>
-                        Courrier électronique pour nous contacter : ZZZZZZZ@ZZZZZZ.ZZZ
-                    </p>
-                    <p>
-                        Index d'égalité professionnelle Femmes-Hommes : ZZ/XXX
-                    </p>
-                </div>
-            </div>
-        </div>
+{# Page content #}
+{% block body %}
 
-        <div class="row">
-            <div class="col-12 col-md-8 col-sm-8 offset-md-2 offset-sm-2 mt-4 mb-4" id="for-copyright-one">
-                <div class="row" id="for-copyright-two">
-                    <h5 style="font-family: 'Montserrat', sans-serif;">
-                        DROITS D'AUTEURS
-                    </h5>
-                    <p style="font-family: 'Open Sans', sans-serif;">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque nesciunt temporibus optio delectus accusamus quas recusandae assumenda voluptate nemo rem, suscipit deleniti eum ea ipsam earum fugit! Fuga, quae ea.
-                    </p>
-                </div>
-            </div> 
-        </div>
+	<div class="container-fluid">
 
-    </div>
+		<div class="row">
+			<div class="col-12 col-md-8 col-sm-8 offset-md-2 offset-sm-2 mt-4" id="for-copyright-one">
+				<div class="row" id="for-copyright-two">
+					<p>
+						Le site www.XXXXXXXX est édité et hébergé par :
+					</p>
+					<p>
+						YYYYYYYYYYYYY, Société en nom collectif, dont le siège social est au YYYYYYYYYYYY, 89000 YYYYYYY, immatriculée au RCS CRETEIL sous le n° YYY YYY YYY,
+						code NAF YYYYY.
+					</p>
+					<p>
+						SIRET L Commerce : ZZZZZZZZZZZZZZ
+					</p>
+					<p>
+						TVA L Commerce : FR ZZ ZZZZZZZZZ
+					</p>
+					<p>
+						Directeur de Publication du site : ZZZZZZZZ ZZZZZZZZZ
+					</p>
+					<p>Numéro de Téléphone pour nous contacter : ZZZZZZZZZZZZZZ (appel non surtaxé)</p>
+					<p>
+						Courrier électronique pour nous contacter : ZZZZZZZ@ZZZZZZ.ZZZ
+					</p>
+					<p>
+						Index d'égalité professionnelle Femmes-Hommes : ZZ/XXX
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 col-sm-8 offset-md-2 offset-sm-2 mt-4 mb-4" id="for-copyright-one">
+				<div class="row" id="for-copyright-two">
+					<h5>
+						DROITS D'AUTEURS
+					</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque nesciunt temporibus optio delectus accusamus quas recusandae assumenda voluptate nemo
+						rem, suscipit deleniti eum ea ipsam earum fugit! Fuga, quae ea.
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
 
 {% endblock %}
 
 {# Page footer #}
 {% block footer %}
-{% include 'partials/footer-full.html.twig' %}
+	{% include 'partials/footer-full.html.twig' %}
 {% endblock %}

@@ -187,4 +187,14 @@ class MainController extends AbstractController
 	{
 		return $this->render('main/profil-delete-avatar.html.twig');
 	}
+
+
+	/**
+	 * Controller for the copyright page
+	 * @Route("/copyright/", name="main_copyright")
+	 */
+	public function copyright(): Response
+	{
+		return $this->render('main/copyright.html.twig');
+	}
 }

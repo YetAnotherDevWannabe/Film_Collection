@@ -75,7 +75,7 @@ class UserRegistrationType extends AbstractType
 							'image/png'
 						],
 						'mimeTypesMessage' => 'Votre image doit être au format JPG, PNG ou JPEG',
-						'maxSizeMessage'   => 'Ce fichier de {{ size }}{{ suffix }}est trop lourd, l\'image demandée doit faire au maximum {{ size }}{{ suffix }}',
+						'maxSizeMessage'   => 'Ce fichier de {{ size }}{{ suffix }} est trop lourd, l\'image demandée doit faire au maximum {{ limit }}{{ suffix }}',
 					])
 				],
 			])

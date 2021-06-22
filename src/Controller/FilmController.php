@@ -57,11 +57,14 @@ class FilmController extends AbstractController
 	}
 
 	/**
-	 * @Route("/detail/{slug}/", name="view")
+	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function filmView(Film $film): Response
+	public function filmView(Film $film, Request $request): Response
 	{
-		return $this->render('film/view.html.twig', ['film' => $film,]);
+		// Used to get the last page user was on
+		$lastPage = $request->request->get('referer');
+
+		return $this->render('film/detail.html.twig', ['film' => $film, 'lastPage' => $lastPage]);
 	}
 
 	/**

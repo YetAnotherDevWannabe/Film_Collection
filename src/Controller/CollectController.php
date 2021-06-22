@@ -80,7 +80,7 @@ class CollectController extends AbstractController
 
 	/**
 	 * Controller for the collect view page
-	 * @Route("/detail/{slug}/", name="view")
+	 * @Route("/detail/{slug}/", name="detail")
 	 */
 	public function viewCollect(Collect $collect): Response
 	{
@@ -90,7 +90,7 @@ class CollectController extends AbstractController
 		$filmRepo = $em->getRepository(Film::class);
 		$films = $filmRepo->findAll();
 
-		return $this->render('collect/view.html.twig',
+		return $this->render('collect/detail.html.twig',
 			[
 				'collect' => $collect,
 				'films'   => $films,

@@ -79,7 +79,7 @@
 
 								{# Collect name #}
 								<div class="card-header">
-									<a class="text-compliment fw-bold" href="{{ path('collect_view', { slug: collect.slug }) }}">
+									<a class="text-compliment fw-bold" href="{{ path('collect_detail', { slug: collect.slug }) }}">
 										<i class="fas fa-film me-2"></i>{{ collect.name }}
 									</a>
 								</div>
@@ -113,7 +113,7 @@
 									{# Show modify/delete buttons depending on connected user role #}
 									<p class="mb-0 mt-2 me-1">
 										{# Read collection #}
-										<a href="{{ path('collect_view', { slug: collect.slug }) }}" class="text-primary me-1">
+										<a href="{{ path('collect_detail', { slug: collect.slug }) }}" class="text-primary me-1">
 											<i class="far fa-eye me-1 text-primary"></i>Voir collection
 										</a>
 										{% if is_granted("ROLE_ADMIN") or ( app.user and collect.author.id == app.user.id ) %}
