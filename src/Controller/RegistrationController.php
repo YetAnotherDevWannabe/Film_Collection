@@ -64,15 +64,6 @@ class RegistrationController extends AbstractController
                     );
                 }
 
-
-                    /* //We get the path of the avatar file
-               $avatarFilePath = $this->getParameter('users_uploaded_avatar_dir');
-                }
-                //We generate the file uploaded as the avatar
-                do{
-                    $newAvatarFileName = md5($user . random_bytes(100)) . '.' . $avatar->guessExtension();
-                } while( file_exists($avatarFilePath . $newAvatarFileName) );*/
-
                 //We fill in User table with encoded password, registration date and avatar
                 $user
                 ->setPassword(
@@ -84,9 +75,12 @@ class RegistrationController extends AbstractController
                 ->setActive(true)
 
                 ->setRegistrationDate(new DateTime())
-
-                ->setAvatar($newFileName)
                 ;
+
+                if($avatar){
+                    $user
+                    ->setAvatar($newFileName);
+                }
 
 
                 //We use the entity manager to save the new user in the database

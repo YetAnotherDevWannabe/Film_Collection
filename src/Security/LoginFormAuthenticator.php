@@ -23,6 +23,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 	// TODO: Check if active account before login
 
 
+
 	use TargetPathTrait;
 	public const LOGIN_ROUTE = 'main_login';
 	private UrlGeneratorInterface $urlGenerator;
