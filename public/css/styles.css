@@ -286,7 +286,10 @@
 	color : #eb3255 !important;
 }
 
-
+/*film view*/
+.poster{
+	height: 300px; !important;
+}
 
 /* Responsive */
 /*------------*/

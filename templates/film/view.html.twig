@@ -11,22 +11,60 @@
 {% block body %}
 
 	<div class="container-fluid">
+		{# TODO: Use Bootstrap Card ? #}
+		<div class="row pt-3 ps-md-3 offset-md-0 offset-sm-1">
+			{# <!-- first part #}
+			<div class="col-12 col-md-10 offset-md-2 d-md-flex">
 
-		{# H1 Title #}
-		<div class="row">
-			<h1 class="col-12 text-center my-5">{{ film.name }}</h1>
-		</div>
+				<div class="row">
+					{# poster #}
+					<div class="col-12 mx-md-2 d-flex justify-content-center align-items-center">
+						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="poster">
+					</div>
+				</div>
 
-		<div class="row">
-			<div class="col-12 col-md-8 offset-md-2">
-
-				{# Films detail #}
-				div.col-
-
+				{# title/genre#}
+				<div class="col-12 col-md-9 px-2 py-3 ">
+					<div class="col-12 col-md-8">
+						<h3>{{ film.name }} ({{ film.year }})</h3>
+						<h4>Genre: {{ film.genre }}</h4>
+						<hr>
+						<h5 class="pt-md-4 pt-2">
+							Note : {{ film.note }} %
+							{# TODO: Modify the notation bar ? #}
+							<div class="progress">
+								<div
+									class="progress-bar progress-bar-striped"
+									role="progressbar"
+									style="width: {{ film.note }}%;"
+								>
+								</div>
+							</div>
+							</h5>
+						<h3>Synopsis:</h3>
+						<p>{{ film.synopsis }}</p>
+					</div>
+				</div>
 			</div>
-
 		</div>
-
+		{# link #}
+		<div class="text-center py-4">
+			<a href="google.com">Plus d'informations...</a>
+		</div>
+		{# second part #}
+		<div class="row">
+			<div class="col-md-4 offset-md-4 d-flex flex-column justify-content-center align-items-center">
+				{# iframeYTB  #}
+				<div class="col-lg-6 embed-responsive embed-responsive-16by9 text-center">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ film.trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+				<div class="col-lg-6 p-4">
+					{# TODO: hover-color #}
+					<input type="submit" value="Retour à la liste"
+						   class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse nav-btn-hover mx-0">
+				</div>
+			</div>
+		</div>
 	</div>
 
 {% endblock %}
