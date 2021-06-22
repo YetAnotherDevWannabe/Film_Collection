@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Collect;
 use App\Entity\Film;
+use App\Form\CollectDeleteFormType;
 use App\Form\CollectFormType;
 use App\Form\FilmFormType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -22,7 +23,7 @@ class CollectController extends AbstractController
 
 	/**
 	 * Page controller to create a new collection
-	 * @Route("/nouvelle/", name="new")
+	 * @Route("/ajouter/", name="new")
 	 * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function createCollect(Request $request): Response
@@ -48,12 +49,10 @@ class CollectController extends AbstractController
 
 			// Success flash message
 			$this->addFlash('success', 'Votre collection a bien été créé.');
-
-			// Redirect the user to the 'add_film' page
 			return $this->redirectToRoute('collect_list');
 		}
 
-		return $this->render('collect/new.html.twig', [ 'collectForm' => $collectForm->createView(), ]);
+		return $this->render('collect/add.html.twig', ['collectForm' => $collectForm->createView(),]);
 	}
 
 	/**
@@ -76,14 +75,14 @@ class CollectController extends AbstractController
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
 
-		return $this->render('collect/list.html.twig', [ 'collects' => $collects, ]);
+		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
 	}
 
 	/**
 	 * Controller for the collect view page
 	 * @Route("/detail/{slug}/", name="view")
 	 */
-	public function collectView(Collect $collect): Response
+	public function viewCollect(Collect $collect): Response
 	{
 		// TODO: JS hover qui affiche le poster
 		// TODO: récupérer la liste des films de la collection
@@ -94,7 +93,53 @@ class CollectController extends AbstractController
 		return $this->render('collect/view.html.twig',
 			[
 				'collect' => $collect,
-				'films' => $films,
+				'films'   => $films,
+			]);
+	}
+
+	/**
+	 * Controller for the search page
+	 * @Route("/supprimer/{id}", name="delete")
+	 */
+	public function deleteCollect(Collect $collect, Request $request): Response
+	{
+		//TODO: add CSRF to avoid having possibility of going back to this page?
+
+		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
+		$user = $this->getUser();
+		if ( $user->getRoles() != 'ROLE_ADMIN' && $user->getId() != $collect->getAuthor()->getId() )
+		{
+			return $this->redirectToRoute('collect_list');
+		}
+
+		// Creates form for display
+		$collectDeleteForm = $this->createForm(CollectDeleteFormType::class);
+		$collectDeleteForm->handleRequest($request);
+
+		// If Cancel button is clicked
+		if ( $collectDeleteForm->getClickedButton() === $collectDeleteForm->get('cancel') )
+		{
+			return $this->redirectToRoute('collect_list');
+		}
+
+		if ( $collectDeleteForm->isSubmitted() )
+		{
+
+			// Remove collect from DB
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($collect);
+			$em->flush();
+
+			// Success flash message
+			$this->addFlash('success', 'Collection supprimé.');
+			return $this->redirectToRoute('collect_list');
+		}
+
+
+		return $this->render('collect/delete.html.twig',
+			[
+				'collectDeleteForm' => $collectDeleteForm->createView(),
+				'collect'           => $collect,
 			]);
 	}
 

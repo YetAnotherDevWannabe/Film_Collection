@@ -60,7 +60,6 @@ class MainController extends AbstractController
 			if ( $editDataForm->isValid() )
 			{
 
-
 				$user = $this->getUser();
 
 				/*$user
@@ -80,9 +79,7 @@ class MainController extends AbstractController
 
 				if ( !$emailField->isEmpty() )
 				{
-
 					$user->setEmail($emailField->getData());
-
 				}
 
 				$nicknameField = $editDataForm->get('nickname');
@@ -90,7 +87,6 @@ class MainController extends AbstractController
 				if ( !$nicknameField->isEmpty() )
 				{
 					$user->setNickname($nicknameField->getData());
-
 				}
 
 				$passwordField = $editDataForm->get('password');
@@ -108,9 +104,7 @@ class MainController extends AbstractController
 
 				//We use the entity manager to save the new user in the database
 				$em = $this->getDoctrine()->getManager();
-
 				$em->flush();
-
 				$em->refresh($user);
 
 				//Succes message when the account has been created and the user has been registered
@@ -144,19 +138,13 @@ class MainController extends AbstractController
 	{
 
 		$form = $this->createForm(AvatarEditFormType::class);
-
 		$form->handleRequest($request);
-
 
 		if($form->isSubmitted() && $form->isValid())
 		{
 
-
-
 			$avatar = $form->get('avatar')->getData();
-
 			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
-
 			$connectedUser = $this->getUser();
 
 			// TODO : à décommenter quand l'upload à l'inscription fonctionnera
@@ -165,12 +153,11 @@ class MainController extends AbstractController
 
 			// }
 
-			do{
-
+			do
+			{
 				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
-
-			
-			} while( file_exists( $profilAvatarDir . $newFileName) );
+			}
+			while( file_exists( $profilAvatarDir . $newFileName) );
 
 			$connectedUser->setAvatar($newFileName);
 			$em = $this->getDoctrine()->getManager();
@@ -182,7 +169,6 @@ class MainController extends AbstractController
 			);
 
 			$this->addFlash('succès', 'Votre avatar a été modifié !');
-
 			return $this->redirectToRoute('main_profil');
 
 		}

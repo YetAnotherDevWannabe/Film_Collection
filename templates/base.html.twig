@@ -217,21 +217,21 @@
 						{% else %}{# if user is not connected #}
 
 							<li class="nav-item mx-lg-1">
-								<a class="nav-link btn btn-lg w-100 nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
+								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
 								   href="{{ path('main_register') }}"
 								   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
 								   data-mdb-ripple-centered="true"
 								>
-									<i class="fas fa-user-plus mx-1"></i>Inscription
+									<i class="fas fa-user-plus me-2"></i>Inscription
 								</a>
 							</li>
 							<li class="nav-item mx-lg-1">
-								<a class="nav-link btn btn-lg w-100 nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
+								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
 								   href="{{ path('main_login') }}"
 								   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
 								   data-mdb-ripple-centered="true"
 								>
-									<i class="fas fa-sign-in-alt mx-1"></i>Connexion
+									<i class="fas fa-sign-in-alt me-2"></i>Connexion
 								</a>
 							</li>
 

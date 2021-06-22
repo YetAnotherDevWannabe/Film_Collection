@@ -1,0 +1,49 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Suppression : {{ collect.name }}{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+
+		{# Titre H1 #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Suppression : <span class="text-compliment">{{ collect.name }}</span></h1>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2">
+
+
+				<div class="row">
+
+					<div class="col-12 col-md-6 offset-md-3">
+
+						{{ form(collectDeleteForm) }}
+
+					</div>
+
+				</div>
+
+
+
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

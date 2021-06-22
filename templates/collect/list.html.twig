@@ -12,6 +12,7 @@
 
 	<div class="container-fluid">
 
+		{# Titre H1 #}
 		<div class="row">
 			<h1 class="col-12 text-center my-5">Collections</h1>
 		</div>
@@ -78,7 +79,7 @@
 
 								{# Collect name #}
 								<div class="card-header">
-									<a class="text-compliment fw-bold" href="{{ path('collect_view', {slug: collect.slug}) }}">
+									<a class="text-compliment fw-bold" href="{{ path('collect_view', { slug: collect.slug }) }}">
 										<i class="fas fa-film me-2"></i>{{ collect.name }}
 									</a>
 								</div>
@@ -111,22 +112,20 @@
 								<div class="card-footer pt-0">
 									{# Show modify/delete buttons depending on connected user role #}
 									<p class="mb-0 mt-2 me-1">
-										{# Modify a collection #}
-										{# TODO: also grant access if ROLE_USER and connected user id === author id #}
-										{% if is_granted("ROLE_ADMIN") %}
-											<a href="{# {{ path('blog_article_edit', {id: article.id}) }} #}" class="text-modify"><i
-														class="fas fa-edit me-1 text-modify"></i>modifier</a>
-										{% endif %}
-										{#
-										Delete a collection :
-										 - onclick="" to confirm the suppression through JS confirm()
-										 - CSRF token in URL
-										#}
-										{# TODO: also grant access if ROLE_USER and connected user id === author id #}
-										{% if is_granted("ROLE_ADMIN") %}
-											<a href="{# {{ path('blog_article_delete', { id: article.id, csrf_token: csrf_token('blog_article_delete_' ~ article.id ) }) }} #}"
-											   class="text-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette collection ?')"><i
-														class="fas fa-trash mx-1 text-delete"></i>supprimer</a>
+										{# Read collection #}
+										<a href="{{ path('collect_view', { slug: collect.slug }) }}" class="text-primary me-1">
+											<i class="far fa-eye me-1 text-primary"></i>Voir collection
+										</a>
+										{% if is_granted("ROLE_ADMIN") or ( app.user and collect.author.id == app.user.id ) %}
+											{# Modify collection #}
+											<a href="{# {{ path('blog_article_edit', {id: article.id}) }} #}" class="text-modify">
+												<i class="fas fa-edit me-1 text-modify"></i>modifier
+											</a>
+
+											{# Delete collection #}
+											<a href="{{ path('collect_delete', { id: collect.id }) }}" class="text-delete">
+												<i class="fas fa-trash mx-1 text-delete"></i>supprimer
+											</a>
 										{% endif %}
 									</p>
 								</div>

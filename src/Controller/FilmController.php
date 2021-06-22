@@ -46,7 +46,6 @@ class FilmController extends AbstractController
 
 	/**
 	 * @Route("/liste/", name="list")
-	 * @Security ("is_granted('ROLE_ADMIN')") // TODO: admin or everyone ?
 	 */
 	public function filmList(): Response
 	{
