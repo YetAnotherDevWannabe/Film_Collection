@@ -33,7 +33,6 @@
 						{% if is_granted("ROLE_USER") %}
 
 							{% for userCollect in userCollects %}
-								{% dump(userCollect) %}
 								<li>
 									<a class="dropdown-item nav-drop-hover" href="">{{ userCollect.name }}</a>
 								</li>

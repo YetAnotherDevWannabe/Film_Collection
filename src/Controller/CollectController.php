@@ -70,7 +70,7 @@ class CollectController extends AbstractController
 		$query = $em->createQuery('SELECT c FROM App\Entity\Collect c ORDER BY c.publicationDate DESC');
 
 		// Get the number of collection to show on each page from services.yaml
-		$collectNumberByPage = $this->getParameter('collection_number_by_page');
+		$collectNumberByPage = $this->getParameter('entity_number_by_page');
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);

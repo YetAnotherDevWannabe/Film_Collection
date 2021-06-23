@@ -51,7 +51,7 @@
 						</div>
 					</div>
 
-					{% if collects.getTotalItemCount > collection_number_by_page %}
+					{% if collects.getTotalItemCount > entity_number_by_page %}
 
 						<div class="row">
 							<div class="col-12 my-1 text-center">
@@ -176,7 +176,7 @@
 
 
 				{# Show pagination if any collection is present #}
-				{% if collects is not empty %}
+				{% if collects.getTotalItemCount > entity_number_by_page %}
 					<div class="row">
 						<div class="col-12 my-3 text-center">
 							<div class="d-inline-block">

@@ -12,10 +12,28 @@
 
 	<div class="container-fluid">
 
-		{# H1 Title #}
+		{# Titre H1 #}
 		<div class="row">
-			<h1 class="col-12 text-center my-5">Liste des films</h1>
+			<h1 class="col-12 text-center my-2 my-md-5">Films</h1>
 		</div>
+
+		{# Total number of collections #}
+		<div class="row">
+			<p class="col-12 text-center mb-1">Nombre de films : {{ films.getTotalItemCount }}</p>
+		</div>
+
+		{# Show sorting & pagination if any collection is present #}
+		{% if films.getTotalItemCount > entity_number_by_page %}
+
+			<div class="row">
+				<div class="col-12 my-1 text-center">
+					<div class="d-inline-block">
+						{{ knp_pagination_render(films) }}
+					</div>
+				</div>
+			</div>
+
+		{% endif %}
 
 		<div class="row">
 			<div class="col-12 col-md-8 offset-md-2 list-group mb-5">
@@ -86,6 +104,19 @@
 			</div>
 
 		</div>
+
+		{# Show sorting & pagination if any collection is present #}
+		{% if films.getTotalItemCount > entity_number_by_page %}
+
+			<div class="row">
+				<div class="col-12 my-1 text-center">
+					<div class="d-inline-block">
+						{{ knp_pagination_render(films) }}
+					</div>
+				</div>
+			</div>
+
+		{% endif %}
 
 	</div>
 

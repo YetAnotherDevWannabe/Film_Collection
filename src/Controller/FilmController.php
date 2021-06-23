@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Collect;
 use App\Entity\Film;
 use App\Form\FilmFormType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -48,13 +50,22 @@ class FilmController extends AbstractController
 	/**
 	 * @Route("/liste/", name="list")
 	 */
-	public function filmList(): Response
+	public function filmList(Request $request, PaginatorInterface $paginator): Response
 	{
-		$em = $this->getDoctrine()->getManager();
-		$filmRepo = $em->getRepository(Film::class);
-		$films = $filmRepo->findAll();
+		$requestedPage = $request->query->getInt('page', 1);
+		// If requested page < 1 error 404
+		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
 
-		return $this->render('film/list.html.twig', ['films' => $films]);
+		$em = $this->getDoctrine()->getManager();
+		$query = $em->createQuery('SELECT f FROM App\Entity\Film f ORDER BY f.id ASC');
+
+		// Get the number of collection to show on each page from services.yaml
+		$filmNumberByPage = $this->getParameter('entity_number_by_page');
+
+		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
+		$films = $paginator->paginate($query, $requestedPage, $filmNumberByPage);
+
+		return $this->render('film/list.html.twig', ['films' => $films,]);
 	}
 
 	/**
