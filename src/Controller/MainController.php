@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Avatar;
 use App\Form\AvatarEditFormType;
+use App\Form\AvatarDeleteFormType;
 use App\Form\ProfilDeleteFormType;
 use App\Form\ProfilEditFormType;
 use App\Form\RegistrationFormType;
@@ -14,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\EditProfileFormType;
+
 
 class MainController extends AbstractController
 {
@@ -165,7 +168,6 @@ class MainController extends AbstractController
 
 				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
 
-			
 			} while( file_exists( $profilAvatarDir . $newFileName) );
 
 			$connectedUser->setAvatar($newFileName);
@@ -192,9 +194,48 @@ class MainController extends AbstractController
 	/**
 	 * Controller for the avatar suppression page
 	 * @Route("/profil/avatar/delete/", name="main_avatar_delete")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
-	public function avatarDelete(): Response
+	public function avatarDelete(Request $request): Response
 	{
-		return $this->render('main/profil-delete-avatar.html.twig');
+
+		$connectedUser = $this->getUser();
+
+		if($connectedUser->getAvatar() == null){
+			$this->addFlash('warning', 'Vous n\'avez pas d\'avatar à supprimer actuellement !');
+			return $this->redirectToRoute('main_profil');
+		}
+
+		$form = $this->createForm(AvatarDeleteFormType::class);
+
+		$form->handleRequest($request);
+
+		// Si le bouton annuler est cliqué
+
+		if($form->getClickedButton() == $form->get('cancel')){
+			return $this->redirectToRoute('main_profil');
+		}
+
+		if($form->isSubmitted() && $form->isValid()){
+
+			// Suppression de l'avatar
+			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
+
+			// Suppression de l'image
+			unlink( $profilAvatarDir . $connectedUser->getAvatar() );
+
+			// Suppression du nom de l'image dans l'utilisateur
+			$connectedUser->setAvatar(null);
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+			$this->addFlash('success', 'L\'avatar a été supprimé avec succès !');
+			return $this->redirectToRoute('main_profil');
+
+		}
+
+
+		return $this->render('main/avatar.delete.html.twig', [
+			'avatarDeleteForm' => $form->createView(),
+		]);
 	}
 }

@@ -36,16 +36,10 @@ class AvatarEditFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('modifier', SubmitType::class, [
-                'label' => 'Modifier',
+            ->add('valider', SubmitType::class, [
+                'label' => 'Valider',
                 'attr'  => [
-                    'class' => 'btn btn-outline-primary col-12',
-                ],
-            ])
-            ->add('supprimer', SubmitType::class, [
-                'label' => 'supprimer',
-                'attr'  => [
-                    'class' => 'btn btn-outline-primary col-12',
+                    'class' => 'btn-success btn-block mt-3',
                 ],
             ])
         ;
