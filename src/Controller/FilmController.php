@@ -73,9 +73,17 @@ class FilmController extends AbstractController
 	 */
 	public function filmDetail(Film $film, Request $request): Response
 	{
+		if ( $this->getUser() )
+		{
+			$userCollects = $this->getUser()->getCollects();
+		}
+		else
+		{
+			$userCollects = null;
+		}
+
 		// Used to get the last page user was on
 		$lastPage = $request->request->get('referer');
-		$userCollects = $this->getUser()->getCollects();
 
 		return $this->render('film/detail.html.twig',
 			[

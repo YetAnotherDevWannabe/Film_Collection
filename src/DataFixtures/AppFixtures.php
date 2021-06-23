@@ -212,6 +212,20 @@ class AppFixtures extends Fixture
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
 
+		// Star Wars: The Force Awakens
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('140607')
+			->setName('Star Wars: The Force Awakens')
+			->setYear(2015)
+			->setSynopsis('Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.')
+			->setGenre('Action, Adventure, Science Fiction, Fantasy')
+			// ->setNote(73)
+			// ->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wqnLdwVXoBjKibFRR5U3y0aDUhs.jpg')
+			// ->setTrailer('erLk59H86ww')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+
 
 		////////////////
 		/// COLLECTS ///
