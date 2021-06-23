@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Collect;
+use App\Entity\CommentCollect;
 use App\Entity\Film;
 use App\Form\CollectDeleteFormType;
 use App\Form\CollectFormType;
+use App\Form\CommentCollectFormType;
 use App\Form\FilmFormType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -83,23 +85,88 @@ class CollectController extends AbstractController
 	 * Controller for the collect view page
 	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function viewCollect(Collect $collect): Response
+	public function viewCollect(Request $request,Collect $collect): Response
 	{
-		// TODO: JS hover qui affiche le poster
-		// TODO: récupérer la liste des films de la collection
-		$em = $this->getDoctrine()->getManager();
-		$filmRepo = $em->getRepository(Film::class);
-		$films = $filmRepo->findAll();
+        // TODO: JS hover qui affiche le poster
+        // TODO: récupérer la liste des films de la collection
+        $em = $this->getDoctrine()->getManager();
+        $filmRepo = $em->getRepository(Film::class);
+        $films = $filmRepo->findAll();
 
-		return $this->render('collect/detail.html.twig',
-			[
-				'collect' => $collect,
-				'films'   => $films,
-			]);
+	    //if user is not connected we call directly the view without processing the form below
+        if (!$this->getUser()){
+
+            return $this->render('collect/detail.html.twig',
+                [
+                    'collect' => $collect,
+                    'films'   => $films,
+                ]);
+        }
+
+        $comment = new CommentCollect();
+        $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        //Verification that the form has been sent and has no errors
+        if ($commentForm->isSubmitted() && $commentForm->isValid()){
+
+            $comment
+                ->setPublicationDate(new \DateTime())
+                ->setCollect($collect)
+                ->setUser($this->getUser());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+
+            $this->addFlash('success', 'Commentaire publié avec succès !');
+
+            //Deletion of the two variables of the form and the newly created comment to avoid that the new form remains filled after the creation
+            unset($comment);
+            unset($commentForm);
+
+            $comment = new CommentCollect();
+            $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+        }
+
+        return $this->render('collect/detail.html.twig',
+            [
+                'collect' => $collect,
+                'films'   => $films,
+                'commentForm' => $commentForm->createView(),
+            ]);
 	}
 
+    /**
+     * Controller for the commentCollect deletion
+     * @Route("/commentaire/supression/{id}", name="comment_delete")
+     */
+	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
+    {
+        $tokenCSRF = $request->query->get('csrf_token');
+
+        // Verify if token is valid
+        if (!$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) ){
+
+            $this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
+
+        } else {
+
+            // deletion of commnent
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($commentCollect);
+            $em->flush();
+
+            $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+        }
+
+        return $this->redirectToRoute('collect_detail', [
+           'slug' => $commentCollect->getCollect()->getSlug()
+        ]);
+    }
+
 	/**
-	 * Controller for the search page
+	 * Controller for the collect deletion
 	 * @Route("/supprimer/{id}", name="delete")
 	 */
 	public function deleteCollect(Collect $collect, Request $request): Response
