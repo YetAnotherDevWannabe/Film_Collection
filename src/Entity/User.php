@@ -67,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	/**
 	 * @ORM\OneToMany(targetEntity=Collect::class, mappedBy="author")
+	 * @ORM\OrderBy({"publicationDate" = "DESC"})
 	 */
 	private $collects;
 

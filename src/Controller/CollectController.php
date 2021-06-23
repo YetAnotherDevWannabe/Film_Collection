@@ -122,7 +122,7 @@ class CollectController extends AbstractController
 			return $this->redirectToRoute('collect_list');
 		}
 
-		if ( $collectDeleteForm->isSubmitted() )
+		if ( $collectDeleteForm->isSubmitted() && $collectDeleteForm->isValid() )
 		{
 
 			// Remove collect from DB
@@ -145,10 +145,10 @@ class CollectController extends AbstractController
 
 	/**
 	 * Controller for the search page
-	 * @Route("/rechercher/", name="search")
+	 * @Route("/film/{id}/ajouter/", name="film_add")
 	 */
-	public function search(Request $request): Response
+	public function filmAdd(Request $request): Response
 	{
-		return $this->render('collect/search.html.twig');
+
 	}
 }

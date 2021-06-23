@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Collect;
 use App\Entity\Film;
 use App\Form\FilmFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,12 +60,46 @@ class FilmController extends AbstractController
 	/**
 	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function filmView(Film $film, Request $request): Response
+	public function filmDetail(Film $film, Request $request): Response
 	{
 		// Used to get the last page user was on
 		$lastPage = $request->request->get('referer');
+		$userCollects = $this->getUser()->getCollects();
 
-		return $this->render('film/detail.html.twig', ['film' => $film, 'lastPage' => $lastPage]);
+		return $this->render('film/detail.html.twig',
+			[
+				'film'          => $film,
+				'userCollects'  => $userCollects,
+				'lastPage'      => $lastPage,
+			]);
+	}
+
+	/**
+	 * @Route("/supression/{id}/", name="delete")
+	 * @Security ("is_granted('ROLE_ADMIN')")
+	 */
+	public function filmDelete(Film $film, Request $request): Response
+	{
+		// Récupération du token CSRF dans l' URL
+		$tokenCSRF = $request->query->get('csrf_token');
+
+		// Vérification de la validité du token CSRF
+		if ( !$this->isCsrfTokenValid('film_delete' . $film->getId(), $tokenCSRF) )
+		{
+			$this->addFlash('error', 'Token CSRF invalide.');
+		}
+		else
+		{
+			// Suppression de l' article
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($film);
+			$em->flush();
+
+			// Message flash
+			$this->addFlash('success', 'Film supprimé !');
+		}
+
+		return $this->redirectToRoute('admin_film_delete');
 	}
 
 	/**

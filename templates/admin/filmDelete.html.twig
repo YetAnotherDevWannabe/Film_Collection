@@ -1,0 +1,80 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Liste des films{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+
+		{# H1 Title #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Liste des films</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2 list-group mb-5">
+
+				<div class="row">
+
+					<ul class="list-group col-12 col-md-8 offset-md-2 px-0">
+
+						{# Admin films list #}
+						{% for film in films %}
+
+							{% if loop.index % 2 != 0 %}
+
+								<li class="list-group-item list-group-gradient-reverse-50 list-group-gradient-reverse-50-hover-2 d-flex justify-content-between align-items-center">
+									{{ film.name }} ({{ film.year }})
+									<a class="btn btn-sm"
+									   onclick="return confirm('Voulez-vous supprimer ce film ? (action irréversible)')"
+									   href="{{ path('film_delete', { id: film.id, csrf_token: csrf_token('film_delete' ~ film.id ) }) }}"
+									   data-mdb-ripple-duration="0ms"
+									>
+										delete
+									</a>
+								</li>
+
+							{% endif %}
+
+							{% if loop.index % 2 == 0 %}
+
+								<li class="list-group-item list-group-item-light list-group-gradient-reverse-50-hover d-flex justify-content-between align-items-center">
+									{{ film.name }} ({{ film.year }})
+									<a class="btn btn-sm"
+									   onclick="return confirm('Voulez-vous supprimer ce film ? (action irréversible)')"
+									   href="{{ path('film_delete', { id: film.id, csrf_token: csrf_token('film_delete' ~ film.id ) }) }}"
+									   data-mdb-ripple-duration="0ms"
+									>
+										delete
+									</a>
+								</li>
+
+							{% endif %}
+
+						{% endfor %}
+
+					</ul>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

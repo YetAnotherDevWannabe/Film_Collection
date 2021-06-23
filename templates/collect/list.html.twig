@@ -118,9 +118,9 @@
 										</a>
 										{% if is_granted("ROLE_ADMIN") or ( app.user and collect.author.id == app.user.id ) %}
 											{# Modify collection #}
-											<a href="{# {{ path('blog_article_edit', {id: article.id}) }} #}" class="text-modify">
-												<i class="fas fa-edit me-1 text-modify"></i>modifier
-											</a>
+											{#<a href="#}{# {{ path('blog_article_edit', {id: article.id}) }} #}{#" class="text-modify">#}
+											{#	<i class="fas fa-edit me-1 text-modify"></i>modifier#}
+											{#</a>#}
 
 											{# Delete collection #}
 											<a href="{{ path('collect_delete', { id: collect.id }) }}" class="text-delete">

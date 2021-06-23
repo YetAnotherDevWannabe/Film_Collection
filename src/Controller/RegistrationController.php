@@ -50,6 +50,7 @@ class RegistrationController extends AbstractController
 						)
 					)
 					->setActive(true)
+					->setRoles(["ROLE_USER"])
 					->setRegistrationDate(new DateTime())
 				;
 
