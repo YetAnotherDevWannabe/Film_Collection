@@ -10,6 +10,7 @@ use App\Form\FilmFormType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -145,10 +146,20 @@ class CollectController extends AbstractController
 
 	/**
 	 * Controller for the search page
-	 * @Route("/film/{id}/ajouter/", name="film_add")
+	 * @Route("{collect_id}/ajouter/film/{id}/", name="film_add")
+	 * @Entity("collect", expr="repository.find(collect_id)")
 	 */
-	public function filmAdd(Request $request): Response
+	public function filmAdd(Collect $collect, Film $film, Request $request): Response //Collect $collect, Film $film,
 	{
+		$collect->addFilmCollect($film);
 
+		$em = $this->getDoctrine()->getManager();
+		$em->flush($collect);
+
+		// Message flash
+		$this->addFlash('success', '<span class="text-compliment">'. $film->getName() .'</span> a ajouté à la collection <span class="text-compliment">'. $collect->getName() .'</span> !');
+
+		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()] );
+		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
 	}
 }

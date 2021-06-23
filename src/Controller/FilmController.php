@@ -99,22 +99,20 @@ class FilmController extends AbstractController
 	 */
 	public function filmDelete(Film $film, Request $request): Response
 	{
-		// Récupération du token CSRF dans l' URL
+		// Get CSRF token from URL
 		$tokenCSRF = $request->query->get('csrf_token');
 
-		// Vérification de la validité du token CSRF
+		// Check CSRF token
 		if ( !$this->isCsrfTokenValid('film_delete' . $film->getId(), $tokenCSRF) )
 		{
 			$this->addFlash('error', 'Token CSRF invalide.');
 		}
 		else
 		{
-			// Suppression de l' article
 			$em = $this->getDoctrine()->getManager();
 			$em->remove($film);
 			$em->flush();
 
-			// Message flash
 			$this->addFlash('success', 'Film supprimé !');
 		}
 
