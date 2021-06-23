@@ -16,71 +16,56 @@ use Symfony\Component\Form\FormError;
 
 class RegistrationController extends AbstractController
 {
-    /**
-     * @Route("/inscription/", name="main_register")
-     */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha): Response
-    {
-        //This is the redirection of the user to homepage if he is already connected
-        if($this->getUser()){
-            return redirectToRoute('main_home');
-        }
+	/**
+	 * @Route("/inscription/", name="main_register")
+	 */
+	public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha): Response
+	{
+		//TODO: avatar ne marche pas
+		//This is the redirection of the user to homepage if he is already connected
+		if ( $this->getUser() )
+		{
+			return $this->redirectToRoute('main_home');
+		}
 
-        //We create a new user
-        $user = new User();
+		$user = new User();
+		$registrationForm = $this->createForm(UserRegistrationType::class, $user);
+		$registrationForm->handleRequest($request);
 
-        //This is a form linked to this new user
-        $registrationForm = $this->createForm(UserRegistrationType::class, $user);
+		//Conditions if the form was successfully filled in
+		if ( $registrationForm->isSubmitted() )
+		{
+			if ( !$recaptcha->verify($request->request->get('g-recaptcha-response'), $request->server->get('REMOTE_ADDR')) )
+			{
+				$registrationForm->addError(new formError('Veuillez valider le captcha.'));
+			}
 
-        //We fill the form with  POST data obtained from $request object
-        $registrationForm->handleRequest($request);
+			if ( $registrationForm->isValid() )
+			{
+				$user
+					->setPassword(
+						$passwordEncoder->encodePassword(
+							$user,
+							$registrationForm->get('plainPassword')->getData()
+						)
+					)
+					->setActive(true)
+					->setRegistrationDate(new DateTime())
+				;
 
-        //Conditions if the form was succesffully filled in
-        if($registrationForm->isSubmitted()){
+				//We use the entity manager to save the new user in the database
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($user);
+				$em->flush();
 
-            //Verification of the recaptcha validity
-            if(!$recaptcha->verify( $request->request->get('g-recaptcha-response'), $request->server->get('REMOTE_ADDR') )){
-                //Inclusion of an error message if the recaptcha is empty
-                $registrationForm->addError(new formError('Veuillez valider le recaptcha s\'il-vous-plaît.'));
-            }
+				//Success message when the account has been created and the user has been registered
+				$this->addFlash('success', 'Votre compte a bien été bien créé');
 
+				//We redirect the user to the login page
+				return $this->redirectToRoute('main_login');
+			}
+		}
 
-
-            if($registrationForm->isValid()){
-
-                //User table gets filled in with encoded password and registration date
-                $user
-                ->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $user,
-                        $registrationForm->get('plainPassword')->getData()
-                    )
-                )
-                ->setActive(true)
-
-                ->setRegistrationDate(new DateTime())
-                ;
-
-
-                //We use the entity manager to save the new user in the database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-
-                //Succes message when the account has been created and the user has been registered
-                $this->addFlash('success', 'Votre compte a bien été bien créé');
-
-
-                //We redirect the user to the login page
-                return $this->redirectToRoute('main_home');
-            }
-        }
-
-
-        //We display the view with the "render" function and generate the form view
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $registrationForm->createView()
-        ]);
-    }
+		return $this->render('registration/register.html.twig', ['registrationForm' => $registrationForm->createView(),]);
+	}
 }

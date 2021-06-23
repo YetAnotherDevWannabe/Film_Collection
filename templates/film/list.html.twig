@@ -18,43 +18,56 @@
 		</div>
 
 		<div class="row">
-			<div class="col-12 col-md-8 offset-md-2 list-group">
+			<div class="col-12 col-md-8 offset-md-2 list-group mb-5">
 
 				{# Admin films list #}
 				{% for film in films %}
 
 					{% if loop.index % 2 != 0 %}
 
-						<a href="{{ path('film_view', {slug: film.slug}) }}"
+						<a href="{{ path('film_detail', {slug: film.slug}) }}"
 						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover"
 						   aria-current="true"
 						>
-							<div class="d-flex w-100 justify-content-between pt-2">
-								<h5 class="mb-1">{{ film.name }}</h5>
-								<small>{{ film.year }}</small>
+							<div class="card">
+								<div class="row g-0">
+									<div class="col-2 d-none d-lg-block" style="max-width: 150px">
+										<img src="{{ film.poster }}" alt="{{ film.name }}" class="img-fluid"/>
+									</div>
+									<div class="col-10">
+										<div class="card-body">
+											<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
+											<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
+											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
+										</div>
+									</div>
+								</div>
 							</div>
-							<p class="pt-1 mb-1">
-								{{ film.synopsis|excerpt(150) }}
-							</p>
-							<small class="text-black-50">{{ film.genre }}</small>
 						</a>
+
 
 					{% endif %}
 
 					{% if loop.index % 2 == 0 %}
 
-						<a href="{{ path('film_view', {slug: film.slug}) }}"
-						   class="list-group-item list-group-item-action list-group-item-light"
+						<a href="{{ path('film_detail', {slug: film.slug}) }}"
+						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover"
 						   aria-current="true"
 						>
-							<div class="d-flex w-100 justify-content-between pt-2">
-								<h5 class="mb-1">{{ film.name }}</h5>
-								<small>{{ film.year }}</small>
+							<div class="card">
+								<div class="row g-0">
+									<div class="col-2 d-none d-lg-block" style="max-width: 150px">
+										<img src="{{ film.poster }}" alt="{{ film.name }}" class="img-fluid"/>
+									</div>
+									<div class="col-10">
+										<div class="card-body">
+											<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
+											<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
+											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
+										</div>
+									</div>
+								</div>
 							</div>
-							<p class="pt-1 mb-1">
-								{{ film.synopsis|excerpt(150) }}
-							</p>
-							<small class="text-black-50">{{ film.genre }}</small>
 						</a>
 
 					{% endif %}

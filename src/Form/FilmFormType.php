@@ -142,11 +142,11 @@ class FilmFormType extends AbstractType
 								]),
 						],
 				])
-			->add('trailer', UrlType::class,
+			->add('trailer', TextType::class,
 				[
 					'label'       => 'Bande annonce',
 					'label_attr'  => ['help' => ' : champs obligatoires',],
-					'attr'        => ['placeholder' => 'https://www.youtube.com/watch?v=EFYEni2gsK0',],
+					'attr'        => ['placeholder' => 'EFYEni2gsK0',],
 					'constraints' =>
 						[
 							new Length(

@@ -34,7 +34,7 @@
 
 		{# Navbar #}
 		{# TODO: affichage du menu en mode tel CRADE DE LA MERDE JE GERBE #}
-		<nav class="navbar navbar-expand-lg navbar-light gradient-basecolor">
+		<nav class="navbar navbar-expand-xl navbar-light gradient-basecolor">
 			<div class="container-fluid">
 
 				{# Bouton toggle #}
@@ -62,11 +62,11 @@
 					</a>
 
 					{# Left side buttons #}
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<ul class="navbar-nav me-auto mb-lg-0">
 
 						{# HOME button #}
-						<li class="nav-item">
-							<a class="btn btn-lg btn-nav nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
+						<li class="nav-item mx-lg-1">
+							<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
 							   href="{{ path('main_home') }}"
 							   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
 							   data-mdb-ripple-centered="true"
@@ -77,9 +77,9 @@
 
 
 						{# Left side dropdown 1 #}
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown mx-lg-1">
 							{# TODO: route #}
-							<a class="nav-link btn btn-lg btn-nav dropdown-toggle nav-btn-hover{{ (route == 'collect_list' or route == 'collect_new') ? ' nav-btn' : ' text-dark' }}"
+							<a class="nav-link btn btn-lg w-100 btn-nav dropdown-toggle nav-btn-hover{{ (route == 'collect_list' or route == 'collect_new') ? ' nav-btn' : ' text-dark' }}"
 							   href="#"
 							   id="collectsDropdownMenuLink"
 							   role="button"
@@ -88,7 +88,7 @@
 							>
 								<i class="fas fa-layer-group me-2"></i>Collections
 							</a>
-							<ul class="dropdown-menu dropdown-menu-bg dropdown-menu-end" aria-labelledby="collectsDropdownMenuLink">
+							<ul class="dropdown-menu dropdown-menu-bg dropdown-menu-start dropdown-menu-lg-end" aria-labelledby="collectsDropdownMenuLink">
 
 								{# TODO: href #}
 								<li>
@@ -113,10 +113,10 @@
 
 
 						{# Left side dropdown 2 #}
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown mx-lg-1">
 							{# TODO: route #}
-							<a class="nav-link btn btn-lg btn-nav dropdown-toggle nav-btn-hover{{
-							   (route == 'film_list' or route == 'film_new' or route == 'film_add' or route == 'film_view') ? ' nav-btn' : ' text-dark' }}"
+							<a class="nav-link btn btn-lg w-100 btn-nav dropdown-toggle nav-btn-hover{{
+							   (route == 'film_list' or route == 'film_new' or route == 'film_add' or route == 'film_detail') ? ' nav-btn' : ' text-dark' }}"
 							   href="#"
 							   id="filmsDropdownMenuLink"
 							   role="button"
@@ -149,14 +149,15 @@
 
 
 					{# Right side buttons #}
-					<ul class="navbar-nav ms-auto mb-2 mb-lg-0 dropstart">
+					{# TODO: Menu hors ecran en mode mobile (gauche) #}
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 
 						{% if app.user %}{# if user is connected #}
 
 							{# Dropdown de droite: User #}
-							<li class="nav-item dropdown">
-								<a class="nav-link btn dropdown-toggle nav-btn-hover{{ (route == 'main_profil' or route == 'main_logout') ? ' nav-btn' : ' text-dark' }}"
+							<li class="nav-item dropdown mx-lg-1">
+								<a class="nav-link btn w-100 dropdown-toggle nav-btn-hover{{ (route == 'main_profil' or route == 'main_logout') ? ' nav-btn' : ' text-dark' }}"
 								   href="#"
 								   id="profilDropdownMenuLink"
 								   role="button"
@@ -169,7 +170,8 @@
 											 class="rounded-circle me-1"
 											 height="28"
 											 width="28"
-											 alt="avatar"
+											 alt="menu profil"
+											 title="menu profil"
 											 loading="lazy"
 										/>
 									{% else %}
@@ -178,18 +180,15 @@
 											 class="rounded-circle me-1"
 											 height="28"
 											 width="28"
-											 alt="avatar"
+											 alt="menu profil"
+											 title="menu profil"
 											 loading="lazy"
 										/>
 
 									{% endif %}
-
-
-									{# TODO: app.user #}
-									{# {{ app.user.nickname }} #}
 								</a>
 
-								<ul class="dropdown-menu dropdown-menu-bg" aria-labelledby="profilDropdownMenuLink">
+								<ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end dropdown-menu-bg" aria-labelledby="profilDropdownMenuLink">
 
 									<li>
 										<a class="dropdown-item nav-drop-hover" href="{{ path('main_profil') }}"><i class="fa fa-user-cog me-2"></i>Mon profil</a>
@@ -217,22 +216,22 @@
 
 						{% else %}{# if user is not connected #}
 
-							<li class="nav-item d-inline-block">
-								<a class="btn btn-lg nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
+							<li class="nav-item mx-lg-1">
+								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
 								   href="{{ path('main_register') }}"
 								   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
 								   data-mdb-ripple-centered="true"
 								>
-									<i class="fas fa-user-plus mx-1"></i>Inscription
+									<i class="fas fa-user-plus me-2"></i>Inscription
 								</a>
 							</li>
-							<li class="nav-item">
-								<a class="btn btn-lg nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
+							<li class="nav-item mx-lg-1">
+								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
 								   href="{{ path('main_login') }}"
 								   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
 								   data-mdb-ripple-centered="true"
 								>
-									<i class="fas fa-sign-in-alt mx-1"></i>Connexion
+									<i class="fas fa-sign-in-alt me-2"></i>Connexion
 								</a>
 							</li>
 
@@ -245,9 +244,9 @@
 					{# Search #}
 					{# TODO: action #}
 					{# TODO: 'btn ou d-flex' qui fait u bug au click sur la loupe #}
-					<form class="d-flex" method="GET" action="{# {{ path('collect_search') }} #}">
-						<input class="form-control mx-2 search-outline flex-fill" type="search" placeholder="Trouver un film" aria-label="Search" name="q">
-						<button class="btn nav-outline-btn"
+					<form class="d-flex mx-lg-1" method="GET" action="{# {{ path('collect_search') }} #}">
+						<input class="form-control search-outline flex-fill" type="search" placeholder="Trouver un film" aria-label="Search" name="q">
+						<button class="btn nav-outline-btn ms-1"
 								type="submit"
 								data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
 								data-mdb-ripple-centered="true"

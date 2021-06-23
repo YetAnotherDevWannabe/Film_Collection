@@ -1,52 +1,83 @@
+{# Base for Twig page #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{# Page title #}
+{% block title %}Connexion{% endblock %}
 
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+	{# TODO: Use our flash error message if needed #}
+	{# If there is an error we display it using flash messages #}
+	{% if error %}
+		{{ flash_message('error', error.messageKey|trans(error.messageData, 'security')) }}
+	{% endif %}
 
-    <h1 class="col-12 text-center my-5">Connexion</h1>
+	{% include 'partials/flash-success.html.twig' %}
+	{% include 'partials/flash-info.html.twig' %}
+	{% include 'partials/flash-warning.html.twig' %}
+	{% include 'partials/flash-error.html.twig' %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-4 offset-md-4">
-                <label for="inputEmail">Adresse courriel</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-        <label for="inputPassword">Mot de passe</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+<div class="container-fluid">
 
-        <input type="hidden" name="_csrf_token"
-            value="{{ csrf_token('authenticate') }}">
+	{# H1 Title #}
+	<div class="row">
+		<h1 class="col-12 text-center my-5">Connexion</h1>
+	</div>
+
+	{# Login form #}
+	<div class="row">
+
+		<div class="col-12 col-md-4 offset-md-4">
+
+			<form action="{{ path('main_login') }}" method="POST">
+
+				{# Email field #}
+				<div class="form-outline my-4">
+					<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control">
+					<label for="inputEmail" class="form-label">Email</label>
+				</div>
+
+				{# Password field #}
+				<div class="form-outline my-4">
+					<input type="password" name="password" id="inputPassword" class="form-control" required>
+					<label for="inputPassword" class="form-label">Password</label>
+				</div>
+
+				{# Invisible security token anti CSRF #}
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+				{# Submit button #}
+				<input type="submit" class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0" value="Connexion au compte">
+
+			</form>
+
+		</div>
+
+	</div>
+
+</div>
 
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
-
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" name="_remember_me"> Remember me
-                </label>
-            </div>
-        #}
-
-        <button class="btn btn-primary col-12 mt-3" type="submit">
-            Connectez-vous
-        </button>
-
-            </div>
-        </div>
-    </div>
-
-</form>
+	{# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality. #}
+	{# See https://symfony.com/doc/current/security/remember_me.html #}
+	{#
+	<div class="checkbox mb-3">
+		<label>
+			<input type="checkbox" name="_remember_me"> Remember me
+		</label>
+	</div>
+	#}
 
 {% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

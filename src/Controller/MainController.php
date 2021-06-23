@@ -46,83 +46,81 @@ class MainController extends AbstractController
 
 
 	/**
-     * @Route("/profil/edit/", name="main_profil_edit")
-     */
-    public function profilEdit(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-    {
+	 * @Route("/profil/edit/", name="main_profil_edit")
+	 */
+	public function profilEdit(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+	{
 
-        //This is a form to modify data
-        $editDataForm = $this->createForm(EditProfileFormType::class);
+		//This is a form to modify data
+		$editDataForm = $this->createForm(EditProfileFormType::class);
 
-        //We fill the form with  POST data obtained from $request object
-        $editDataForm->handleRequest($request);
+		//We fill the form with  POST data obtained from $request object
+		$editDataForm->handleRequest($request);
 
-        //Conditions if the form was succesffully filled in
-        if($editDataForm->isSubmitted()){
-            if($editDataForm->isValid()){
+		//Conditions if the form was succesffully filled in
+		if ( $editDataForm->isSubmitted() )
+		{
+			if ( $editDataForm->isValid() )
+			{
 
+				$user = $this->getUser();
 
-                $user = $this->getUser();
-
-                /*$user
-                    ->setNickname($editDataForm->get('nickname')->getData())
-                    ->setEmail($editDataForm->get('email')->getData())
+				/*$user
+					->setNickname($editDataForm->get('nickname')->getData())
+					->setEmail($editDataForm->get('email')->getData())
 					->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $user,
-                        $editDataForm->get('password')->getData()
-                    )
-                )
-                ;*/
+					$passwordEncoder->encodePassword(
+						$user,
+						$editDataForm->get('password')->getData()
+					)
+				)
+				;*/
 
 				//We test below if any field is not blank, we set the new data filled in by the current connected user
 
 				$emailField = $editDataForm->get('email');
 
-				if(!$emailField->isEmpty()){
-
-					$user->setEmail( $emailField->getData() );
-
+				if ( !$emailField->isEmpty() )
+				{
+					$user->setEmail($emailField->getData());
 				}
 
 				$nicknameField = $editDataForm->get('nickname');
 
-				if(!$nicknameField->isEmpty()) {
+				if ( !$nicknameField->isEmpty() )
+				{
 					$user->setNickname($nicknameField->getData());
-
 				}
 
 				$passwordField = $editDataForm->get('password');
 
-				if(!$passwordField->isEmpty()){
+				if ( !$passwordField->isEmpty() )
+				{
 					$user->setPassword(
 						$passwordEncoder->encodePassword(
 							$user,
 							$editDataForm->get('password')->getData()
 						)
-					)
-					;
+					);
 
 				}
 
-                //We use the entity manager to save the new user in the database
-                $em = $this->getDoctrine()->getManager();
-
-                $em->flush();
-
+				//We use the entity manager to save the new user in the database
+				$em = $this->getDoctrine()->getManager();
+				$em->flush();
 				$em->refresh($user);
 
-                //Succes message when the account has been created and the user has been registered
-                $this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+				//Succes message when the account has been created and the user has been registered
+				$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
 
-            }
+			}
 
-        }
+		}
 
-        return $this->render('main/edit.html.twig', [
-            'editDataForm' => $editDataForm->createView(),
-        ]);
-    }
+		return $this->render('main/edit.html.twig', [
+			'editDataForm' => $editDataForm->createView(),
+		]);
+	}
 
 
 	/**
@@ -143,19 +141,13 @@ class MainController extends AbstractController
 	{
 
 		$form = $this->createForm(AvatarEditFormType::class);
-
 		$form->handleRequest($request);
-
 
 		if($form->isSubmitted() && $form->isValid())
 		{
 
-
-
 			$avatar = $form->get('avatar')->getData();
-
 			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
-
 			$connectedUser = $this->getUser();
 
 			// TODO : à décommenter quand l'upload à l'inscription fonctionnera
@@ -164,8 +156,8 @@ class MainController extends AbstractController
 
 			// }
 
-			do{
-
+			do
+			{
 				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
 
 			} while( file_exists( $profilAvatarDir . $newFileName) );
@@ -180,7 +172,6 @@ class MainController extends AbstractController
 			);
 
 			$this->addFlash('succès', 'Votre avatar a été modifié !');
-
 			return $this->redirectToRoute('main_profil');
 
 		}
@@ -237,5 +228,15 @@ class MainController extends AbstractController
 		return $this->render('main/avatar.delete.html.twig', [
 			'avatarDeleteForm' => $form->createView(),
 		]);
+	}
+
+
+	/**
+	 * Controller for the copyright page
+	 * @Route("/copyright/", name="main_copyright")
+	 */
+	public function copyright(): Response
+	{
+		return $this->render('main/copyright.html.twig');
 	}
 }
