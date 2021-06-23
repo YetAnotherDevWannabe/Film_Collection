@@ -7,11 +7,15 @@
 	--compliment : #b59a68;
 }
 
+/*body*/
+/*{*/
+/*	background-color: #e6e6e6;*/
+/*	color: #191919;*/
+/*}*/
+
 h1, h2, h3, h4, h5, h6
 {
 	font-family: 'Montserrat', sans-serif;
-	/*	background-color: #e6e6e6;*/
-	/*	color: #191919;*/
 }
 
 p
@@ -160,7 +164,7 @@ p
 
 .dropdown-menu-bg
 {
-	background-color : #dbe2ee
+	background-color : #dbe2ee !important
 }
 
 .btn-nav
@@ -270,6 +274,13 @@ p
 	background : #b39865;
 	background : linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
 	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
+}
+
+.list-group-gradient-reverse-50-hover-2:hover
+{
+	background : #b39865;
+	background : linear-gradient(to right, rgba(151, 124, 74, 0.4), rgba(198, 177, 139, 0.25));
+	background : -webkit-linear-gradient(to right, rgba(151, 124, 74, 0.4), rgba(198, 177, 139, 0.25));
 }
 
 

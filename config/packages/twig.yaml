@@ -3,7 +3,7 @@ twig:
     form_theme: ['layouts/bootstrap_5_layout.html.twig']
     globals:
         site_name: '%site_name%'
-        collection_number_by_page: '%collection_number_by_page%'
+        entity_number_by_page: '%entity_number_by_page%'
         google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
         ripple_color_white: '#FFFFFF'
         ripple_color_blue: '#195DDB'

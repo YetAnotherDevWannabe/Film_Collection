@@ -72,7 +72,7 @@ class CollectController extends AbstractController
 		$query = $em->createQuery('SELECT c FROM App\Entity\Collect c ORDER BY c.publicationDate DESC');
 
 		// Get the number of collection to show on each page from services.yaml
-		$collectNumberByPage = $this->getParameter('collection_number_by_page');
+		$collectNumberByPage = $this->getParameter('entity_number_by_page');
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
@@ -189,7 +189,7 @@ class CollectController extends AbstractController
 			return $this->redirectToRoute('collect_list');
 		}
 
-		if ( $collectDeleteForm->isSubmitted() )
+		if ( $collectDeleteForm->isSubmitted() && $collectDeleteForm->isValid() )
 		{
 
 			// Remove collect from DB
@@ -212,10 +212,10 @@ class CollectController extends AbstractController
 
 	/**
 	 * Controller for the search page
-	 * @Route("/rechercher/", name="search")
+	 * @Route("/film/{id}/ajouter/", name="film_add")
 	 */
-	public function search(Request $request): Response
+	public function filmAdd(Request $request): Response
 	{
-		return $this->render('collect/search.html.twig');
+
 	}
 }
