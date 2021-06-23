@@ -310,7 +310,12 @@ p
 /*-----------*/
 .poster
 {
-	height : 300px; !important;
+	height : 300px !important;
+}
+
+.poster2
+{
+	height: 200px !important;
 }
 
 .bg-basecolor
