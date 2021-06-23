@@ -53,7 +53,18 @@
 				<div class="row">
 					{# poster #}
 					<div class="col-12 mx-md-2 d-flex justify-content-center align-items-center">
-						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="poster">
+
+					{# If film got poster we show him else we use default_poster #}
+					{% if film.poster is not null %}
+
+						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+
+					{% else %}
+
+						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+
+					{% endif %}
+
 					</div>
 				</div>
 
