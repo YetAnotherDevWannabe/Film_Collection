@@ -305,6 +305,11 @@ p
 	color : #eb3255 !important;
 }
 
+/*Avatar Comment Collect*/
+.comment-profil-photo{
+	width: 84px;
+	height: 84px;
+}
 
 /* film view */
 /*-----------*/

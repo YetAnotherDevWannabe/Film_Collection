@@ -32,16 +32,16 @@
 							<div class="card">
 								<div class="row g-0">
 									<div class="col-2 d-none d-lg-block" style="max-width: 150px">
-										{# If film got poster we show him else we use default_poster #}
-										{% if film.poster is not null %}
+									{# If film got poster we show him else we use default_poster #}
+									{% if film.poster is not null %}
 
-											<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+										<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
 
-										{% else %}
+									{% else %}
 
-											<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+										<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
 
-										{% endif %}
+									{% endif %}
 									</div>
 									<div class="col-10">
 										<div class="card-body">
