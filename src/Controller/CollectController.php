@@ -121,12 +121,10 @@ class CollectController extends AbstractController
 
             $this->addFlash('success', 'Commentaire publié avec succès !');
 
-            //Deletion of the two variables of the form and the newly created comment to avoid that the new form remains filled after the creation
-            unset($comment);
-            unset($commentForm);
+            return $this->redirectToRoute('collect_detail', [
+                'slug' => $collect->getSlug()
+            ]);
 
-            $comment = new CommentCollect();
-            $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
         }
 
         return $this->render('collect/detail.html.twig',
