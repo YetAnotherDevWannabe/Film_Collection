@@ -74,7 +74,7 @@
 								<div class="p-0 mx-2 d-flex justify-content-center align-items-center bg-light comment-profil-photo">
 									{% if comment.user.avatar is not null %}
 
-									<img class="img-fluid img-thumbnail-mini" src="{{ asset('img/uploads/avatar/' ~ app.user.avatar) }}" alt="user_avatar">
+									<img class="img-fluid img-thumbnail-mini" src="{{ asset('img/uploads/avatar/' ~ comment.user.avatar) }}" alt="user_avatar">
 
 								 	{% else %}
 
