@@ -205,11 +205,17 @@ class CollectController extends AbstractController
 
 	/**
 	 * Controller for the search page
-	 * @Route("{collect_id}/ajouter/film/{id}/", name="film_add")
+	 * @Route("/{collect_id}/ajouter/film/{id}/", name="film_add")
 	 * @Entity("collect", expr="repository.find(collect_id)")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
 	public function filmAdd(Collect $collect, Film $film, Request $request): Response //Collect $collect, Film $film,
 	{
+		if ($this->getUser() != $collect->getAuthor() || !$this->getUser())
+		{
+			return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
+		}
+
 		$collect->addFilmCollect($film);
 
 		$em = $this->getDoctrine()->getManager();

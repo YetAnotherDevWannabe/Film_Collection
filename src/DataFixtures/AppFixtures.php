@@ -53,6 +53,17 @@ class AppFixtures extends Fixture
 		$manager->persist($user);
 		$users[] = $user;
 
+		// for ($i = 0; $i < 8; $i++)
+		// {
+		// 	// Collect'
+		// 	$newCollect = new Collect();
+		// 	$newCollect
+		// 		->setName("Collect' " . (rand(0, 100) + $i))
+		// 		->setPublicationDate(new \DateTime())
+		// 		->setAuthor($users[rand(0, count($users) - 1)]);
+		// 	$manager->persist($newCollect);
+		// }
+
 
 		/////////////
 		/// FILMS ///

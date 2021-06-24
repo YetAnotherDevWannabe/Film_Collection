@@ -23,6 +23,11 @@ p
 	font-family: 'Open Sans', sans-serif;
 }
 
+form textarea
+{
+	background-color: #fff !important;
+}
+
 .fs-7
 {
 	font-size: .9rem !important;
@@ -31,6 +36,16 @@ p
 .fs-8
 {
 	font-size: .8rem !important;
+}
+
+.mt-05
+{
+	margin-top: 3px !important;
+}
+
+.mb-05
+{
+	margin-b: 3px !important;
 }
 
 
@@ -317,7 +332,8 @@ p
 }
 
 
-/*Avatar Comment Collect*/
+/* Avatar Comment Collect */
+/*------------------------*/
 .comment-profil-photo{
 	width: 84px;
 	height: 84px;
@@ -351,13 +367,32 @@ p
 }
 
 
-/* Responsive */
-/*------------*/
+/* copyright */
+/*-----------*/
 #for-copyright-two
 {
 	padding:  5%;
 	-webkit-box-shadow: 8px 8px 10px 0px rgba(195, 206, 226, 0.58);-moz-box-shadow:  8px 8px 10px 0px rgba(225, 231, 240, 0.58);
 	box-shadow: 8px 8px 10px 0px rgba(225, 231, 240, 0.58);
+}
+
+
+/* Page de contact */
+/*-----------------*/
+.formulaire, .renseignements
+{
+	color : whitesmoke;
+}
+
+.contact-background
+{
+	background-color : var(--compliment);
+}
+
+.contact-btn
+{
+	color : whitesmoke;
+	border-color: whitesmoke;
 }
 
 
@@ -370,24 +405,3 @@ p
 		border-radius : 0 .6rem .6rem 0 !important;
 	}
 }
-
-/* Page de contact */
-
-/* bloc formulaire de contact */
-
-.formulaire, .renseignements
-{
-		
-	color : whitesmoke;
-}
-
-.contact-background
-{
-	background-color : var(--compliment);
-}
-.contact-btn
-{
-	color : whitesmoke;
-	border-color: whitesmoke;
-}
-

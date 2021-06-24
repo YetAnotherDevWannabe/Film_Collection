@@ -19,10 +19,10 @@ class CommentCollectFormType extends AbstractType
 	{
 		$builder
 			->add('content', TextareaType::class, [
-				'label'       => false,
+				'label'       => 'Laissez un commentaire...',
 				'purify_html' => true,
 				'attr'        => [
-					'placeholder' => 'Laissez votre commentaire...',
+					'placeholder' => 'Laissez un commentaire...',
 					'rows'        => 10,
 				],
 				'constraints' => [
