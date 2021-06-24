@@ -17,12 +17,12 @@
 			<h1 class="col-12 text-center my-2 my-md-5">Résultat de la recherche</h1>
 		</div>
 
-		{# Total number of collections #}
+		{# Total number of films #}
 		<div class="row">
 			<p class="col-12 text-center mb-1">Nombre de films : {{ films.getTotalItemCount }}</p>
 		</div>
 
-		{# Show sorting & pagination if any collection is present #}
+		{# Show sorting & pagination if any film is present #}
 		{% if films.getTotalItemCount > entity_number_by_page %}
 
 			<div class="row">
@@ -67,6 +67,7 @@
 								</div>
 							</div>
 						</a>
+						
 
 
 					{% endif %}
@@ -94,12 +95,14 @@
 											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
 										</div>
 									</div>
+									
 								</div>
 							</div>
 						</a>
 
 					{% endif %}
-
+				{% else %}
+					<p class="col-12 text-center alert alert-warning">Aucun résultat pour cette recherche.</p>
 				{% endfor %}
 
 			</div>
