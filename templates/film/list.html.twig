@@ -53,7 +53,7 @@
 									{% if film.poster is not null %}
 										<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
 									{% else %}
-										<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+										<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
 									{% endif %}
 
 								</div>

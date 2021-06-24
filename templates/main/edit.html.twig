@@ -1,30 +1,30 @@
+{# Base for Twig page #}
 {% extends 'base.html.twig' %}
 
-{#{% block css %}
-    {# Property to hide the horizontal scrolling bar on the editing profile page which is not on other pages #}
-
-    {#body {
-        overflow-x: hidden;
-    }#}
-
-{#{% endblock %}#}
-
+{# Page title #}
 {% block title %}Modification du profil{% endblock %}
 
-{% block body %}
-    <div class="container-fluid">
-        {# Title #}
-        <div class="row">
-            <h1 class="col-12 text-center my-5">Modifiez ci-dessous vos données si vous le souhaitez</h1>
-        </div>
+{# Page CSS #}
+{% block css %}{% endblock %}
 
-        {# Form to modify information #}
-        <div class="row">
-            <div class="col-12 col-md-5 col-lg-4 offset-md-4">
-                {{ form(editDataForm) }}
-            </div>
-        </div>
-    </div>
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+
+		{# Title #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Modifiez ci-dessous vos données</h1>
+		</div>
+
+		{# Form to modify information #}
+		<div class="row">
+			<div class="col-12 col-md-5 col-lg-4 offset-md-4">
+				{{ form(editDataForm) }}
+			</div>
+		</div>
+
+	</div>
 
 {% endblock %}
 
