@@ -235,7 +235,6 @@ class MainController extends AbstractController
 		$connectedUser = $this->getUser();
 
 		if($connectedUser->getAvatar() == null){
-			$this->addFlash('warning', 'Vous n\'avez pas d\'avatar à supprimer actuellement !');
 			return $this->redirectToRoute('main_profil');
 		}
 
