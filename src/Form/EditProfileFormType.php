@@ -76,7 +76,7 @@ class EditProfileFormType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => [
-                    'class' => 'btn btn-primary col-12 mt-3'
+                    'class' => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse col-12 mt-3'
                 ],
             ])
         ;
