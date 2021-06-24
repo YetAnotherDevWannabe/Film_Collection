@@ -39,7 +39,7 @@ class AvatarEditFormType extends AbstractType
 			->add('valider', SubmitType::class, [
 				'label' => 'Valider',
 				'attr'  => [
-					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0',
+					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
 					'data-mdb-ripple-duration' => '0ms',
 				],
 			]);

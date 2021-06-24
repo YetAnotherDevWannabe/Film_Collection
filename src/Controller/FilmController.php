@@ -54,7 +54,7 @@ class FilmController extends AbstractController
 	{
 		$requestedPage = $request->query->getInt('page', 1);
 		// If requested page < 1 error 404
-		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
+		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		$query = $em->createQuery('SELECT f FROM App\Entity\Film f ORDER BY f.id ASC');
@@ -128,11 +128,7 @@ class FilmController extends AbstractController
 		$requestedPage = $request->query->getInt('page', 1);
 
 		// Si le numéro de page demandé dans l'URL est inférieur à 1, erreur 404
-		if ( $requestedPage < 1 )
-		{
-			throw new NotFoundHttpException();
-		}
-
+		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
 
 		// Récupération du manager général des entités
 		$em = $this->getDoctrine()->getManager();

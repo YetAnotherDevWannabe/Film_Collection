@@ -82,7 +82,7 @@ class UserRegistrationType extends AbstractType
 			->add('save', SubmitType::class, [
 				'label' => 'Créer mon compte',
 				'attr'  => [
-					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0',
+					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
 					'data-mdb-ripple-duration' => '0ms',
 				],
 			]);
