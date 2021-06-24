@@ -31,8 +31,6 @@
 			<div class="col-12 col-md-4 offset-md-4">
 				{{ form_start(registrationForm) }}
 
-				<div class="ms-3 my-3"><span class="text-danger">*</span>{{ registrationForm.email.vars.label_attr.help }}</div>
-
 				<div class="form-outline my-5">
 					{{ form_widget(registrationForm.email) }}
 					{% block email_label %}
@@ -69,12 +67,22 @@
 					{{ form_errors(registrationForm.nickname) }}
 				</div>
 
-				{# Display of the user-image or avatar field #}
-				{{ form_row(registrationForm.avatar) }}
+				<div class=" my-5">
+{#					{{ form_row(registrationForm.avatar) }}#}
+					{% block avatar_label %}
+						<label for="{{ registrationForm.avatar.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.avatar.vars.label }}
+						</label>
+					{% endblock %}
+					{{ form_widget(registrationForm.avatar) }}
+					{{ form_errors(registrationForm.avatar) }}
+				</div>
 
-				<div class="my-4 d-flex justify-content-center">
+				<div class="mt-4 d-flex justify-content-center">
 					<div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
 				</div>
+
+				<div class="ms-1 my-3"><span class="text-danger">*</span>{{ registrationForm.email.vars.label_attr.help }}</div>
 
 				{{ form_row(registrationForm.save) }}
 
