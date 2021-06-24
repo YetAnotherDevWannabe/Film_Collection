@@ -1,0 +1,135 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Résultat de la recherche{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+
+		{# Titre H1 #}
+		<div class="row">
+			<h1 class="col-12 text-center my-2 my-md-5">Résultat de la recherche</h1>
+		</div>
+
+		{# Total number of films #}
+		<div class="row">
+			<p class="col-12 text-center mb-1">Nombre de films : {{ films.getTotalItemCount }}</p>
+		</div>
+
+		{# Show sorting & pagination if any film is present #}
+		{% if films.getTotalItemCount > entity_number_by_page %}
+
+			<div class="row">
+				<div class="col-12 my-1 text-center">
+					<div class="d-inline-block">
+						{{ knp_pagination_render(films) }}
+					</div>
+				</div>
+			</div>
+
+		{% endif %}
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2 list-group mb-5">
+
+				{# Admin films list #}
+				{% for film in films %}
+
+					{% if loop.index % 2 != 0 %}
+
+						<a href="{{ path('film_detail', {slug: film.slug}) }}"
+						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+						   aria-current="true"
+						>
+							<div class="card">
+								<div class="row g-0">
+									<div class="col-2 d-none d-lg-block" style="max-width: 150px">
+										{# If film got poster we show him else we use default_poster #}
+										{% if film.poster is not null %}
+											<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+										{% else %}
+											<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+										{% endif %}
+									</div>
+									<div class="col-10">
+										<div class="card-body">
+											<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
+											<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
+											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+						
+
+
+					{% endif %}
+
+					{% if loop.index % 2 == 0 %}
+
+						<a href="{{ path('film_detail', {slug: film.slug}) }}"
+						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+						   aria-current="true"
+						>
+							<div class="card">
+								<div class="row g-0">
+									<div class="col-2 d-none d-lg-block" style="max-width: 150px">
+										{# If film got poster we show him else we use default_poster #}
+										{% if film.poster is not null %}
+											<img src="{{ film.poster }}" alt="{{ film.name }}" class="img-fluid img-thumbnail-mini border border-4 me-3">
+										{% else %}
+											<img src="{{ asset('img/default_poster.png') }}" alt="pas d\'image" class="poster2 img-fluid img-thumbnail-mini border border-4 me-3">
+										{% endif %}
+									</div>
+									<div class="col-10">
+										<div class="card-body">
+											<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
+											<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
+											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</a>
+
+					{% endif %}
+				{% else %}
+					<p class="col-12 text-center alert alert-warning">Aucun résultat pour cette recherche.</p>
+				{% endfor %}
+
+			</div>
+
+		</div>
+
+		{# Show sorting & pagination if any collection is present #}
+		{% if films.getTotalItemCount > entity_number_by_page %}
+
+			<div class="row">
+				<div class="col-12 my-1 text-center">
+					<div class="d-inline-block">
+						{{ knp_pagination_render(films) }}
+					</div>
+				</div>
+			</div>
+
+		{% endif %}
+
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}
