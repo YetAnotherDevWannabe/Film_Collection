@@ -21,11 +21,17 @@
 			<div class="col-12 col-md-8 offset-md-2">
 
 				{# Admin links #}
-				<a class="btn btn-lg gradient-basecolor-reverse gradient-compliment-reverse my-3 py-2 col-8 offset-2 col-md-6 offset-md-3" href="{{ path('film_add') }}">
+				<a class="btn btn-lg gradient-basecolor-reverse gradient-compliment-reverse my-3 py-2 col-8 offset-2 col-md-6 offset-md-3"
+				   href="{{ path('film_add') }}"
+				   data-mdb-ripple-duration="0ms"
+				>
 					<i class="fas fa-plus me-3"></i>Ajouter un film
 				</a>
-				<a class="btn btn-lg gradient-basecolor-reverse gradient-compliment-reverse my-3 py-2 col-8 offset-2 col-md-6 offset-md-3" href="{{ path('film_list') }}">
-					<i class="fas fa-bars me-3"></i>Liste des films
+				<a class="btn btn-lg gradient-basecolor-reverse gradient-compliment-reverse my-3 py-2 col-8 offset-2 col-md-6 offset-md-3"
+				   href="{{ path('admin_film_delete') }}"
+				   data-mdb-ripple-duration="0ms"
+				>
+					<i class="fas fa-minus me-3"></i>Supprimer un film
 				</a>
 
 			</div>

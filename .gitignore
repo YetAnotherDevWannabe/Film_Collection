@@ -25,7 +25,6 @@
 ###< Ignore migration files ###
 
 ###> Ignore user uploaded avatars ###
-/public/img/uploads/avatar/*.gif
-/public/img/uploads/avatar/*.jpg
-/public/img/uploads/avatar/*.png
+/public/img/uploads/avatar/*
+!/public/img/uploads/avatar/.gitignore
 ###< Ignore user uploaded avatars ###

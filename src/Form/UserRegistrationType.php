@@ -18,94 +18,78 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-
-
 class UserRegistrationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('email', EmailType::class, [
-                'label' => 'Adresse courriel',
-                'constraints' => [
-                    new Email([
-                        'message' => 'L\'adresse courriel {{ value }} est invalide'
-                    ]),
-                    new NotBlank([
-                        'message' => 'Veuillez rentrer une adresse courriel valide'
-                    ])
-                ],
-            ])
-            ->add('plainPassword', RepeatedType::class, [
-                'mapped' => false,
-                'type' => PasswordType::class,
-                'invalid_message' => 'Le mot de passe ne correspond pas à sa confirmation',
-                'first_options' => [
-                    'label' => 'Mot de passe',
-                ],
-                'second_options' => [
-                    'label' => 'Confirmation du mot de passe',
-                ],
-                'label' => 'Mot de passe',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Merci de renseigner un mot de passe'
-                    ]),
-                    new Regex([
-                        'pattern' => '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ !\"\#\$%&\'\(\)*+,\-.\/:;<=>?@[\\^\]_`\{|\}~])^.{8,4096}$/',
-                        'message' => 'Votre mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un caractère spécial, un chiffre'
-                    ])
-                ],
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('email', EmailType::class, [
+				'label'       => 'Adresse email',
+				'constraints' => [
+					new Email(['message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide.']),
+					new NotBlank(['message' => 'L\'adresse email ne peut pas être vide.']),
+				],
+				'label_attr'  => ['help' => ' : champs obligatoires',],
+			])
+			->add('plainPassword', RepeatedType::class, [
+				'mapped'          => false,
+				'type'            => PasswordType::class,
+				'invalid_message' => 'La confirmation  ne correspond pas au mot de passe',
+				'first_options'   => ['label' => 'Mot de passe'],
+				'second_options'  => ['label' => 'Confirmation du mot de passe'],
+				'constraints'     => [
+					new NotBlank([
+						'message' => 'Merci de renseigner un mot de passe'
+					]),
+					new Regex([
+						'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#\$%&\'()*+,\-.\/:;<=>?@[\\\\\]\^_`{\|}~]).{8,4096}$/',
+						'message' => 'Votre mot de passe doit contenir au moins 8 caractères a-z, A-A, 0-9 un caractère spécial'
+					])
+				],
 
-            ])
-            ->add('nickname', TextType::class, [
-                'label' => "Pseudonyme",
-                'constraints' => [
-                    new Length([
-                        'min' => 2,
-                        'max' => 150,
-                        'minMessage' => 'Votre pseudonyme doit contenir au minimum {{ limit }} caractères',
-                        'maxMessage' => 'Votre pseudonyme doit contenir au maximum {{ limit }} caractères',
-                    ]),
-                    new NotBlank([
-                        'message' => 'Veuillez renseigner un pseudonyme s\'il-vous-plaît',
-                    ])
-                ],
-            ])
-            ->add('avatar', FileType::class, [
-                'label' => 'Avatar',
-                'attr' => [
-                    'accept' => 'image/jpeg, image/jpg, image/png',
-                ],
-                'constraints' => [
+			])
+			->add('nickname', TextType::class, [
+				'label'       => 'Nom d\'utilisateur',
+				'constraints' =>
+					[
+						new NotBlank(['message' => 'Merci de renseigner un nom d\'utilisateur']),
+						new Length(
+							[
+								'min'        => '2',
+								'max'        => '50',
+								'minMessage' => 'Votre nom d\'utilisateur doit contenir au moins {{ limit }} caractères.',
+								'maxMessage' => 'Votre nom d\'utilisateur doit contenir au maximum {{ limit }} caractères.',
+							]
+						),
+					],
+			])
+			->add('avatar', FileType::class, [
+				'label'       => 'Avatar',
+				'attr'        => ['accept' => 'image/jpeg, image/jpg, image/png',],
+				'constraints' => [
+					new File([
+						'maxSize'          => '1M',
+						'mimeTypes'        => [
+							'image/jpeg',
+							'image/jpg',
+							'image/png'
+						],
+						'mimeTypesMessage' => 'Votre image doit être au format JPG, PNG ou JPEG',
+						'maxSizeMessage'   => 'Ce fichier de {{ size }}{{ suffix }} est trop lourd, l\'image demandée doit faire au maximum {{ limit }}{{ suffix }}',
+					])
+				],
+			])
+			->add('save', SubmitType::class, [
+				'label' => 'Créer mon compte',
+				'attr'  => ['class' => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0'],
+			]);
+	}
 
-                    new File([
-                        'maxSize' => '1M',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/jpg',
-                            'image/png'
-                        ],
-                        'mimeTypesMessage' => 'Votre image doit être au format JPG, PNG ou JPEG',
-                        'maxSizeMessage' => 'Ce fichier de {{ size }} {{ suffix }} est trop lourd, l\'image demandée doit faire au maximum {{ size }} {{ suffix }}',
-                    ])
-                ],
-            ])
-
-            ->add('save', SubmitType::class, [
-                'label' => 'S\'inscrire',
-                'attr' => [
-                    'class' => 'btn btn-primary col-12 mt-3'
-                ],
-            ])
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            'attr' => ['novalidate' => 'novalidate']
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => User::class,
+			'attr'       => ['novalidate' => 'novalidate']
+		]);
+	}
 }

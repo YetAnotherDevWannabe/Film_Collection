@@ -1,57 +1,97 @@
+{# Base for Twig page #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Page d'inscription{% endblock %}
+{# Page title #}
+{% block title %}Créer un compte{% endblock %}
 
+{# Page CSS #}
+{# We use the CSS block for the Google reCAPTCHA JS file as it needs to be in the <head> of the HTML #}
+{% block css %}
+	<script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+{# Page content #}
 {% block body %}
 
+	{% for error in registrationForm.vars.errors %}
+		{{ flash_message('error', error.message) }}
+	{% endfor %}
 
-    <div class="container">
-        <div class="row">
-            <h1 class="col-12 text-center my-5">Page d'inscription</h1>
-        </div>
-    </div>
+	{# Error flash messages #}
+	{% include 'partials/flash-error.html.twig' %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-4 offset-md-4">
-                {# We open the form #}
-                {{ form_start(registrationForm) }}
+	<div class="container-fluid">
 
-                {# Display of form errors #}
-                {{ form_errors(registrationForm) }}
+		{# H1 Title #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Créer un compte</h1>
+		</div>
 
-                {# Display of the email field #}
-                {{ form_row(registrationForm.email) }}
+		<div class="row">
+			<div class="col-12 col-md-4 offset-md-4">
+				{{ form_start(registrationForm) }}
 
-                {# Display of the password field #}
-                {{ form_row(registrationForm.plainPassword) }}
+				<div class="ms-3 my-3"><span class="text-danger">*</span>{{ registrationForm.email.vars.label_attr.help }}</div>
 
-                {# Display of nickname field #}
-                {{ form_row(registrationForm.nickname) }}
+				<div class="form-outline my-4">
+					{{ form_widget(registrationForm.email) }}
+					{% block email_label %}
+						<label for="{{ registrationForm.email.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.email.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(registrationForm.email) }}
+				</div>
 
-                {# Display of the user-image or avatar field #}
-                {{ form_row(registrationForm.avatar) }}
+				<div class="form-outline my-4">
+					{{ form_widget(registrationForm.plainPassword.children.first) }}
+					{% block pass1_label %}
+						<label for="{{ registrationForm.plainPassword.children.first.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.plainPassword.children.first.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(registrationForm.plainPassword.children.first) }}
+				</div>
 
-                {# Display of recaptcha with the site key variable which is gotten from .env file #}
-                <div class="form-group">
-                    <div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
-                </div>
+				<div class="form-outline my-4">
+					{{ form_widget(registrationForm.plainPassword.children.second) }}
+					{% block pass2_label %}
+						<label for="{{ registrationForm.plainPassword.children.second.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.plainPassword.children.second.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(registrationForm.plainPassword.children.second) }}
+				</div>
 
-                {# Display of validation or save button #}
-                {{ form_row(registrationForm.save) }}
+				<div class="form-outline my-4">
+					{{ form_widget(registrationForm.nickname) }}
+					{% block nickname_label %}
+						<label for="{{ registrationForm.nickname.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.nickname.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(registrationForm.nickname) }}
+				</div>
 
-                {# This is the end of the form #}
-                {{ form_end(registrationForm) }}
-            </div>
-        </div>
-    </div>
+				{# Display of the user-image or avatar field #}
+				{{ form_row(registrationForm.avatar) }}
 
+				<div class="my-4 d-flex justify-content-center">
+					<div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
+				</div>
 
+				{{ form_row(registrationForm.save) }}
 
+				{{ form_end(registrationForm) }}
+
+			</div>
+		</div>
+
+	</div>
+	</div>
 
 {% endblock %}
 
-{% block js %}
-{# This is the javascript file which is necesssary to display the google recaptcha #}
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
 {% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

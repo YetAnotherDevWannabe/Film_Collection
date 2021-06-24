@@ -78,55 +78,16 @@
     </div>
 
 </div>
-<footer class="bg-light text-center mt-auto gradient-custom-reverse-50">
-
-    {# Grid container #}
-    <div class="container py-2">
-
-        <!-- {# Section: Social media #} -->
-        <nav>
-            <!-- {# Facebook #} -->
-            <a class="btn btn-primary btn-floating m-1" style="background-color: #3b5998" href="https://fr-fr.facebook.com/" role="button">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-
-            <!-- {# Twitter #} -->
-            <a class="btn btn-primary btn-floating m-1" style="background-color: #55acee" href="https://twitter.com/?lang=fr" role="button">
-                <i class="fab fa-twitter"></i>
-            </a>
-
-            <!-- {# Instagram #} -->
-            <a class="btn btn-primary btn-floating m-1" style="background-color: #ac2bac" href="https://www.instagram.com/?hl=fr" role="button">
-                <i class="fab fa-instagram"></i>
-            </a>
-
-            <!-- {# Linkedin #} -->
-            <a class="btn btn-primary btn-floating m-1" style="background-color: #0082ca" href="https://fr.linkedin.com/" role="button">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
-
-            <!-- {# Github #} -->
-            <a class="btn btn-primary btn-floating m-1" style="background-color: #333333" href="https://github.com/YetAnotherDevWannabe/Film_Collection" role="button">
-                <i class="fab fa-github"></i>
-            </a>
-        </nav>
-
-    </div>
-
-    <!-- {# Copyright #} -->
-    <div class="text-center p-3 gradient-custom-reverse">
-        © 2021 Copyright:
-        <a class="text-dark" href="https://github.com/YetAnotherDevWannabe/Film_Collection">
-            La Taco's Dream Team
-            <img src="../img/tacos_dream_team.png" alt="logo" height="35" class="rounded-circle ms-1">
-        </a>
-    </div>
-
-</footer>
 
 
 
 
 
 
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+    {% include 'partials/footer-small.html.twig' %}
 {% endblock %}

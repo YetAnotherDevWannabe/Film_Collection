@@ -25,7 +25,6 @@
 
 				<div class="form-outline mb-4">
 					{{ form_widget(filmForm.tmdbId) }}
-{#					{{ form_label(filmForm.tmdbId) }}#}
 					{% block tmdbId_label %}
 						<label for="{{ filmForm.tmdbId.vars.id }}" class="form-label required" style="margin-left: 0px;">
 							{{ filmForm.tmdbId.vars.label }} <span class="text-danger">*</span></label>
@@ -35,7 +34,6 @@
 
 				<div class="form-outline my-4">
 					{{ form_widget(filmForm.name) }}
-{#					{{ form_label(filmForm.name) }}#}
 					{% block name_label %}
 						<label for="{{ filmForm.name.vars.id }}" class="form-label required" style="margin-left: 0px;">
 							{{ filmForm.name.vars.label }} <span class="text-danger">*</span></label>
@@ -45,7 +43,6 @@
 
 				<div class="form-outline my-4">
 					{{ form_widget(filmForm.year) }}
-					{# {{ form_label(filmForm.year) }} #}
 					{% block year_label %}
 						<label for="{{ filmForm.year.vars.id }}" class="form-label required" style="margin-left: 0px;">
 							{{ filmForm.year.vars.label }} <span class="text-danger">*</span></label>
@@ -55,7 +52,6 @@
 
 				<div class="form-outline my-4">
 					{{ form_widget(filmForm.synopsis) }}
-					{# {{ form_label(filmForm.synopsis) }} #}
 					{% block synopsis_label %}
 						<label for="{{ filmForm.synopsis.vars.id }}" class="form-label required" style="margin-left: 0px;">
 							{{ filmForm.synopsis.vars.label }} <span class="text-danger">*</span></label>
@@ -65,7 +61,6 @@
 
 				<div class="form-outline my-4">
 					{{ form_widget(filmForm.genre) }}
-{#					{{ form_label(filmForm.genre) }}#}
 					{% block genre_label %}
 						<label for="{{ filmForm.genre.vars.id }}" class="form-label required" style="margin-left: 0px;">
 							{{ filmForm.genre.vars.label }} <span class="text-danger">*</span></label>
