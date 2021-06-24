@@ -40,15 +40,21 @@
 									<img class="img-fluid img-thumbnail-mini me-md-3" src="{{ asset('img/default_avatar.png') }}" alt="default_avatar">
 
 								{% endif %}
-								
+
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-12 pt-3">
-								<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a><br>
-								{% if app.user.avatar is null %}
+								{% if app.user.avatar is not null %}
+
+									<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a><br>
 									<a class="text-compliment fw-bold" href="{{ path('main_avatar_delete') }}">Supprimer l'avatar</a>
+
+								{% else %}
+
+									<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a><br>
+									
 								{% endif %}
 							</div>
 						</div>
