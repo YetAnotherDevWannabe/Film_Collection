@@ -87,12 +87,31 @@
 								{# Collect body #}
 								<div class="card-body my-0 py-0 ms-4">
 									<div>
+
+										{# Calcul note moyenne #}
+										{% set total = 0 %}
+
+										{% for film in collect.getFilmCollect() %}
+											{% set total = total + film.note %}
+										{% endfor %}
+
+										{% if collect.getFilmCollect()|length != 0 %}
+											{% set note_med = total / (collect.getFilmCollect()|length) %}
+										{% else %}
+											{% set note_med = 'Pas de films dans la collection' %}
+										{% endif %}
+
+
+
+
+
+
 										{# Most likely a number of film in the list and median film note #}
 										<p class="text-basecolor mb-0 mt-2">Nombre de films :
-											<span class="text-compliment">{{ collect.name }}{# {{ collect.film|length }} #}</span>
+											<span class="text-compliment">{{ collect.getFilmCollect()|length }}</span>
 										</p>
 										<p class="text-basecolor mb-0 mt-1">Note moyenne des films :
-											<span class="text-compliment">{{ collect.name }}</span>
+											<span class="text-compliment">{{ note_med }}</span>
 										</p>
 										<div class="blockquote-footer my-1 py-0 ms-2">
 											<small class="text-muted">
@@ -129,7 +148,6 @@
 							</div>
 
 						</div>
-
 
 
 					{% else %}

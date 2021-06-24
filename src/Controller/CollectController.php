@@ -85,85 +85,81 @@ class CollectController extends AbstractController
 	 * Controller for the collect view page
 	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function viewCollect(Request $request,Collect $collect): Response
+	public function detailCollect(Request $request, Collect $collect): Response
 	{
-        // TODO: JS hover qui affiche le poster
-        // TODO: récupérer la liste des films de la collection
-        $em = $this->getDoctrine()->getManager();
-        $filmRepo = $em->getRepository(Film::class);
-        $films = $filmRepo->findAll();
+		//if user is not connected we call directly the view without processing the form below
+		if ( !$this->getUser() )
+		{
+			return $this->render('collect/detail.html.twig',
+				[
+					'collect' => $collect,
+				]);
+		}
 
-	    //if user is not connected we call directly the view without processing the form below
-        if (!$this->getUser()){
+		$comment = new CommentCollect();
+		$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+		$commentForm->handleRequest($request);
 
-            return $this->render('collect/detail.html.twig',
-                [
-                    'collect' => $collect,
-                    'films'   => $films,
-                ]);
-        }
+		//Verification that the form has been sent and has no errors
+		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
+		{
 
-        $comment = new CommentCollect();
-        $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-        $commentForm->handleRequest($request);
+			$comment
+				->setPublicationDate(new \DateTime())
+				->setCollect($collect)
+				->setUser($this->getUser());
 
-        //Verification that the form has been sent and has no errors
-        if ($commentForm->isSubmitted() && $commentForm->isValid()){
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($comment);
+			$em->flush();
 
-            $comment
-                ->setPublicationDate(new \DateTime())
-                ->setCollect($collect)
-                ->setUser($this->getUser());
+			$this->addFlash('success', 'Commentaire publié avec succès !');
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
+			//Deletion of the two variables of the form and the newly created comment to avoid that the new form remains filled after the creation
+			unset($comment);
+			unset($commentForm);
 
-            $this->addFlash('success', 'Commentaire publié avec succès !');
+			$comment = new CommentCollect();
+			$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+		}
 
-            //Deletion of the two variables of the form and the newly created comment to avoid that the new form remains filled after the creation
-            unset($comment);
-            unset($commentForm);
-
-            $comment = new CommentCollect();
-            $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-        }
-
-        return $this->render('collect/detail.html.twig',
-            [
-                'collect' => $collect,
-                'films'   => $films,
-                'commentForm' => $commentForm->createView(),
-            ]);
+		return $this->render('collect/detail.html.twig',
+			[
+				'collect'     => $collect,
+				'commentForm' => $commentForm->createView(),
+			]);
 	}
 
-    /**
-     * Controller for the commentCollect deletion
-     * @Route("/commentaire/supression/{id}", name="comment_delete")
-     */
+	/**
+	 * Controller for the commentCollect deletion
+	 * @Route("/commentaire/supression/{id}", name="comment_delete")
+	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
-    {
-        $tokenCSRF = $request->query->get('csrf_token');
+	{
+		$tokenCSRF = $request->query->get('csrf_token');
 
-        // Verify if token is valid
-        if (!$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) ){
+		// Verify if token is valid
+		if ( !$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) )
+		{
 
-            $this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
+			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
 
-        } else {
+		}
+		else
+		{
 
-            // deletion of commnent
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($commentCollect);
-            $em->flush();
+			// deletion of commnent
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($commentCollect);
+			$em->flush();
 
-            $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
-        }
+			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+		}
 
-        return $this->redirectToRoute('collect_detail', [
-           'slug' => $commentCollect->getCollect()->getSlug()
-        ]);
-    }
+		return $this->redirectToRoute('collect_detail', [
+			'slug' => $commentCollect->getCollect()->getSlug(),
+		]);
+	}
 
 	/**
 	 * Controller for the collect deletion
@@ -171,8 +167,6 @@ class CollectController extends AbstractController
 	 */
 	public function deleteCollect(Collect $collect, Request $request): Response
 	{
-		//TODO: add CSRF to avoid having possibility of going back to this page?
-
 		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
 		$user = $this->getUser();
 		if ( $user->getRoles() != 'ROLE_ADMIN' && $user->getId() != $collect->getAuthor()->getId() )
@@ -224,9 +218,9 @@ class CollectController extends AbstractController
 		$em->flush($collect);
 
 		// Message flash
-		$this->addFlash('success', '<span class="text-compliment">'. $film->getName() .'</span> a ajouté à la collection <span class="text-compliment">'. $collect->getName() .'</span> !');
+		$this->addFlash('success', '<span class="text-compliment">' . $film->getName() . '</span> a ajouté à la collection <span class="text-compliment">' . $collect->getName() . '</span> !');
 
-		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()] );
+		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
 	}
 }
