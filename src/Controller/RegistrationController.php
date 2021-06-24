@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Form\UserRegistrationType;
 use App\Recaptcha\RecaptchaValidator;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class RegistrationController extends AbstractController
@@ -19,7 +20,7 @@ class RegistrationController extends AbstractController
 	/**
 	 * @Route("/inscription/", name="main_register")
 	 */
-	public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha): Response
+	public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha, SluggerInterface $slugger): Response
 	{
 		//TODO: avatar ne marche pas
 		//This is the redirection of the user to homepage if he is already connected
@@ -42,6 +43,22 @@ class RegistrationController extends AbstractController
 
 			if ( $registrationForm->isValid() )
 			{
+
+                //We get the avatar field
+                $avatar = $registrationForm->get('avatar')->getData();
+
+                //Condition if the avatar field is used, since it is not required
+                if($avatar){
+                    $originalFileName = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFileName = $slugger->slug($originalFileName);
+                    $newFileName = $safeFileName . '-' . uniqid() . '.' . $avatar->guessExtension();
+
+                    $avatar->move(
+                        $this->getParameter('users_uploaded_avatar_dir'),
+                        $newFileName
+                    );
+                }
+
 				$user
 					->setPassword(
 						$passwordEncoder->encodePassword(
@@ -50,8 +67,14 @@ class RegistrationController extends AbstractController
 						)
 					)
 					->setActive(true)
+					->setRoles(["ROLE_USER"])
 					->setRegistrationDate(new DateTime())
 				;
+
+                if($avatar){
+                    $user
+                    ->setAvatar($newFileName);
+                }
 
 				//We use the entity manager to save the new user in the database
 				$em = $this->getDoctrine()->getManager();
@@ -59,7 +82,7 @@ class RegistrationController extends AbstractController
 				$em->flush();
 
 				//Success message when the account has been created and the user has been registered
-				$this->addFlash('success', 'Votre compte a bien été bien créé');
+				$this->addFlash('success', 'Votre compte a bien été créé');
 
 				//We redirect the user to the login page
 				return $this->redirectToRoute('main_login');

@@ -2,13 +2,20 @@
 {% extends 'base.html.twig' %}
 
 {# Page title #}
-{% block title %}{% endblock %}
+{% block title %}Supprimez votre profil ici si vous le souhaitez{% endblock %}
 
 {# Page CSS #}
 {% block css %}{% endblock %}
 
 {# Page content #}
-{% block body %}{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row my-5">
+        {{ form(form) }}
+    </div>
+</div>
+
+{% endblock %}
 
 {# Page footer #}
 {% block footer %}{% endblock %}

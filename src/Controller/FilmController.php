@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Collect;
 use App\Entity\Film;
 use App\Form\FilmFormType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -46,34 +49,113 @@ class FilmController extends AbstractController
 
 	/**
 	 * @Route("/liste/", name="list")
-	 * @Security ("is_granted('ROLE_ADMIN')") // TODO: admin or everyone ?
 	 */
-	public function filmList(): Response
+	public function filmList(Request $request, PaginatorInterface $paginator): Response
 	{
-		$em = $this->getDoctrine()->getManager();
-		$filmRepo = $em->getRepository(Film::class);
-		$films = $filmRepo->findAll();
+		$requestedPage = $request->query->getInt('page', 1);
+		// If requested page < 1 error 404
+		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
 
-		return $this->render('film/list.html.twig', ['films' => $films]);
+		$em = $this->getDoctrine()->getManager();
+		$query = $em->createQuery('SELECT f FROM App\Entity\Film f ORDER BY f.id ASC');
+
+		// Get the number of collection to show on each page from services.yaml
+		$filmNumberByPage = $this->getParameter('entity_number_by_page');
+
+		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
+		$films = $paginator->paginate($query, $requestedPage, $filmNumberByPage);
+
+		return $this->render('film/list.html.twig', ['films' => $films,]);
 	}
 
 	/**
-	 * @Route("/detail/{slug}/", name="view")
+	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function filmView(Film $film): Response
+	public function filmDetail(Film $film, Request $request): Response
 	{
-		return $this->render('film/view.html.twig', ['film' => $film,]);
+		if ( $this->getUser() )
+		{
+			$userCollects = $this->getUser()->getCollects();
+		}
+		else
+		{
+			$userCollects = null;
+		}
+
+		// Used to get the last page user was on
+		$lastPage = $request->request->get('referer');
+
+		return $this->render('film/detail.html.twig',
+			[
+				'film'          => $film,
+				'userCollects'  => $userCollects,
+				'lastPage'      => $lastPage,
+			]);
+	}
+
+	/**
+	 * @Route("/supression/{id}/", name="delete")
+	 * @Security ("is_granted('ROLE_ADMIN')")
+	 */
+	public function filmDelete(Film $film, Request $request): Response
+	{
+		// Get CSRF token from URL
+		$tokenCSRF = $request->query->get('csrf_token');
+
+		// Check CSRF token
+		if ( !$this->isCsrfTokenValid('film_delete' . $film->getId(), $tokenCSRF) )
+		{
+			$this->addFlash('error', 'Token CSRF invalide.');
+		}
+		else
+		{
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($film);
+			$em->flush();
+
+			$this->addFlash('success', 'Film supprimé !');
+		}
+
+		return $this->redirectToRoute('admin_film_delete');
 	}
 
 	/**
 	 * @Route("/recherche/", name="search")
 	 */
-	public function filmSearch(): Response
+	public function filmSearch(Request $request, PaginatorInterface $paginator): Response
 	{
+		   // On récupère dans l'URL la donnée GET['page'] (si elle n'existe pas, la valeur par défaut sera "1")
+		   $requestedPage = $request->query->getInt('page', 1);
+
+		   // Si le numéro de page demandé dans l'URL est inférieur à 1, erreur 404
+		   if($requestedPage < 1){
+			   throw new NotFoundHttpException();
+		   }
+   
+   
+		  // Récupération du manager général des entités
+		  $em = $this->getDoctrine()->getManager();
+   
+		  // Récupération de la recherche dans le formulaire
+		  $search = $request->query->get('q');
+   
+		  // Création de la requête
+		  $query = $em
+		   ->createQuery('SELECT a FROM App\Entity\Film a WHERE a.name LIKE :search ORDER BY a.year DESC')
+		   ->setParameters(['search' => '%' . $search . '%'])
+	   ;
+   
+		   // Récupération des articles
+		   $films = $paginator->paginate(
+			   $query,
+			   $requestedPage,
+			   5
+		   );
+   
 		$em = $this->getDoctrine()->getManager();
 		$filmRepo = $em->getRepository(Film::class);
 		// $filmsSearched = $filmRepo->findBy();
 
-		return $this->render('film/search.html.twig', []);
+		return $this->render('film/search.html.twig', [ 'films' => $films,]);
 	}
 }

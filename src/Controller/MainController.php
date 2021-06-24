@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Avatar;
 use App\Form\AvatarEditFormType;
+use App\Form\AvatarDeleteFormType;
 use App\Form\ProfilDeleteFormType;
 use App\Form\ProfilEditFormType;
 use App\Form\RegistrationFormType;
@@ -16,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use App\Form\EditProfileFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -66,8 +69,8 @@ class MainController extends AbstractController
 			if ( $editDataForm->isValid() )
 			{
 
-
 				$user = $this->getUser();
+
 
 				/*$user
 					->setNickname($editDataForm->get('nickname')->getData())
@@ -80,15 +83,14 @@ class MainController extends AbstractController
 				)
 				;*/
 
+
 				//We test below if any field is not blank, we set the new data filled in by the current connected user
 
 				$emailField = $editDataForm->get('email');
 
 				if ( !$emailField->isEmpty() )
 				{
-
 					$user->setEmail($emailField->getData());
-
 				}
 
 				$nicknameField = $editDataForm->get('nickname');
@@ -96,7 +98,6 @@ class MainController extends AbstractController
 				if ( !$nicknameField->isEmpty() )
 				{
 					$user->setNickname($nicknameField->getData());
-
 				}
 
 				$passwordField = $editDataForm->get('password');
@@ -112,15 +113,19 @@ class MainController extends AbstractController
 
 				}
 
-				//We use the entity manager to save the new user in the database
-				$em = $this->getDoctrine()->getManager();
+                //We use the entity manager to save changes
+                $em = $this->getDoctrine()->getManager();
 
-				$em->flush();
+                $em->flush();
 
 				$em->refresh($user);
 
-				//Succes message when the account has been created and the user has been registered
-				$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+                //Success message when the user successfully edited at least one field
+				if(!$emailField->isEmpty() || !$nicknameField->isEmpty() || !$passwordField->isEmpty()){
+					$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+				}
+
+				return $this->redirectToRoute('main_profil');
 
 			}
 
@@ -136,9 +141,37 @@ class MainController extends AbstractController
 	 * Controller for the profil suppression page
 	 * @Route("/profil/delete/", name="main_profil_delete")
 	 */
-	public function profilDelete(): Response
+	public function profilDelete(TokenStorageInterface $tokenStorage, Request $request): Response
 	{
-		return $this->render('main/profil-delete.html.twig');
+
+		$form = $this->createForm(DisableAccountFormType::class);
+
+		$form->handleRequest($request);
+
+		if($form->getClickedButton() == $form->get('cancel')){
+			return $this->redirectToRoute('main_profil');
+		}
+
+		if($form->isSubmitted() && $form->isValid()){
+			$user = $this->getUser();
+
+			$user
+				->setActive(false);
+
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+
+			$tokenStorage->setToken();
+
+			$this->addFlash('success', 'Votre compte a bien été supprimé');
+
+			return $this->redirectToRoute('main_home');
+		}
+
+
+		return $this->render('main/profil-delete.html.twig', [
+			'form' => $form->createView()
+		]);
 	}
 
 
@@ -150,19 +183,13 @@ class MainController extends AbstractController
 	{
 
 		$form = $this->createForm(AvatarEditFormType::class);
-
 		$form->handleRequest($request);
-
 
 		if($form->isSubmitted() && $form->isValid())
 		{
 
-
-
 			$avatar = $form->get('avatar')->getData();
-
 			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
-
 			$connectedUser = $this->getUser();
 
 			// TODO : à décommenter quand l'upload à l'inscription fonctionnera
@@ -171,11 +198,10 @@ class MainController extends AbstractController
 
 			// }
 
-			do{
-
+			do
+			{
 				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
 
-			
 			} while( file_exists( $profilAvatarDir . $newFileName) );
 
 			$connectedUser->setAvatar($newFileName);
@@ -188,7 +214,6 @@ class MainController extends AbstractController
 			);
 
 			$this->addFlash('succès', 'Votre avatar a été modifié !');
-
 			return $this->redirectToRoute('main_profil');
 
 		}
@@ -202,10 +227,59 @@ class MainController extends AbstractController
 	/**
 	 * Controller for the avatar suppression page
 	 * @Route("/profil/avatar/delete/", name="main_avatar_delete")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
-	public function avatarDelete(): Response
+	public function avatarDelete(Request $request): Response
 	{
-		return $this->render('main/profil-delete-avatar.html.twig');
+
+		$connectedUser = $this->getUser();
+
+		if($connectedUser->getAvatar() == null){
+			$this->addFlash('warning', 'Vous n\'avez pas d\'avatar à supprimer actuellement !');
+			return $this->redirectToRoute('main_profil');
+		}
+
+		$form = $this->createForm(AvatarDeleteFormType::class);
+
+		$form->handleRequest($request);
+
+		// Si le bouton annuler est cliqué
+
+		if($form->getClickedButton() == $form->get('cancel')){
+			return $this->redirectToRoute('main_profil');
+		}
+
+		if($form->isSubmitted() && $form->isValid()){
+
+			// Suppression de l'avatar
+			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
+
+			// Suppression de l'image
+			unlink( $profilAvatarDir . $connectedUser->getAvatar() );
+
+			// Suppression du nom de l'image dans l'utilisateur
+			$connectedUser->setAvatar(null);
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+			$this->addFlash('success', 'L\'avatar a été supprimé avec succès !');
+			return $this->redirectToRoute('main_profil');
+
+		}
+
+
+		return $this->render('main/avatar.delete.html.twig', [
+			'avatarDeleteForm' => $form->createView(),
+		]);
+	}
+
+
+	/**
+	 * Controller for the copyright page
+	 * @Route("/copyright/", name="main_copyright")
+	 */
+	public function copyright(): Response
+	{
+		return $this->render('main/copyright.html.twig');
 	}
 
 	/**

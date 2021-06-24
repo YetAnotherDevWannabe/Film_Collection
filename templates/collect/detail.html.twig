@@ -1,0 +1,143 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}{{ collect.name }}{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+
+		{# H1 Title #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">{{ collect.name }}<span class="small fs-5 text-muted"> - {{ collect.author.nickname|capitalize }} - {{ collect.publicationDate|date('Y.m.d') }}</span></h1>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2 list-group">
+
+				{# Admin films list #}
+				{% for film in collect.getFilmCollect() %}
+
+					<a href="{{ path('film_detail', {slug: film.slug}) }}"
+					   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+					   aria-current="true"
+					>
+						<div class="card">
+							<div class="row g-0">
+								<div class="col-2 d-none d-lg-block" style="max-width: 150px">
+
+									{# If film got poster we show him else we use default_poster #}
+									{% if film.poster is not null %}
+										<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+									{% else %}
+										<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+									{% endif %}
+
+								</div>
+								<div class="col-10">
+									<div class="card-body">
+										<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
+										<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
+										<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</a>
+
+				{% endfor %}
+
+			</div>
+
+		</div>
+		{# Bloc des commentaires #}
+		<div class="row">
+
+			<div class="col-12 col-md-8 offset-md-2">
+
+				<div class="gradient-basecolor-reverse-50 p-4 my-5">
+
+					 {# Liste des commentaires liés à l'article #}
+					<h2 class="text-center mb-5">Commentaires ({{ collect.commentCollects|length }})</h2>
+					<div>
+
+						{% for comment in collect.commentCollects %}
+
+						<div class="card my-3 bg-light">
+							<div class="card-body row">
+								{# Affichage de la photo de profil #}
+								<div class="p-0 mx-2 d-flex justify-content-center align-items-center bg-light comment-profil-photo">
+									{% if comment.user.avatar is not null %}
+
+									<img class="img-fluid img-thumbnail-mini" src="{{ asset('img/uploads/avatar/' ~ app.user.avatar) }}" alt="user_avatar">
+
+								 	{% else %}
+
+									<img class="img-fluid img-thumbnail-mini" src="{{ asset('img/default_avatar.png') }}" alt="default_avatar">
+
+									{% endif %}
+								</div>
+
+								{# Affichage de la date de publication et de l'auteur du commentaire #}
+								<div class="col-12 col-sm mt-2 mt-sm-0">
+
+									<footer class="blockquote-footer mb-3 mt-1">
+										Ajouté par <strong class=" me-1">{{ comment.user.nickname }}</strong>
+										<br class="d-sm-none">
+										Le <strong>{{ comment.publicationDate|date('d/m/Y à H\\hi') }}</strong>
+									</footer>
+
+									<p>{{ comment.content|nl2br }}</p>
+								</div>
+
+								{# Si l'utilisateur est admin, on affiche le bouton supprimer #}
+								{% if is_granted('ROLE_ADMIN') or (app.user and app.user.id == comment.user.id) %}
+
+								<div class="admin-button-article text-end">
+									<a onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')" class="text-danger" href="{{ path('collect_comment_delete', { id: comment.id, csrf_token: csrf_token('collect_comment_delete' ~ comment.id) }) }}"><i class="fas fa-trash-alt me-1"></i>Supprimer</a>
+								</div>
+
+								{% endif %}
+							</div>
+						</div>
+
+						{% else %}
+
+						<p class="text-center alert alert-warning">Aucun commentaire n'a été publié pour le moment.</p>
+
+						{% endfor %}
+					</div>
+
+					{# Si l'utilisateur est connecté, on affiche le formulaire #}
+					{% if app.user %}
+
+					<h2 class="text-center my-5">Écrire un commentaire</h2>
+					<div>
+						{{ form(commentForm) }}
+					</div>
+
+					{% else %}
+					<p class="text-center  text-info mt-4">Vous devez <a href="{{ path('main_login') }}">vous connecter</a> pour laisser un commentaire.</p>
+					{% endif %}
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

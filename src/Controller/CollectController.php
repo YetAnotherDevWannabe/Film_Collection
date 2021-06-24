@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Collect;
+use App\Entity\CommentCollect;
 use App\Entity\Film;
+use App\Form\CollectDeleteFormType;
 use App\Form\CollectFormType;
+use App\Form\CommentCollectFormType;
 use App\Form\FilmFormType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +26,7 @@ class CollectController extends AbstractController
 
 	/**
 	 * Page controller to create a new collection
-	 * @Route("/nouvelle/", name="new")
+	 * @Route("/ajouter/", name="new")
 	 * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function createCollect(Request $request): Response
@@ -48,12 +52,10 @@ class CollectController extends AbstractController
 
 			// Success flash message
 			$this->addFlash('success', 'Votre collection a bien été créé.');
-
-			// Redirect the user to the 'add_film' page
 			return $this->redirectToRoute('collect_list');
 		}
 
-		return $this->render('collect/new.html.twig', [ 'collectForm' => $collectForm->createView(), ]);
+		return $this->render('collect/add.html.twig', ['collectForm' => $collectForm->createView(),]);
 	}
 
 	/**
@@ -71,39 +73,154 @@ class CollectController extends AbstractController
 		$query = $em->createQuery('SELECT c FROM App\Entity\Collect c ORDER BY c.publicationDate DESC');
 
 		// Get the number of collection to show on each page from services.yaml
-		$collectNumberByPage = $this->getParameter('collection_number_by_page');
+		$collectNumberByPage = $this->getParameter('entity_number_by_page');
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
 
-		return $this->render('collect/list.html.twig', [ 'collects' => $collects, ]);
+		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
 	}
 
 	/**
 	 * Controller for the collect view page
-	 * @Route("/detail/{slug}/", name="view")
+	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function collectView(Collect $collect): Response
+	public function detailCollect(Request $request, Collect $collect): Response
 	{
-		// TODO: JS hover qui affiche le poster
-		// TODO: récupérer la liste des films de la collection
-		$em = $this->getDoctrine()->getManager();
-		$filmRepo = $em->getRepository(Film::class);
-		$films = $filmRepo->findAll();
+		//if user is not connected we call directly the view without processing the form below
+		if ( !$this->getUser() )
+		{
+			return $this->render('collect/detail.html.twig',
+				[
+					'collect' => $collect,
+				]);
+		}
 
-		return $this->render('collect/view.html.twig',
+		$comment = new CommentCollect();
+		$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+		$commentForm->handleRequest($request);
+
+		//Verification that the form has been sent and has no errors
+		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
+		{
+
+			$comment
+				->setPublicationDate(new \DateTime())
+				->setCollect($collect)
+				->setUser($this->getUser());
+
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($comment);
+			$em->flush();
+
+			$this->addFlash('success', 'Commentaire publié avec succès !');
+
+			//Deletion of the two variables of the form and the newly created comment to avoid that the new form remains filled after the creation
+			unset($comment);
+			unset($commentForm);
+
+			$comment = new CommentCollect();
+			$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+		}
+
+		return $this->render('collect/detail.html.twig',
 			[
-				'collect' => $collect,
-				'films' => $films,
+				'collect'     => $collect,
+				'commentForm' => $commentForm->createView(),
+			]);
+	}
+
+	/**
+	 * Controller for the commentCollect deletion
+	 * @Route("/commentaire/supression/{id}", name="comment_delete")
+	 */
+	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
+	{
+		$tokenCSRF = $request->query->get('csrf_token');
+
+		// Verify if token is valid
+		if ( !$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) )
+		{
+
+			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
+
+		}
+		else
+		{
+
+			// deletion of commnent
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($commentCollect);
+			$em->flush();
+
+			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+		}
+
+		return $this->redirectToRoute('collect_detail', [
+			'slug' => $commentCollect->getCollect()->getSlug(),
+		]);
+	}
+
+	/**
+	 * Controller for the collect deletion
+	 * @Route("/supprimer/{id}", name="delete")
+	 */
+	public function deleteCollect(Collect $collect, Request $request): Response
+	{
+		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
+		$user = $this->getUser();
+		if ( $user->getRoles() != 'ROLE_ADMIN' && $user->getId() != $collect->getAuthor()->getId() )
+		{
+			return $this->redirectToRoute('collect_list');
+		}
+
+		// Creates form for display
+		$collectDeleteForm = $this->createForm(CollectDeleteFormType::class);
+		$collectDeleteForm->handleRequest($request);
+
+		// If Cancel button is clicked
+		if ( $collectDeleteForm->getClickedButton() === $collectDeleteForm->get('cancel') )
+		{
+			return $this->redirectToRoute('collect_list');
+		}
+
+		if ( $collectDeleteForm->isSubmitted() && $collectDeleteForm->isValid() )
+		{
+
+			// Remove collect from DB
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($collect);
+			$em->flush();
+
+			// Success flash message
+			$this->addFlash('success', 'Collection supprimé.');
+			return $this->redirectToRoute('collect_list');
+		}
+
+
+		return $this->render('collect/delete.html.twig',
+			[
+				'collectDeleteForm' => $collectDeleteForm->createView(),
+				'collect'           => $collect,
 			]);
 	}
 
 	/**
 	 * Controller for the search page
-	 * @Route("/rechercher/", name="search")
+	 * @Route("{collect_id}/ajouter/film/{id}/", name="film_add")
+	 * @Entity("collect", expr="repository.find(collect_id)")
 	 */
-	public function search(Request $request): Response
+	public function filmAdd(Collect $collect, Film $film, Request $request): Response //Collect $collect, Film $film,
 	{
-		return $this->render('collect/search.html.twig');
+		$collect->addFilmCollect($film);
+
+		$em = $this->getDoctrine()->getManager();
+		$em->flush($collect);
+
+		// Message flash
+		$this->addFlash('success', '<span class="text-compliment">' . $film->getName() . '</span> a ajouté à la collection <span class="text-compliment">' . $collect->getName() . '</span> !');
+
+		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
+		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
 	}
 }

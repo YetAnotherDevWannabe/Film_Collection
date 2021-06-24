@@ -13,16 +13,12 @@
 	{# TODO: Use our flash error message if needed #}
 	{# If there is an error we display it using flash messages #}
 	{% if error %}
-		{{ flash_message('error', error.messageKey) }}
+		{{ flash_message('error', error.messageKey|trans(error.messageData, 'security')) }}
 	{% endif %}
 
-	{# Success flash messages #}
 	{% include 'partials/flash-success.html.twig' %}
-	{# Info flash messages #}
 	{% include 'partials/flash-info.html.twig' %}
-	{# Warning flash messages #}
 	{% include 'partials/flash-warning.html.twig' %}
-	{# Error flash messages #}
 	{% include 'partials/flash-error.html.twig' %}
 
 <div class="container-fluid">
@@ -48,7 +44,7 @@
 				{# Password field #}
 				<div class="form-outline my-4">
 					<input type="password" name="password" id="inputPassword" class="form-control" required>
-					<label for="inputPassword" class="form-label">Password</label>
+					<label for="inputPassword" class="form-label">Mot de passe</label>
 				</div>
 
 				{# Invisible security token anti CSRF #}

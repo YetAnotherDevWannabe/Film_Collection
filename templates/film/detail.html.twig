@@ -1,0 +1,166 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}{{ film.name }}{% endblock %}
+
+{# Page CSS #}
+{% block css %}{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+	<div class="container-fluid">
+		{# TODO: Use Bootstrap Card ? #}
+		<div class="row pt-3 ps-md-3 offset-md-0">
+
+			{% if userCollects is not empty %}
+				
+				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-center my-5">
+
+					<a class="btn gradient-basecolor-reverse gradient-compliment-reverse dropdown-toggle"
+					   href="#"
+					   id="collectDropdownMenuLink"
+					   role="button"
+					   data-mdb-toggle="dropdown"
+					   aria-expanded="false"
+					   data-mdb-ripple-duration="0ms"
+					>
+						Ajouter le film à une collection
+					</a>
+					<ul class="dropdown-menu dropdown-menu-bg" aria-labelledby="collectDropdownMenuLink">
+
+						{% if is_granted("ROLE_USER") %}
+
+							{% for userCollect in userCollects %}
+								<li>
+									<a class="dropdown-item nav-drop-hover" href="{{ path('collect_film_add', {collect_id: userCollect.id, id: film.id}) }}">{{ userCollect.name }}</a>
+								</li>
+							{% endfor %}
+
+						{% endif %}
+
+					</ul>
+
+				</div>
+
+			{% endif %}
+
+			{# <!-- first part #}
+			<div class="col-12 col-md-10 offset-md-2 d-md-flex">
+
+				<div class="row">
+					{# poster #}
+					<div class="col-12 mx-md-2 d-flex justify-content-center align-items-center">
+
+					{# If film got poster we show him else we use default_poster #}
+					{% if film.poster is not null %}
+
+						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+
+					{% else %}
+
+						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+
+					{% endif %}
+
+					</div>
+				</div>
+
+				{# title/genre #}
+				<div class="col-12 col-md-9 px-2 py-3 ">
+					<div class="col-12 col-md-8">
+						{# Name #}
+						<h3>{{ film.name }} ({{ film.year }})</h3>
+
+						{# Genre #}
+						<h5>Genre : {{ film.genre }}</h5>
+						<hr>
+
+						{# Note #}
+						<h5 class="mt-2">
+							Note : {{ film.note }} {% if film.note %}%{% else %}Pas de note{% endif %}
+
+							{% if film.note %}
+
+								<i class="ms-2 text-compliment {{ film.note >= 5 and film.note < 10 ? 'fas fa-star-half-alt' : film.note >= 10 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 15 and film.note < 20 ? 'fas fa-star-half-alt' : film.note >= 20 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 25 and film.note < 30 ? 'fas fa-star-half-alt' : film.note >= 30 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 35 and film.note < 40 ? 'fas fa-star-half-alt' : film.note >= 40 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 45 and film.note < 50 ? 'fas fa-star-half-alt' : film.note >= 50 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 55 and film.note < 60 ? 'fas fa-star-half-alt' : film.note >= 60 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 65 and film.note < 70 ? 'fas fa-star-half-alt' : film.note >= 70 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 75 and film.note < 80 ? 'fas fa-star-half-alt' : film.note >= 80 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 85 and film.note < 90 ? 'fas fa-star-half-alt' : film.note >= 90 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-compliment {{ film.note >= 95 and film.note < 100 ? 'fas fa-star-half-alt' : film.note >= 100 ? 'fas fa-star' : 'far fa-star' }}"></i>
+
+								{# TODO: Modify the notation bar ? #}
+								<div class="progress progress-back" style="height: 8px;">
+									<div
+											class="progress-bar progress-bar-striped bg-compliment"
+											role="progressbar"
+											height="6px"
+											style="width: {{ film.note }}%;"
+											aria-valuemin="0"
+											aria-valuemax="100"
+									>
+									</div>
+								</div>
+
+							{% endif %}
+
+						</h5>
+
+						{# Synopsis #}
+						<h5 class="mt-md-4">Synopsis :</h5>
+						<p class="fs-7">{{ film.synopsis }}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# link #}
+		<div class="text-center py-4">
+			<a href="https://www.themoviedb.org/movie/{{ film.tmdbId }}">Plus d'informations...</a>
+		</div>
+
+		{# second part #}
+		<div class="row">
+			<div class="col-md-4 offset-md-4 d-flex flex-column justify-content-center align-items-center">
+
+				{# iframeYTB #}
+				{% if film.trailer %}
+					<div class="col-lg-6 embed-responsive embed-responsive-16by9 text-center">
+						<iframe width="560"
+								height="315"
+								src="https://www.youtube.com/embed/{{ film.trailer }}"
+								title="YouTube video player"
+								frameborder="0"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+								allowfullscreen>
+						</iframe>
+					</div>
+				{% endif %}
+
+				<div class="col-lg-8 p-4">
+					<a href="{{ app.request.headers.get('referer') }}"
+					   class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0"
+					   data-mdb-ripple-duration="0ms"
+					>
+						Retour à la liste
+					</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
+
+{# Page JS #}
+{% block js %}{% endblock %}

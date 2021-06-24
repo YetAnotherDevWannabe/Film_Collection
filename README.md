@@ -59,7 +59,7 @@ symfony serve
 ```
 
 
-### TODO : Pour créer les fixtures (Users / Collections / Commentaires) :
+### 6. Les fixtures (Users / Collections / Films / Commentaires) :
 
 - Charger les fixtures avec la commande suivante
 
@@ -67,12 +67,9 @@ symfony serve
 symfony console doctrine:fixtures:load
 ```
 
-Les fixtures créeront :
+Les fixtures vont créer :
 
-* Un compte admin  (email: 'admin@email.com', password: 'Aa111111/')
-* Un compte mod  (email: 'mod@email.com', password: 'Mm111111/')
-	* entre 1 et 4 autre comptes mods
-* 1 compte utilisateur (email 'user@email.com', password : 'Uu111111/')
-	* entre 44 et 74 autre comptes utilisateurs
-* entre 150 et 200 articles
-* entre 0 et 10 commentaires par article
+* Un compte admin  (email: 'admin@email.com', password: 'Aa111111!')
+* Un compte user  (email: 'w@w.w', password: 'Ww111111!')
+* 12 Films (10 complet et 1 sans note / poster / trailer)
+* 13 Collections (pas de films rattachés pour le moment)

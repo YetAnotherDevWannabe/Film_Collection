@@ -31,27 +31,41 @@
 			<div class="col-12 col-md-4 offset-md-4">
 				{{ form_start(registrationForm) }}
 
+				<div class="ms-3 my-3"><span class="text-danger">*</span>{{ registrationForm.email.vars.label_attr.help }}</div>
+
 				<div class="form-outline my-4">
 					{{ form_widget(registrationForm.email) }}
-					{{ form_label(registrationForm.email) }}
+					{% block email_label %}
+						<label for="{{ registrationForm.email.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.email.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
 					{{ form_errors(registrationForm.email) }}
 				</div>
 
 				<div class="form-outline my-4">
 					{{ form_widget(registrationForm.plainPassword.children.first) }}
-					{{ form_label(registrationForm.plainPassword.children.first) }}
+					{% block pass1_label %}
+						<label for="{{ registrationForm.plainPassword.children.first.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.plainPassword.children.first.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
 					{{ form_errors(registrationForm.plainPassword.children.first) }}
 				</div>
 
 				<div class="form-outline my-4">
 					{{ form_widget(registrationForm.plainPassword.children.second) }}
-					{{ form_label(registrationForm.plainPassword.children.second) }}
+					{% block pass2_label %}
+						<label for="{{ registrationForm.plainPassword.children.second.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.plainPassword.children.second.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
 					{{ form_errors(registrationForm.plainPassword.children.second) }}
 				</div>
 
 				<div class="form-outline my-4">
 					{{ form_widget(registrationForm.nickname) }}
-					{{ form_label(registrationForm.nickname) }}
+					{% block nickname_label %}
+						<label for="{{ registrationForm.nickname.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ registrationForm.nickname.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
 					{{ form_errors(registrationForm.nickname) }}
 				</div>
 

@@ -23,4 +23,16 @@ class AdminController extends AbstractController
 	{
 		return $this->render('admin/index.html.twig');
 	}
+
+	/**
+	 * @Route("/film/suppression/", name="film_delete")
+	 */
+	public function filmDelete(): Response
+	{
+		$em = $this->getDoctrine()->getManager();
+		$filmRepo = $em->getRepository(Film::class);
+		$films = $filmRepo->findAll();
+
+		return $this->render('admin/filmDelete.html.twig', ['films' => $films]);
+	}
 }

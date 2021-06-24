@@ -64,7 +64,7 @@ class Film
 	private $user;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity=Collect::class, mappedBy="film_collect")
+	 * @ORM\ManyToMany(targetEntity=Collect::class, mappedBy="filmCollect")
 	 */
 	private $collects;
 

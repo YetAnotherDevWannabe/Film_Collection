@@ -29,6 +29,7 @@ class UserRegistrationType extends AbstractType
 					new Email(['message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide.']),
 					new NotBlank(['message' => 'L\'adresse email ne peut pas être vide.']),
 				],
+				'label_attr'  => ['help' => ' : champs obligatoires',],
 			])
 			->add('plainPassword', RepeatedType::class, [
 				'mapped'          => false,
@@ -42,7 +43,7 @@ class UserRegistrationType extends AbstractType
 					]),
 					new Regex([
 						'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#\$%&\'()*+,\-.\/:;<=>?@[\\\\\]\^_`{\|}~]).{8,4096}$/',
-						'message' => 'Votre mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un caractère spécial, un chiffre'
+						'message' => 'Votre mot de passe doit contenir au moins 8 caractères a-z, A-A, 0-9 un caractère spécial'
 					])
 				],
 
@@ -74,7 +75,7 @@ class UserRegistrationType extends AbstractType
 							'image/png'
 						],
 						'mimeTypesMessage' => 'Votre image doit être au format JPG, PNG ou JPEG',
-						'maxSizeMessage'   => 'Ce fichier de {{ size }}{{ suffix }}est trop lourd, l\'image demandée doit faire au maximum {{ size }}{{ suffix }}',
+						'maxSizeMessage'   => 'Ce fichier de {{ size }}{{ suffix }} est trop lourd, l\'image demandée doit faire au maximum {{ limit }}{{ suffix }}',
 					])
 				],
 			])
