@@ -9,16 +9,19 @@
 
 {# Page content #}
 {% block body %}
-<div class="container">
-    <div class="row my-5">
-        {{ form(form) }}
-    </div>
-</div>
+
+	<div class="container">
+		<div class="row my-5">
+			{{ form(form) }}
+		</div>
+	</div>
 
 {% endblock %}
 
 {# Page footer #}
-{% block footer %}{% endblock %}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
 
 {# Page JS #}
 {% block js %}{% endblock %}

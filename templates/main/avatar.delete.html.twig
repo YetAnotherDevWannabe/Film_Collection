@@ -10,26 +10,26 @@
 {# Page content #}
 {% block body %}
 
-<div class="container-fluid">
+	<div class="container-fluid">
 
-	{# Titre H1 #}
-	<div class="row">
-		<h1 class="col-12 text-center my-5">Suppression de l'avatar</h1>
-	</div>
+		{# Titre H1 #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Suppression de l'avatar</h1>
+		</div>
 
-	<div class="row">
-		<div class="col-12 col-md-4 offset-md-4">
-			{{ form(avatarDeleteForm) }}
+		<div class="row">
+			<div class="col-12 col-md-4 offset-md-4">
+				{{ form(avatarDeleteForm) }}
+			</div>
 		</div>
 	</div>
-</div>
 
 {% endblock %}
 
-	{# Page footer #}
-	{% block footer %}
-		{% include 'partials/footer-full.html.twig' %}
-	{% endblock %}
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-small.html.twig' %}
+{% endblock %}
 
-	{# Page JS #}
-	{% block js %}{% endblock %}
+{# Page JS #}
+{% block js %}{% endblock %}

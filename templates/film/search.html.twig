@@ -14,12 +14,12 @@
 
 		{# Titre H1 #}
 		<div class="row">
-			<h1 class="col-12 text-center my-2 my-md-5">Résultat de la recherche</h1>
+			<h1 class="col-12 text-center my-2 my-md-5">Résultat pour la recherche : {{ search }}</h1>
 		</div>
 
 		{# Total number of films #}
 		<div class="row">
-			<p class="col-12 text-center mb-1">Nombre de films : {{ films.getTotalItemCount }}</p>
+			<p class="col-12 text-center mb-1">Nombre de films trouvés : {{ films.getTotalItemCount }}</p>
 		</div>
 
 		{# Show sorting & pagination if any film is present #}
@@ -41,68 +41,65 @@
 				{# Admin films list #}
 				{% for film in films %}
 
-					{% if loop.index % 2 != 0 %}
+					<a href="{{ path('film_detail', {slug: film.slug}) }}"
+					   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+					   aria-current="true"
+					>
+						<div class="card">
+							<div class="row g-0">
+								<div class="col-2 d-none d-lg-block" style="max-width: 150px">
 
-						<a href="{{ path('film_detail', {slug: film.slug}) }}"
-						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
-						   aria-current="true"
-						>
-							<div class="card">
-								<div class="row g-0">
-									<div class="col-2 d-none d-lg-block" style="max-width: 150px">
-										{# If film got poster we show him else we use default_poster #}
-										{% if film.poster is not null %}
-											<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
-										{% else %}
-											<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
-										{% endif %}
-									</div>
-									<div class="col-10">
-										<div class="card-body">
-											<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
-											<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
-											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
-										</div>
+									{# If film got poster we show him else we use default_poster #}
+									{% if film.poster is not null %}
+										<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+									{% else %}
+										<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+									{% endif %}
+
+								</div>
+								<div class="col-10">
+									<div class="card-body">
+										<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
+										<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
+										<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
 									</div>
 								</div>
 							</div>
-						</a>
-						
+						</div>
+					</a>
 
-
-					{% endif %}
-
-					{% if loop.index % 2 == 0 %}
-
-						<a href="{{ path('film_detail', {slug: film.slug}) }}"
-						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
-						   aria-current="true"
-						>
-							<div class="card">
-								<div class="row g-0">
-									<div class="col-2 d-none d-lg-block" style="max-width: 150px">
-										{# If film got poster we show him else we use default_poster #}
-										{% if film.poster is not null %}
-											<img src="{{ film.poster }}" alt="{{ film.name }}" class="img-fluid img-thumbnail-mini border border-4 me-3">
-										{% else %}
-											<img src="{{ asset('img/default_poster.png') }}" alt="pas d\'image" class="poster2 img-fluid img-thumbnail-mini border border-4 me-3">
-										{% endif %}
-									</div>
-									<div class="col-10">
-										<div class="card-body">
-											<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
-											<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(250) }}</p>
-											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-						</a>
-
-					{% endif %}
 				{% else %}
-					<p class="col-12 text-center alert alert-warning">Aucun résultat pour cette recherche.</p>
+
+					<div class="row">
+
+						<div class="col-12 text-center">
+
+							<div class="row">
+								{# Tailwind alert #}
+								<div class="col-12 col-md-8 offset-md-2 rounded-start rounded-end mt-4" role="alert">
+
+									<div class="row">
+
+										<div class="text-center offset-1 col-2 shadow-custom bg-tw-info bg-icon" style="border-radius: .6rem 0 0 .6rem !important;">
+											<div class="d-flex align-items-center justify-content-center h-100">
+												<i class="fas fa-info-circle fs-3 text-white"></i>
+											</div>
+										</div>
+
+										<div class="text-start bg-white px-3 pt-2 col-8 shadow-custom" style="border-radius: 0 .6rem .6rem 0 !important;">
+											<span class="fs-5 color-tw-info">Aucun film</span>
+											<p>Aucun résultat pour votre recherche</p>
+										</div>
+
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
 				{% endfor %}
 
 			</div>
