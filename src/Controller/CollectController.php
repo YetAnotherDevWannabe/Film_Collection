@@ -129,10 +129,11 @@ class CollectController extends AbstractController
 
 	/**
 	 * Controller for the commentCollect deletion
-	 * @Route("/commentaire/supression/{id}", name="comment_delete")
+	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
 	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
 	{
+        $user = $this->getUser();
 		$tokenCSRF = $request->query->get('csrf_token');
 
 		// Verify if token is valid
@@ -142,7 +143,13 @@ class CollectController extends AbstractController
 			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
 
 		}
-		else
+
+		else if( $user->getRoles() != 'ROLE_ADMIN' || $user->getId() != $commentCollect->getUser()->getId() ){
+
+            $this->addFlash('error', 'Action impossible.');
+        }
+
+        else
 		{
 
 			// deletion of commnent
