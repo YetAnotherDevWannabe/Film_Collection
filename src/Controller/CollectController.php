@@ -85,13 +85,8 @@ class CollectController extends AbstractController
 	 * Controller for the collect view page
 	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function viewCollect(Request $request,Collect $collect): Response
+	public function detailCollect(Request $request, Collect $collect): Response
 	{
-        // TODO: JS hover qui affiche le poster
-        // TODO: récupérer la liste des films de la collection
-        $em = $this->getDoctrine()->getManager();
-        $filmRepo = $em->getRepository(Film::class);
-        $films = $filmRepo->findAll();
 
 	    //if user is not connected we call directly the view without processing the form below
         if (!$this->getUser()){
@@ -99,7 +94,6 @@ class CollectController extends AbstractController
             return $this->render('collect/detail.html.twig',
                 [
                     'collect' => $collect,
-                    'films'   => $films,
                 ]);
         }
 
@@ -130,38 +124,40 @@ class CollectController extends AbstractController
         return $this->render('collect/detail.html.twig',
             [
                 'collect' => $collect,
-                'films'   => $films,
                 'commentForm' => $commentForm->createView(),
             ]);
 	}
 
-    /**
-     * Controller for the commentCollect deletion
-     * @Route("/commentaire/supression/{id}", name="comment_delete")
-     */
+	/**
+	 * Controller for the commentCollect deletion
+	 * @Route("/commentaire/supression/{id}", name="comment_delete")
+	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
-    {
-        $tokenCSRF = $request->query->get('csrf_token');
+	{
+		$tokenCSRF = $request->query->get('csrf_token');
 
-        // Verify if token is valid
-        if (!$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) ){
+		// Verify if token is valid
+		if ( !$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) )
+		{
 
-            $this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
+			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
 
-        } else {
+		}
+		else
+		{
 
-            // deletion of commnent
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($commentCollect);
-            $em->flush();
+			// deletion of commnent
+			$em = $this->getDoctrine()->getManager();
+			$em->remove($commentCollect);
+			$em->flush();
 
-            $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
-        }
+			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+		}
 
-        return $this->redirectToRoute('collect_detail', [
-           'slug' => $commentCollect->getCollect()->getSlug()
-        ]);
-    }
+		return $this->redirectToRoute('collect_detail', [
+			'slug' => $commentCollect->getCollect()->getSlug(),
+		]);
+	}
 
 	/**
 	 * Controller for the collect deletion
@@ -169,8 +165,6 @@ class CollectController extends AbstractController
 	 */
 	public function deleteCollect(Collect $collect, Request $request): Response
 	{
-		//TODO: add CSRF to avoid having possibility of going back to this page?
-
 		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
 		$user = $this->getUser();
 		if ( $user->getRoles() != 'ROLE_ADMIN' && $user->getId() != $collect->getAuthor()->getId() )
@@ -222,9 +216,9 @@ class CollectController extends AbstractController
 		$em->flush($collect);
 
 		// Message flash
-		$this->addFlash('success', '<span class="text-compliment">'. $film->getName() .'</span> a ajouté à la collection <span class="text-compliment">'. $collect->getName() .'</span> !');
+		$this->addFlash('success', '<span class="text-compliment">' . $film->getName() . '</span> a ajouté à la collection <span class="text-compliment">' . $collect->getName() . '</span> !');
 
-		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()] );
+		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
 	}
 }
