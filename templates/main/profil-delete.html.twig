@@ -2,19 +2,24 @@
 {% extends 'base.html.twig' %}
 
 {# Page title #}
-{% block title %}Supprimez votre profil ici si vous le souhaitez{% endblock %}
+{% block title %}Suppression du profil{% endblock %}
 
 {# Page CSS #}
 {% block css %}{% endblock %}
 
 {# Page content #}
 {% block body %}
+<div class="container-fluid py-5 my-5">
+    <div class="row text-center">
+        <h1>Supprimer votre compte ?</h1>
+    </div>
 
-	<div class="container">
-		<div class="row my-5">
-			{{ form(form) }}
-		</div>
-	</div>
+    <div class="col-6 offset-md-3 offset-3">
+        <div class="row py-5">
+            {{ form(form) }}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 

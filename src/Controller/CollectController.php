@@ -87,47 +87,45 @@ class CollectController extends AbstractController
 	 */
 	public function detailCollect(Request $request, Collect $collect): Response
 	{
-		//if user is not connected we call directly the view without processing the form below
-		if ( !$this->getUser() )
-		{
-			return $this->render('collect/detail.html.twig',
-				[
-					'collect' => $collect,
-				]);
-		}
 
-		$comment = new CommentCollect();
-		$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-		$commentForm->handleRequest($request);
+	    //if user is not connected we call directly the view without processing the form below
+        if (!$this->getUser()){
 
-		//Verification that the form has been sent and has no errors
-		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
-		{
+            return $this->render('collect/detail.html.twig',
+                [
+                    'collect' => $collect,
+                ]);
+        }
 
-			$comment
-				->setPublicationDate(new \DateTime())
-				->setCollect($collect)
-				->setUser($this->getUser());
+        $comment = new CommentCollect();
+        $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+        $commentForm->handleRequest($request);
 
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($comment);
-			$em->flush();
+        //Verification that the form has been sent and has no errors
+        if ($commentForm->isSubmitted() && $commentForm->isValid()){
 
-			$this->addFlash('success', 'Commentaire publié avec succès !');
+            $comment
+                ->setPublicationDate(new \DateTime())
+                ->setCollect($collect)
+                ->setUser($this->getUser());
 
-			//Deletion of the two variables of the form and the newly created comment to avoid that the new form remains filled after the creation
-			unset($comment);
-			unset($commentForm);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
 
-			$comment = new CommentCollect();
-			$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-		}
+            $this->addFlash('success', 'Commentaire publié avec succès !');
 
-		return $this->render('collect/detail.html.twig',
-			[
-				'collect'     => $collect,
-				'commentForm' => $commentForm->createView(),
-			]);
+            return $this->redirectToRoute('collect_detail', [
+                'slug' => $collect->getSlug()
+            ]);
+
+        }
+
+        return $this->render('collect/detail.html.twig',
+            [
+                'collect' => $collect,
+                'commentForm' => $commentForm->createView(),
+            ]);
 	}
 
 	/**

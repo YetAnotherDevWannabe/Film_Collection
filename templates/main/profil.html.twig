@@ -17,79 +17,82 @@
 			<h1 class="col-12 text-center my-5">Gestion du profil</h1>
 		</div>
 
-		<div class="col-12 col-md-10 offset-md-1">
-			<div class="row align-items-center">
+		<div class="row mb-5">
+			<div class="col-12 mb-5 col-md-10 offset-md-1">
+				<div class="row">
 
 
-				<!-- {# Left block #} -->
-				<div class="col-12 col-md-3 gradient-custom-reverse-50 px-2 py-3 text-center rounded-start">
+					<!-- {# Left block #} -->
+					<div class="col-12 col-md-3 gradient-basecolor-reverse-50 px-2 py-3 text-center rounded-start">
 
-					<!-- {# Avatar #} -->
-					<div class="row">
-						<div class="col-6 offset-3 profil-photo col-md-12 offset-md-0 d-flex">
+						<!-- {# Avatar #} -->
+						<div class="row">
+							<div class="col-12 profil-photo mx-md-2 d-flex justify-content-center align-items-center">
 
-							{% if app.user.avatar is not null %}
+								{% if app.user.avatar is not null %}
 
-								<img class="img-fluid img-thumbnail-mini me-3"
-									 src="{{ asset('img/uploads/avatar/' ~ app.user.avatar) }}"
-									 alt="avatar"
+									<img class="img-fluid img-thumbnail-mini me-md-3"
+										 src="{{ asset('img/uploads/avatar/' ~ app.user.avatar) }}"
+										 alt="avatar"
+									>
+								{% else %}
+
+									<img class="img-fluid img-thumbnail-mini me-md-3" src="{{ asset('img/default_avatar.png') }}" alt="default_avatar">
+
+								{% endif %}
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12 pt-3">
+								<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a><br>
+								{% if app.user.avatar is null %}
+									<a class="text-compliment fw-bold" href="{{ path('main_avatar_delete') }}">Supprimer l'avatar</a>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+
+
+					<!-- {# Right block #} -->
+					<div class="col-12 col-md-9 px-2 py-3 gradient-basecolor d-flex justify-content-center align-items-center rounded-end">
+
+						<!-- {# Account information #} -->
+						<ul class="list-group col-12 col-md-10 p-0 my-4 d-flex">
+
+							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
+								Email : <span class="text-info fw-normal">{{ app.user.email }}</span>
+							</li>
+
+							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
+								Pseudonyme : <span class="text-info fw-normal">{{ app.user.nickname }}</span>
+							</li>
+
+							<li class="list-group-item text-basecolor text-muted fw-bold py-3">Date d'inscription : <span
+										class="text-info fw-normal">{{ app.user.registrationDate|date('d/m/Y à H\\hi') }}</span></li>
+
+							<li class="list-group-item text-basecolor text-muted fw-bold py-3">Compte : <span
+										class="text-info fw-normal">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
+
+							<li class="list-group-item text-basecolor text-muted fw-normal py-2">
+								<a class="btn btn-lg btn-warning py-1 col-8 offset-2 mb-2"
+								   href="{{ path('main_profil_edit') }}"
+								   data-mdb-ripple-duration="0ms"
 								>
-							{% else %}
+									<i class="fas fa-user-edit me-1"></i>Modifier le profil
+								</a>
+								<a class="btn btn-lg btn-danger py-1 col-8 offset-2"
+								   href="{{ path('main_profil_delete') }}"
+								   data-mdb-ripple-duration="0ms"
+								>
+									<i class="fas fa-user-times me-1"></i>Supprimer le compte</a>
+							</li>
 
-								<img class="img-fluid img-thumbnail-mini me-3" src="../img/default_avatar.png" alt="default avatar">
-
-							{% endif %}
-
-						</div>
+						</ul>
 					</div>
 
-					<div class="row">
-						<div class="col-12 pt-3">
-							<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a>
-							<br>
-							<a class="text-compliment fw-bold" href="{{ path('main_avatar_delete') }}">Supprimer l'avatar</a>
-						</div>
-					</div>
 				</div>
-
-
-				<!-- {# Right block #} -->
-				<div class="col-12 col-md-9 px-2 py-3 gradient-custom d-flex justify-content-center align-items-center rounded-end">
-
-					<!-- {# Account information #} -->
-					<ul class="list-group col-12 col-md-10 p-0 my-4  d-flex">
-
-						<li class="list-group-item text-basecolor text-muted fw-bold py-3">
-							Email : <span class="text-info fw-normal">{{ app.user.email }}</span>
-						</li>
-
-						<li class="list-group-item text-basecolor text-muted fw-bold py-3">
-							Pseudonyme : <span class="text-info fw-normal">{{ app.user.nickname }}</span>
-						</li>
-
-						<li class="list-group-item text-basecolor text-muted fw-bold py-3">Date d'inscription : <span
-									class="text-info fw-normal">{{ app.user.registrationDate|date('d/m/Y à H\\hi') }}</span></li>
-
-						<li class="list-group-item text-basecolor text-muted fw-bold py-3">Compte : <span
-									class="text-info fw-normal">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
-
-						<li class="list-group-item text-basecolor text-muted fw-normal py-2">
-							<a class="btn btn-lg btn-warning py-1 col-8 offset-2 mb-2"
-							   href="{{ path('main_profil_edit') }}"
-							   data-mdb-ripple-duration="0ms"
-							>
-								<i class="fas fa-user-edit me-1"></i>Modifier le profil
-							</a>
-							<a class="btn btn-lg btn-danger py-1 col-8 offset-2"
-							   href="{{ path('main_profil_delete') }}"
-							   data-mdb-ripple-duration="0ms"
-							>
-								<i class="fas fa-user-times me-1"></i>Supprimer le compte</a>
-						</li>
-
-					</ul>
-				</div>
-
 			</div>
 		</div>
 
