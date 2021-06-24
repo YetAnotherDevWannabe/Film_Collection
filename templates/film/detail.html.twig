@@ -34,7 +34,7 @@
 
 							{% for userCollect in userCollects %}
 								<li>
-									<a class="dropdown-item nav-drop-hover" href="">{{ userCollect.name }}</a>
+									<a class="dropdown-item nav-drop-hover" href="{{ path('collect_film_add', {collect_id: userCollect.id, id: film.id}) }}">{{ userCollect.name }}</a>
 								</li>
 							{% endfor %}
 

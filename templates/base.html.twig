@@ -68,7 +68,7 @@
 						<li class="nav-item mx-lg-1">
 							<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
 							   href="{{ path('main_home') }}"
-							   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
+							   data-mdb-ripple-color="{{ ripple_color_white }}"  {{ ripple_color_blue }}
 							   data-mdb-ripple-centered="true"
 							>
 								<i class="fas fa-home me-2"></i>Accueil
@@ -149,7 +149,6 @@
 
 
 					{# Right side buttons #}
-					{# TODO: Menu hors ecran en mode mobile (gauche) #}
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 

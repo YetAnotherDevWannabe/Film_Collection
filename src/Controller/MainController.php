@@ -15,7 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use App\Form\EditProfileFormType;
+use App\Form\DisableAccountFormType;
 
 
 class MainController extends AbstractController
@@ -65,6 +67,7 @@ class MainController extends AbstractController
 
 				$user = $this->getUser();
 
+
 				/*$user
 					->setNickname($editDataForm->get('nickname')->getData())
 					->setEmail($editDataForm->get('email')->getData())
@@ -75,6 +78,7 @@ class MainController extends AbstractController
 					)
 				)
 				;*/
+
 
 				//We test below if any field is not blank, we set the new data filled in by the current connected user
 
@@ -105,13 +109,19 @@ class MainController extends AbstractController
 
 				}
 
-				//We use the entity manager to save the new user in the database
-				$em = $this->getDoctrine()->getManager();
-				$em->flush();
+                //We use the entity manager to save changes
+                $em = $this->getDoctrine()->getManager();
+
+                $em->flush();
+
 				$em->refresh($user);
 
-				//Succes message when the account has been created and the user has been registered
-				$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+                //Success message when the user successfully edited at least one field
+				if(!$emailField->isEmpty() || !$nicknameField->isEmpty() || !$passwordField->isEmpty()){
+					$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+				}
+
+				return $this->redirectToRoute('main_profil');
 
 			}
 
@@ -127,9 +137,37 @@ class MainController extends AbstractController
 	 * Controller for the profil suppression page
 	 * @Route("/profil/delete/", name="main_profil_delete")
 	 */
-	public function profilDelete(): Response
+	public function profilDelete(TokenStorageInterface $tokenStorage, Request $request): Response
 	{
-		return $this->render('main/profil-delete.html.twig');
+
+		$form = $this->createForm(DisableAccountFormType::class);
+
+		$form->handleRequest($request);
+
+		if($form->getClickedButton() == $form->get('cancel')){
+			return $this->redirectToRoute('main_profil');
+		}
+
+		if($form->isSubmitted() && $form->isValid()){
+			$user = $this->getUser();
+
+			$user
+				->setActive(false);
+
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+
+			$tokenStorage->setToken();
+
+			$this->addFlash('success', 'Votre compte a bien été supprimé');
+
+			return $this->redirectToRoute('main_home');
+		}
+
+
+		return $this->render('main/profil-delete.html.twig', [
+			'form' => $form->createView()
+		]);
 	}
 
 
