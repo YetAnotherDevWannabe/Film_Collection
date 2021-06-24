@@ -14,7 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use App\Form\EditProfileFormType;
+use App\Form\DisableAccountFormType;
 
 class MainController extends AbstractController
 {
@@ -62,17 +64,6 @@ class MainController extends AbstractController
 
                 $user = $this->getUser();
 
-                /*$user
-                    ->setNickname($editDataForm->get('nickname')->getData())
-                    ->setEmail($editDataForm->get('email')->getData())
-					->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $user,
-                        $editDataForm->get('password')->getData()
-                    )
-                )
-                ;*/
-
 				//We test below if any field is not blank, we set the new data filled in by the current connected user
 
 				$emailField = $editDataForm->get('email');
@@ -115,6 +106,8 @@ class MainController extends AbstractController
 					$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
 				}
 
+				return $this->redirectToRoute('main_home');
+
             }
 
         }
@@ -129,19 +122,37 @@ class MainController extends AbstractController
 	 * Controller for the profil suppression page
 	 * @Route("/profil/delete/", name="main_profil_delete")
 	 */
-	public function profilDelete(): Response
+	public function profilDelete(TokenStorageInterface $tokenStorage, Request $request): Response
 	{
-		$user = $this->getUser();
 
-		$user
-			->setActive(false);
+		$form = $this->createForm(DisableAccountFormType::class);
 
-		$em = $this->getDoctrine()->getManager();
-		$em->flush();
+		$form->handleRequest($request);
 
-		$this->addFlash('success', 'Votre compte a bien été supprimé');
+		if($form->getClickedButton() == $form->get('cancel')){
+			return $this->redirectToRoute('main_profil');
+		}
 
-		return $this->render('main/index.html.twig');
+		if($form->isSubmitted() && $form->isValid()){
+			$user = $this->getUser();
+
+			$user
+				->setActive(false);
+
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+
+			$tokenStorage->setToken();
+
+			$this->addFlash('success', 'Votre compte a bien été supprimé');
+
+			return $this->redirectToRoute('main_home');
+		}
+
+
+		return $this->render('main/profil-delete.html.twig', [
+			'form' => $form->createView()
+		]);
 	}
 
 

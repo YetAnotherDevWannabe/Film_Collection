@@ -89,7 +89,7 @@ class RegistrationController extends AbstractController
                 $em->flush();
 
                 //Succes message when the account has been created and the user has been registered
-                $this->addFlash('success', 'Votre compte a bien été bien créé');
+                $this->addFlash('success', 'Votre compte a bien été créé');
 
 
                 //We redirect the user to the login page

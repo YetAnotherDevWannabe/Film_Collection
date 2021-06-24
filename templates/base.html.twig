@@ -68,7 +68,7 @@
 						<li class="nav-item">
 							<a class="btn btn-lg btn-nav nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
 							   href="{{ path('main_home') }}"
-							   data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
+							   data-mdb-ripple-color="{{ ripple_color_white }}"  {{ ripple_color_blue }}
 							   data-mdb-ripple-centered="true"
 							>
 								<i class="fas fa-home me-2"></i>Accueil
@@ -149,7 +149,7 @@
 
 
 					{# Right side buttons #}
-					<ul class="navbar-nav ms-auto mb-2 mb-lg-0 dropstart">
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 
 						{% if app.user %}{# if user is connected #}
