@@ -1,0 +1,108 @@
+{# Base for Twig page #}
+{% extends 'base.html.twig' %}
+
+{# Page title #}
+{% block title %}Contact{% endblock %}
+
+{# Page CSS #}
+{% block css %}
+    {# Insertion du fichier JS dans le block stylesheets conformément à la documentation de Recaptcha qui préconise d'intégrer ce fichier JS dans le head #}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
+
+{# Page content #}
+{% block body %}
+
+
+	
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-10 offset-1 contact-background mt-3 mb-3 ps-3 pe-3">
+				<div class="row">
+					{# bloc formulaire de contact #}
+					
+					<div class="formulaire col-12" id="contact-form">
+						<h1 class="text-center mt-5 mb-5">Nous contacter, c'est simple !</h1>
+						<p class="col-12 text-center my-5 fs-2">Une question ? Un message ?</p>
+						<p class="col-12 text-center my-5 fs-3">Utilisez notre formulaire !</p>
+						<p>
+							{# affichage du formulaire sans le recaptcha {{ form(formContact) }} #}
+					
+							{# Ouverture du formulaire #}
+							{{ form_start(contactForm) }}
+					
+							{# Affichage des erreurs générales du formulaire #}
+							{{ form_errors(contactForm) }}
+					
+							{# Affichage du champ sujet #}
+							{{ form_row(contactForm.subject) }}
+					
+							{# Affichage du champ email #}
+							{{ form_row(contactForm.email) }}
+					
+							{# Affichage du champ content #}
+							{{ form_row(contactForm.content) }}
+					
+							{# Affichage du captcha avec la clé publique récupérée directement grâce à la
+							passerelle faite dans twig.yaml #}
+						<div class="form-group">
+							<div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
+						</div>
+					
+						{# Affichage du bouton de validation #}
+						{{ form_row(contactForm.save) }}
+					
+						{# Fermeture du formulaire #}
+						{{ form_end(contactForm) }}
+					
+						{# NB : sécurité : pas besoin d'échapper les caractères HTML avec l'équivalent de
+						htmlspecialchars car avec twig c'est échappé automatiquement #}
+						</p>
+					</div>
+					{# bloc des renseignements #}
+					
+					<div class="renseignements col-12">
+						<div class="row">
+							<div class="col-12 col-md-3 offset-md-1">
+								<img class="img-fluid img-thumbnail mt-5 mb-5" src="{{ asset('img/handshake.jpg') }}"
+									alt="homme qui tend la main">
+							</div>
+							<div class="col-12 col-md-7">
+								<p class="text-center mt-5 mb-2 fs-2">Notre community manager :</p>
+								<p class="text-center mt-2 mb-2">Téléphone : 0 805 622 345</p>
+								<p class="text-center mt-4 mb-1">Adresse de nos locaux :</p>
+								<p class="text-center mt-0 mb-1">36 Boulevard H-P. Schneider</p>
+								<p class="text-center mt-0 mb-2">71 200 Le Creusot</p>				
+								<p class="text-center mt-4 mb-1">Nos horaires :
+								<p class="text-center mt-0 mb-2">du lundi au vendredi :</p>
+								<p class="text-center mt-0 mb-2">de 9h à 12h et de 14h à 18h</p>
+								<p class="text-center mt-0 mb-2">Ou sur RDV</p>			
+							</div>
+						</div>	
+					</div>
+					
+					{# bloc google map #}
+					<div class="col-12">
+						{# carte interactive pour localiser facilement les locaux de la société #}
+							<iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0"
+								marginwidth="0"
+								src="https://maps.google.com/maps?width=100%25&amp;height=300&amp;hl=fr&amp;q=36%20boulevard%20Henry-Paul%20Schneider%2071200%20Le%20Creusot+(WebForce3)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+{% endblock %}
+
+
+	{# Page footer #}
+	{% block footer %}
+		{% include 'partials/footer-full.html.twig' %}
+	{% endblock %}
+
+	{# Page JS #}
+	{% block js %}{% endblock %}

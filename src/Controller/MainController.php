@@ -7,6 +7,9 @@ use App\Form\AvatarEditFormType;
 use App\Form\ProfilDeleteFormType;
 use App\Form\ProfilEditFormType;
 use App\Form\RegistrationFormType;
+use App\Form\ContactFormType;
+use App\Recaptcha\RecaptchaValidator;
+use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\EditProfileFormType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 
 class MainController extends AbstractController
 {
@@ -201,4 +207,61 @@ class MainController extends AbstractController
 	{
 		return $this->render('main/profil-delete-avatar.html.twig');
 	}
+
+	/**
+     * @Route("/contact/", name="contact")
+     */
+
+	public function contactForm(Request $request, RecaptchaValidator $recaptcha, MailerInterface $mailer ): Response
+    {
+        // Création d'un nouveau formulaire et d'un nouveau message de contact
+        $contactForm = $this->createForm(ContactFormType::class);
+
+        // Symfony va remplir $newContact grâce aux données du formulaire envoyé
+        $contactForm->handleRequest($request);
+
+        // Pour savoir si le formulaire a été envoyé et validé, on a accès à cette condition :
+        if($contactForm->isSubmitted()) {
+
+            // Si le captcha n'est pas valide, on crée une nouvelle erreur dans le formulaire
+            if(!$recaptcha->verify( $request->request->get('g-recaptcha-response', ""), $request->server->get('REMOTE_ADDR') )){
+
+				// Ajout d'une nouvelle erreur manuellement dans le formulaire
+				$contactForm->addError(new FormError('Veuillez valider le captcha !'));
+			}
+
+			if($contactForm->isValid()){
+
+				$email = (new TemplatedEmail())
+					->from(new Address('noreply@moviebrary.fr', 'noreply'))
+					->to('contact@moviebrary.fr')
+					->subject($contactForm->get("subject")->getData())
+					->htmlTemplate('email/contact.html.twig')    // Fichier twig du mail en version html
+					->textTemplate('email/contact.txt.twig')     // Fichier twig du mail en version text
+					
+					->context([
+						'contact_email' => $contactForm->get("email")->getData(),
+						'content' => $contactForm->get("content")->getData()
+					])
+					
+				;
+				// Envoi du mail
+				$mailer->send($email);
+
+				// Création d'un message flash de type "success"
+				$this->addFlash('success', 'Votre message de contact a bien été envoyé, nous vous répondrons dans les meilleurs délais !');
+	
+				// Redirection de l'utilisateur
+				return $this->redirectToRoute('contact');
+
+			}
+					
+		}		
+
+        //Pour que la vue puisse afficher le formulaire, on doit lui envoyer le formulaire généré, avec $formContact->createView()
+	    return $this->render('main/contact.html.twig', [
+		'contactForm' => $contactForm->createView()
+	    ]);
+    }
+
 }

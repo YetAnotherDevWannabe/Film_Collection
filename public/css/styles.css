@@ -297,3 +297,24 @@
 		border-radius: 0 .6rem .6rem 0 !important;
 	}
 }
+
+/* Page de contact */
+
+/* bloc formulaire de contact */
+
+.formulaire, .renseignements
+{
+		
+	color : whitesmoke;
+}
+
+.contact-background
+{
+	background-color : var(--compliment);
+}
+.contact-btn
+{
+	color : whitesmoke;
+	border-color: whitesmoke;
+}
+
