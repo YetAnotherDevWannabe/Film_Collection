@@ -23,7 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CollectController extends AbstractController
 {
-
 	/**
 	 * Page controller to create a new collection
 	 * @Route("/ajouter/", name="new")
@@ -66,7 +65,7 @@ class CollectController extends AbstractController
 	{
 		$requestedPage = $request->query->getInt('page', 1);
 		// If requested page < 1 error 404
-		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
+		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		// Create a query for paginator to get only the collections shown on the current page
