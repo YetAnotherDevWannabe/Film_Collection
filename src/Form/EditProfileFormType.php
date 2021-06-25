@@ -37,7 +37,7 @@ class EditProfileFormType extends AbstractType
 				'constraints' => [
 					new Length([
 						'min'        => 2,
-						'max'        => 150,
+						'max'        => 50,
 						'minMessage' => 'Votre pseudonyme doit contenir au minimum {{ limit }} caractères',
 						'maxMessage' => 'Votre pseudonyme doit contenir au maximum {{ limit }} caractères',
 					]),
