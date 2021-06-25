@@ -5,7 +5,24 @@
 {% block title %}Accueil{% endblock %}
 
 {# Page CSS #}
-{% block css %}{% endblock %}
+{% block css %}
+	<style>
+	.bg-cover
+	{
+		background-image      : url('{{ asset('/img/cinema.jpg') }}');
+		background-attachment : fixed;
+		background-size       : cover;
+		height                : 400px;
+	}
+	.bg-cover-2
+	{
+		background-image      : url('{{ asset('/img/DolbyCinema.jpg') }}');
+		background-attachment : fixed;
+		background-size       : cover;
+		height                : 400px;
+	}
+	</style>
+{% endblock %}
 
 {# Page content #}
 {% block body %}
@@ -18,10 +35,16 @@
 		<img class="mb-2" style="width: 250px; margin: auto" src="{{ asset('img/logo.png') }}" alt="logo">
 	</div>
 
+	<p class="col-8 offset-2 my-5">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium atque eaque enim esse et eveniet excepturi expedita minus molestiae, molestias obcaecati, perferendis possimus quia reprehenderit sunt. Aliquam at consequuntur dolorum esse hic in ipsa laboriosam minus temporibus ullam! Accusantium delectus dignissimos dolores doloribus error facere magni maiores non nulla quos?
+	</p>
+
+	<section class="row my-5 bg-cover"></section>
+
 	<div class="row">
 		<div class="col-12 col-md-8 offset-md-2">
 			<div class="row">
-				<p>
+				<p class=" my-5">
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
 					rerum
 					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
@@ -41,6 +64,8 @@
 			</div>
 
 		</div>
+
+		<section class="row my-5 bg-cover-2"></section>
 
 	</div>
 
