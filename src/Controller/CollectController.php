@@ -23,7 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CollectController extends AbstractController
 {
-
 	/**
 	 * Page controller to create a new collection
 	 * @Route("/ajouter/", name="new")
@@ -66,7 +65,7 @@ class CollectController extends AbstractController
 	{
 		$requestedPage = $request->query->getInt('page', 1);
 		// If requested page < 1 error 404
-		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
+		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		// Create a query for paginator to get only the collections shown on the current page
@@ -85,85 +84,90 @@ class CollectController extends AbstractController
 	 * Controller for the collect view page
 	 * @Route("/detail/{slug}/", name="detail")
 	 */
-	public function viewCollect(Request $request,Collect $collect): Response
+	public function detailCollect(Request $request, Collect $collect): Response
 	{
-        // TODO: JS hover qui affiche le poster
-        // TODO: récupérer la liste des films de la collection
-        $em = $this->getDoctrine()->getManager();
-        $filmRepo = $em->getRepository(Film::class);
-        $films = $filmRepo->findAll();
+		//if user is not connected we call directly the view without processing the form below
+		if ( !$this->getUser() )
+		{
 
-	    //if user is not connected we call directly the view without processing the form below
-        if (!$this->getUser()){
+			return $this->render('collect/detail.html.twig',
+				[
+					'collect' => $collect,
+				]);
+		}
 
-            return $this->render('collect/detail.html.twig',
-                [
-                    'collect' => $collect,
-                    'films'   => $films,
-                ]);
-        }
+		$comment = new CommentCollect();
+		$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+		$commentForm->handleRequest($request);
 
-        $comment = new CommentCollect();
-        $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-        $commentForm->handleRequest($request);
-
-        //Verification that the form has been sent and has no errors
-        if ($commentForm->isSubmitted() && $commentForm->isValid()){
+		//Verification that the form has been sent and has no errors
+		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
+		{
 
             $comment
                 ->setPublicationDate(new \DateTime())
                 ->setCollect($collect)
-                ->setUser($this->getUser());
+                ->setUser($this->getUser())
+                ->setActive(true);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($comment);
+			$em->flush();
 
-            $this->addFlash('success', 'Commentaire publié avec succès !');
+			$this->addFlash('success', 'Commentaire publié avec succès !');
 
-            //Deletion of the two variables of the form and the newly created comment to avoid that the new form remains filled after the creation
-            unset($comment);
-            unset($commentForm);
+			return $this->redirectToRoute('collect_detail', [
+				'slug' => $collect->getSlug(),
+			]);
 
-            $comment = new CommentCollect();
-            $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-        }
+		}
 
-        return $this->render('collect/detail.html.twig',
-            [
-                'collect' => $collect,
-                'films'   => $films,
-                'commentForm' => $commentForm->createView(),
-            ]);
+		return $this->render('collect/detail.html.twig',
+			[
+				'collect'     => $collect,
+				'commentForm' => $commentForm->createView(),
+			]);
 	}
 
-    /**
-     * Controller for the commentCollect deletion
-     * @Route("/commentaire/supression/{id}", name="comment_delete")
-     */
+	/**
+	 * Controller for the commentCollect deletion
+	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
+     * @Security ("is_granted('ROLE_USER')")
+	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
-    {
-        $tokenCSRF = $request->query->get('csrf_token');
+	{
+	    $user = $this->getUser();
+        $userRole = $this->getUser()->getRoles()[0];
+		$tokenCSRF = $request->query->get('csrf_token');
 
-        // Verify if token is valid
-        if (!$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) ){
+		// Verify if token is valid
+		if ( !$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) )
+		{
+			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
+		}
 
-            $this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
+		else if( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() ){
 
-        } else {
+            // disable the comment (deletion for user)
+            $commentCollect
+                ->setActive(false);
 
-            // deletion of commnent
             $em = $this->getDoctrine()->getManager();
-            $em->remove($commentCollect);
             $em->flush();
 
             $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+
         }
 
-        return $this->redirectToRoute('collect_detail', [
-           'slug' => $commentCollect->getCollect()->getSlug()
-        ]);
-    }
+        else
+		{
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
+		}
+
+		return $this->redirectToRoute('collect_detail', [
+			'slug' => $commentCollect->getCollect()->getSlug(),
+		]);
+	}
 
 	/**
 	 * Controller for the collect deletion
@@ -171,11 +175,9 @@ class CollectController extends AbstractController
 	 */
 	public function deleteCollect(Collect $collect, Request $request): Response
 	{
-		//TODO: add CSRF to avoid having possibility of going back to this page?
-
 		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
 		$user = $this->getUser();
-		if ( $user->getRoles() != 'ROLE_ADMIN' && $user->getId() != $collect->getAuthor()->getId() )
+		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ($user && $user->getId() != $collect->getAuthor()->getId()) ) //TODO: Suppr impossible if user author
 		{
 			return $this->redirectToRoute('collect_list');
 		}
@@ -213,20 +215,26 @@ class CollectController extends AbstractController
 
 	/**
 	 * Controller for the search page
-	 * @Route("{collect_id}/ajouter/film/{id}/", name="film_add")
+	 * @Route("/{collect_id}/ajouter/film/{id}/", name="film_add")
 	 * @Entity("collect", expr="repository.find(collect_id)")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
 	public function filmAdd(Collect $collect, Film $film, Request $request): Response //Collect $collect, Film $film,
 	{
+		if ( $this->getUser() != $collect->getAuthor() || !$this->getUser() )
+		{
+			return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
+		}
+
 		$collect->addFilmCollect($film);
 
 		$em = $this->getDoctrine()->getManager();
 		$em->flush($collect);
 
 		// Message flash
-		$this->addFlash('success', '<span class="text-compliment">'. $film->getName() .'</span> a ajouté à la collection <span class="text-compliment">'. $collect->getName() .'</span> !');
+		$this->addFlash('success', '<span class="text-compliment">' . $film->getName() . '</span> a ajouté à la collection <span class="text-compliment">' . $collect->getName() . '</span> !');
 
-		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()] );
+		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
 	}
 

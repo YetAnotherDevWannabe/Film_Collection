@@ -3,11 +3,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\Collect;
+use App\Entity\CommentCollect;
 use App\Entity\Film;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker;
 
 class AppFixtures extends Fixture
 {
@@ -23,35 +25,52 @@ class AppFixtures extends Fixture
 
 	public function load(ObjectManager $manager)
 	{
+		$faker = Faker\Factory::create('fr_FR');
+
 		/////////////
 		/// USERS ///
 		/////////////
 
-		// User Admin
+		// Admin
 		$userAdmin = new User();
 		$userAdmin
 			->setEmail('admin@email.com')
 			->setRoles(['ROLE_ADMIN'])
 			->setPassword($this->encoder->encodePassword($userAdmin, 'Aa111111!'))
 			->setNickname('admin')
-			->setRegistrationDate(new \DateTime())
+			->setRegistrationDate($faker->dateTimeBetween('-6 weeks', '-5 weeks'))
 			->setActive(true)
 		;
 		$manager->persist($userAdmin);
 		$users[] = $userAdmin;
 
-		// User Q007
+		// User
 		$user = new User();
 		$user
-			->setEmail('q@q.q')
+			->setEmail('user@email.com')
 			->setRoles(['ROLE_USER'])
-			->setPassword($this->encoder->encodePassword($user, 'Qq111111!'))
-			->setNickname('Q007')
-			->setRegistrationDate(new \DateTime())
+			->setPassword($this->encoder->encodePassword($user, 'Uu111111!'))
+			->setNickname('user')
+			->setRegistrationDate($faker->dateTimeBetween('-4 weeks', 'now'))
 			->setActive(true)
 		;
 		$manager->persist($user);
 		$users[] = $user;
+
+		for ($i = 0; $i < 5; $i++)
+		{
+			$user = new User();
+			$user
+				->setEmail($faker->unique()->email)
+				->setRoles(['ROLE_USER'])
+				->setPassword($this->encoder->encodePassword($user, 'Aa111111!'))
+				->setNickname($faker->unique()->userName)
+				->setRegistrationDate($faker->dateTimeBetween('-4 weeks', 'now'))
+				->setActive(true)
+			;
+			$manager->persist($user);
+			$users[] = $user;
+		}
 
 
 		/////////////
@@ -71,6 +90,7 @@ class AppFixtures extends Fixture
 			->setTrailer('EFYEni2gsK0')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// A Quiet Place Part II
 		$newFilm = new Film();
@@ -85,6 +105,7 @@ class AppFixtures extends Fixture
 			->setTrailer('XEMwSdne6UE')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// Hitman's Wife's Bodyguard
 		$newFilm = new Film();
@@ -99,6 +120,7 @@ class AppFixtures extends Fixture
 			->setTrailer('oZ2XyA28bQc')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// Joker
 		$newFilm = new Film();
@@ -113,6 +135,7 @@ class AppFixtures extends Fixture
 			->setTrailer('t433PEQGErc')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// Soul
 		$newFilm = new Film();
@@ -127,6 +150,7 @@ class AppFixtures extends Fixture
 			->setTrailer('4TojlZYqPUo')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// Tom Clancy's Without Remorse
 		$newFilm = new Film();
@@ -141,6 +165,7 @@ class AppFixtures extends Fixture
 			->setTrailer('e-rw2cxFVLg')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// Army of the Dead
 		$newFilm = new Film();
@@ -155,6 +180,7 @@ class AppFixtures extends Fixture
 			->setTrailer('H83kjG5RCT8')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// Raya and the Last Dragon
 		$newFilm = new Film();
@@ -169,48 +195,7 @@ class AppFixtures extends Fixture
 			->setTrailer('9BPMTr-NS9s')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
-
-		// Zack Snyder's Justice League
-		$newFilm = new Film();
-		$newFilm
-			->setTmdbId('791373')
-			->setName('Zack Snyder\'s Justice League')
-			->setYear(2021)
-			->setSynopsis('Determined to ensure Superman\'s ultimate sacrifice was not in vain, Bruce Wayne aligns forces with Diana Prince with plans to recruit a team of metahumans to protect the world from an approaching threat of catastrophic proportions.')
-			->setGenre(' Action, Adventure, Fantasy, Science Fiction ')
-			->setNote(84)
-			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg')
-			->setTrailer('vM-Bja2Gy04')
-			->setUser($userAdmin);
-		$manager->persist($newFilm);
-
-		// Taxi
-		$newFilm = new Film();
-		$newFilm
-			->setTmdbId('2330')
-			->setName('Taxi')
-			->setYear(1998)
-			->setSynopsis('Daniel est un fou du volant. Cet ex-livreur de pizzas est aujourd\'hui chauffeur de taxi et sait échapper aux radars les plus perfectionnés. Pourtant, un jour, il croise la route d\'Emilien, policier recalé pour la huitième fois à son permis de conduire. Pour conserver son taxi, il accepte le marché que lui propose Emilien : l\'aider à démanteler un gang de braqueurs de banques qui écume les succursales de la ville à bord de puissants véhicules. Road-movie urbain sur un scénario de Luc Besson, également producteur.')
-			->setGenre('Action, Comédie')
-			->setNote(66)
-			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5d16tJ2DLImAwCY2w0LYZjgWZA1.jpg')
-			->setTrailer('OnEcAcVPXUw')
-			->setUser($userAdmin);
-		$manager->persist($newFilm);
-
-		// Le Prénom
-		$newFilm = new Film();
-		$newFilm
-			->setTmdbId('122198')
-			->setName('Le Prénom')
-			->setYear(2012)
-			->setSynopsis('Vincent, la quarantaine triomphante, va être père pour la première fois. Invité à dîner chez Élisabeth et Pierre, sa sœur et son beau-frère, il y retrouve Claude, un ami d’enfance. En attendant l’arrivée d’Anna, sa jeune épouse éternellement en retard, on le presse de questions sur sa future paternité dans la bonne humeur générale... Mais quand on demande à Vincent s’il a déjà choisi un prénom pour l’enfant à naître, sa réponse plonge la famille dans le chaos.')
-			->setGenre('Drame, Comédie')
-			->setNote(77)
-			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/w5JWQo7ArqmoegKYiQbv8TeAJmg.jpg')
-			->setTrailer('FX2ukwKgWlo')
-			->setUser($userAdmin);
-		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 		// Star Wars: The Force Awakens
 		$newFilm = new Film();
@@ -225,6 +210,52 @@ class AppFixtures extends Fixture
 			// ->setTrailer('erLk59H86ww')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
+		// Zack Snyder's Justice League
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('791373')
+			->setName('Zack Snyder\'s Justice League')
+			->setYear(2021)
+			->setSynopsis('Determined to ensure Superman\'s ultimate sacrifice was not in vain, Bruce Wayne aligns forces with Diana Prince with plans to recruit a team of metahumans to protect the world from an approaching threat of catastrophic proportions.')
+			->setGenre(' Action, Adventure, Fantasy, Science Fiction ')
+			->setNote(84)
+			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg')
+			->setTrailer('vM-Bja2Gy04')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
+		// Taxi
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('2330')
+			->setName('Taxi')
+			->setYear(1998)
+			->setSynopsis('Daniel est un fou du volant. Cet ex-livreur de pizzas est aujourd\'hui chauffeur de taxi et sait échapper aux radars les plus perfectionnés. Pourtant, un jour, il croise la route d\'Emilien, policier recalé pour la huitième fois à son permis de conduire. Pour conserver son taxi, il accepte le marché que lui propose Emilien : l\'aider à démanteler un gang de braqueurs de banques qui écume les succursales de la ville à bord de puissants véhicules. Road-movie urbain sur un scénario de Luc Besson, également producteur.')
+			->setGenre('Action, Comédie')
+			->setNote(66)
+			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5d16tJ2DLImAwCY2w0LYZjgWZA1.jpg')
+			->setTrailer('OnEcAcVPXUw')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
+		// Le Prénom
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('122198')
+			->setName('Le Prénom')
+			->setYear(2012)
+			->setSynopsis('Vincent, la quarantaine triomphante, va être père pour la première fois. Invité à dîner chez Élisabeth et Pierre, sa sœur et son beau-frère, il y retrouve Claude, un ami d’enfance. En attendant l’arrivée d’Anna, sa jeune épouse éternellement en retard, on le presse de questions sur sa future paternité dans la bonne humeur générale... Mais quand on demande à Vincent s’il a déjà choisi un prénom pour l’enfant à naître, sa réponse plonge la famille dans le chaos.')
+			->setGenre('Drame, Comédie')
+			->setNote(77)
+			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/w5JWQo7ArqmoegKYiQbv8TeAJmg.jpg')
+			->setTrailer('FX2ukwKgWlo')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
 
 
 		////////////////
@@ -235,54 +266,51 @@ class AppFixtures extends Fixture
 		$newCollect = new Collect();
 		$newCollect
 			->setName("Collect' Or")
-			->setPublicationDate(new \DateTime())
+			->setPublicationDate($faker->dateTimeBetween('-6 weeks', '-5 weeks'))
 			->setAuthor($userAdmin);
+		/// COLLECT_FILM ///
+		for ($i = 0; $i < rand(0, 5); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
 		$manager->persist($newCollect);
+		$collects[] = $newCollect;
 
-		// Collect' Trash
-		$newCollect = new Collect();
-		$newCollect
-			->setName("Collect' Trash")
-			->setPublicationDate(new \DateTime())
-			->setAuthor($users[rand(0, count($users) - 1)]);
-		$manager->persist($newCollect);
-
-		// Collect' Taxe
-		$newCollect = new Collect();
-		$newCollect
-			->setName("Collect' Taxe")
-			->setPublicationDate(new \DateTime())
-			->setAuthor($users[rand(0, count($users) - 1)]);
-		$manager->persist($newCollect);
-
-		// Collect' Les emmerdes
-		$newCollect = new Collect();
-		$newCollect
-			->setName("Collect' Les emmerdes")
-			->setPublicationDate(new \DateTime())
-			->setAuthor($users[rand(0, count($users) - 1)]);
-		$manager->persist($newCollect);
-
-		// Collect' Tion
-		$newCollect = new Collect();
-		$newCollect
-			->setName("Collect' Tion")
-			->setPublicationDate(new \DateTime())
-			->setAuthor($users[rand(0, count($users) - 1)]);
-		$manager->persist($newCollect);
-
-		for ($i = 0; $i < 8; $i++)
+		for ($i = 0; $i < 12; $i++)
 		{
 			// Collect'
 			$newCollect = new Collect();
 			$newCollect
-				->setName("Collect' " . (rand(0, 100) + $i))
-				->setPublicationDate(new \DateTime())
+				->setName("Collect' " . $faker->words(rand(1, 3), true))
+				->setPublicationDate($faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now'))
 				->setAuthor($users[rand(0, count($users) - 1)]);
+			/// COLLECT_FILM ///
+			// for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
 			$manager->persist($newCollect);
+			$collects[] = $newCollect;
+
+
+			////////////////
+			/// COMMENTS ///
+			////////////////
+
+			for ($k = 0; $k < rand(0, 6); $k++)
+			{
+				// Création d' un nouveau commentaire
+				$comment = new CommentCollect();
+				$comment
+					->setUser( $faker->randomElement($users) )
+					->setPublicationDate( $faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now') )
+					->setContent( $faker->paragraph(3) )
+					->setCollect($collects[rand(0, count($collects) - 1)])
+					->setActive(true)
+				;
+				$manager->persist($comment);
+			}
 		}
 
-		// Save it to the DB
+
+		/////////////
+		/// FLUSH ///
+		/////////////
+
 		$manager->flush();
 	}
 }

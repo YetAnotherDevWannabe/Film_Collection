@@ -21,9 +21,7 @@
 				{# Formulaire #}
 				{{ form_start(filmForm) }}
 
-				<div class="ms-3 my-3"><span class="text-danger">*</span>{{ filmForm.trailer.vars.label_attr.help }}</div>
-
-				<div class="form-outline mb-4">
+				<div class="form-outline mb-5">
 					{{ form_widget(filmForm.tmdbId) }}
 					{% block tmdbId_label %}
 						<label for="{{ filmForm.tmdbId.vars.id }}" class="form-label required" style="margin-left: 0px;">
@@ -32,7 +30,7 @@
 					{{ form_errors(filmForm.tmdbId) }}
 				</div>
 
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					{{ form_widget(filmForm.name) }}
 					{% block name_label %}
 						<label for="{{ filmForm.name.vars.id }}" class="form-label required" style="margin-left: 0px;">
@@ -41,7 +39,7 @@
 					{{ form_errors(filmForm.name) }}
 				</div>
 
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					{{ form_widget(filmForm.year) }}
 					{% block year_label %}
 						<label for="{{ filmForm.year.vars.id }}" class="form-label required" style="margin-left: 0px;">
@@ -50,7 +48,7 @@
 					{{ form_errors(filmForm.year) }}
 				</div>
 
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					{{ form_widget(filmForm.synopsis) }}
 					{% block synopsis_label %}
 						<label for="{{ filmForm.synopsis.vars.id }}" class="form-label required" style="margin-left: 0px;">
@@ -59,7 +57,7 @@
 					{{ form_errors(filmForm.synopsis) }}
 				</div>
 
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					{{ form_widget(filmForm.genre) }}
 					{% block genre_label %}
 						<label for="{{ filmForm.genre.vars.id }}" class="form-label required" style="margin-left: 0px;">
@@ -68,23 +66,25 @@
 					{{ form_errors(filmForm.genre) }}
 				</div>
 
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					{{ form_widget(filmForm.note) }}
 					{{ form_label(filmForm.note) }}
 					{{ form_errors(filmForm.note) }}
 				</div>
 
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					{{ form_widget(filmForm.poster) }}
 					{{ form_label(filmForm.poster) }}
 					{{ form_errors(filmForm.poster) }}
 				</div>
 
-				<div class="form-outline my-4">
+				<div class="form-outline mt-5">
 					{{ form_widget(filmForm.trailer) }}
 					{{ form_label(filmForm.trailer) }}
 					{{ form_errors(filmForm.trailer) }}
 				</div>
+
+				<div class="ms-1 my-3"><span class="text-danger">*</span>{{ filmForm.trailer.vars.label_attr.help }}</div>
 
 				{{ form_row(filmForm.save) }}
 

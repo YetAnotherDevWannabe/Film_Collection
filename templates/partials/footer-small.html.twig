@@ -7,48 +7,68 @@
 		{# Section: Social media #}
 		<section>
 			{# Facebook #}
-			<a class="btn btn-primary btn-floating m-1"
+			<a class="btn btn-primary btn-floating fs-4 m-1"
+			   title="Facebook"
 			   style="background-color: #3b5998"
 			   href="#"
 			   role="button"
+			   data-mdb-ripple-duration="0ms"
 			>
 				<i class="fab fa-facebook-f"></i>
 			</a>
 
 			{# Twitter #}
-			<a class="btn btn-primary btn-floating m-1"
+			<a class="btn btn-primary btn-floating fs-4 m-1"
+			   title="Twitter"
 			   style="background-color: #55acee"
 			   href="#"
 			   role="button"
+			   data-mdb-ripple-duration="0ms"
 			>
 				<i class="fab fa-twitter"></i>
 			</a>
 
 			{# Instagram #}
-			<a class="btn btn-primary btn-floating m-1"
+			<a class="btn btn-primary btn-floating fs-4 m-1"
+			   title="Instagram"
 			   style="background-color: #ac2bac"
 			   href="#"
 			   role="button"
+			   data-mdb-ripple-duration="0ms"
 			>
 				<i class="fab fa-instagram"></i>
 			</a>
 
 			{# Linkedin #}
-			<a class="btn btn-primary btn-floating m-1"
+			<a class="btn btn-primary btn-floating fs-4 m-1"
+			   title="Linkedin"
 			   style="background-color: #0082ca"
 			   href="#"
 			   role="button"
+			   data-mdb-ripple-duration="0ms"
 			>
 				<i class="fab fa-linkedin-in"></i>
 			</a>
 
 			{# Github #}
-			<a class="btn btn-primary btn-floating m-1"
+			<a class="btn btn-primary btn-floating fs-4 m-1"
+			   title="Github"
 			   style="background-color: #333333"
 			   href="https://github.com/YetAnotherDevWannabe/Film_Collection"
 			   role="button"
+			   data-mdb-ripple-duration="0ms"
 			>
 				<i class="fab fa-github"></i>
+			</a>
+
+			{# Mail #}
+			<a class="btn text-black-50 font-weight-bold rounded-pill bg-basecolor gradient-compliment-reverse text-mutted m-1 ms-4"
+			   title="Contactez-nous"
+			   href="{{ path('main_contact') }}"
+			   role="button"
+			   data-mdb-ripple-duration="0ms"
+			>
+				<i class="fas fa-mail-bulk me-2"></i>Contactez-nous
 			</a>
 		</section>
 
@@ -57,7 +77,6 @@
 	{# Copyright #}
 	<div class="text-center py-3 gradient-basecolor">
 		© 2021 Copyright:
-		{# TODO: Changer le lien avec la page copyright de Zana #}
 		<a class="text-dark"
 		   href="{{ path('main_copyright') }}"
 		>

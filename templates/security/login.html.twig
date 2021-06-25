@@ -36,13 +36,13 @@
 			<form action="{{ path('main_login') }}" method="POST">
 
 				{# Email field #}
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control">
 					<label for="inputEmail" class="form-label">Email</label>
 				</div>
 
 				{# Password field #}
-				<div class="form-outline my-4">
+				<div class="form-outline my-5">
 					<input type="password" name="password" id="inputPassword" class="form-control" required>
 					<label for="inputPassword" class="form-label">Mot de passe</label>
 				</div>
@@ -51,7 +51,11 @@
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 				{# Submit button #}
-				<input type="submit" class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0" value="Connexion au compte">
+				<input type="submit"
+					   class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4"
+					   value="Connexion au compte"
+					   data-mdb-ripple-duration="0ms"
+				>
 
 			</form>
 
@@ -60,17 +64,6 @@
 	</div>
 
 </div>
-
-
-	{# Uncomment this section and add a remember_me option below your firewall to activate remember me functionality. #}
-	{# See https://symfony.com/doc/current/security/remember_me.html #}
-	{#
-	<div class="checkbox mb-3">
-		<label>
-			<input type="checkbox" name="_remember_me"> Remember me
-		</label>
-	</div>
-	#}
 
 {% endblock %}
 

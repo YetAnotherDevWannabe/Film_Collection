@@ -13,44 +13,44 @@ use Symfony\Component\Validator\Constraints\File;
 
 class AvatarEditFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('avatar', FileType::class, [
-                'label' => 'Ajouter un avatar',
-                'attr' => [
-                    'accept' => 'image/jpeg, image/png',
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Vous devez sélectionner un fichier'
-                    ]),
-                    new File([
-                        'maxSize' => '1M',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-                        'mimeTypesMessage' => 'L\'image doit être de type jpg ou png',
-                        'maxSizeMessage' => 'Fichier trop volumineux {{ size }}{{ suffix }}, la taille maximum est {{ limit }}{{ suffix }}',
-                    ]),
-                ],
-            ])
-            ->add('valider', SubmitType::class, [
-                'label' => 'Valider',
-                'attr'  => [
-                    'class' => 'btn-success btn-block mt-3',
-                ],
-            ])
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('avatar', FileType::class, [
+				'label'       => 'Ajouter un avatar',
+				'attr'        => [
+					'accept' => 'image/jpeg, image/png',
+				],
+				'constraints' => [
+					new NotBlank([
+						'message' => 'Vous devez sélectionner un fichier',
+					]),
+					new File([
+						'maxSize'          => '1M',
+						'mimeTypes'        => [
+							'image/jpeg',
+							'image/png',
+						],
+						'mimeTypesMessage' => 'L\'image doit être de type jpg ou png',
+						'maxSizeMessage'   => 'Fichier trop volumineux {{ size }}{{ suffix }}, la taille maximum est {{ limit }}{{ suffix }}',
+					]),
+				],
+			])
+			->add('valider', SubmitType::class, [
+				'label' => 'Valider',
+				'attr'  => [
+					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+					'data-mdb-ripple-duration' => '0ms',
+				],
+			]);
+	}
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'attr' => [
-                'novalidate' => 'novalidate',
-            ],
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'attr' => [
+				'novalidate' => 'novalidate',
+			],
+		]);
+	}
 }

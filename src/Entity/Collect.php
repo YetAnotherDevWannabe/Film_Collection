@@ -37,7 +37,7 @@ class Collect
 	private $author;
 
 	/**
-	 * @ORM\OneToMany(targetEntity=CommentCollect::class, mappedBy="collect")
+	 * @ORM\OneToMany(targetEntity=CommentCollect::class, mappedBy="collect", orphanRemoval=true)
 	 */
 	private $commentCollects;
 

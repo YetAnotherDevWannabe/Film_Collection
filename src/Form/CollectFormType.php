@@ -33,7 +33,10 @@ class CollectFormType extends AbstractType
 			->add('save', SubmitType::class,
 				[
 					'label' => 'Créer ma collection',
-					'attr'  => ['class' => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0'],
+					'attr'  => [
+						'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+						'data-mdb-ripple-duration' => '0ms',
+					],
 				]
 			);;
 	}
@@ -42,7 +45,6 @@ class CollectFormType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => Collect::class,
-			// TODO: à enlever à la fin
 			'attr'       => [
 				'novalidate' => 'novalidate',
 			],

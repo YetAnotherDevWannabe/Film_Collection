@@ -161,7 +161,10 @@ class FilmFormType extends AbstractType
 			->add('save', SubmitType::class,
 				[
 					'label' => 'Ajouter film',
-					'attr'  => ['class' => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0'],
+					'attr'  => [
+						'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+						'data-mdb-ripple-duration' => '0ms',
+					],
 				]
 			);
 	}

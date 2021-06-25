@@ -24,12 +24,11 @@ class UserRegistrationType extends AbstractType
 	{
 		$builder
 			->add('email', EmailType::class, [
-				'label'       => 'Adresse email',
+				'label'       => 'Email',
 				'constraints' => [
 					new Email(['message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide.']),
 					new NotBlank(['message' => 'L\'adresse email ne peut pas être vide.']),
 				],
-				'label_attr'  => ['help' => ' : champs obligatoires',],
 			])
 			->add('plainPassword', RepeatedType::class, [
 				'mapped'          => false,
@@ -39,14 +38,13 @@ class UserRegistrationType extends AbstractType
 				'second_options'  => ['label' => 'Confirmation du mot de passe'],
 				'constraints'     => [
 					new NotBlank([
-						'message' => 'Merci de renseigner un mot de passe'
+						'message' => 'Merci de renseigner un mot de passe',
 					]),
 					new Regex([
 						'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[ !"#\$%&\'()*+,\-.\/:;<=>?@[\\\\\]\^_`{\|}~]).{8,4096}$/',
-						'message' => 'Votre mot de passe doit contenir au moins 8 caractères a-z, A-A, 0-9 un caractère spécial'
-					])
+						'message' => 'Votre mot de passe doit contenir au moins 8 caractères a-z, A-A, 0-9 un caractère spécial',
+					]),
 				],
-
 			])
 			->add('nickname', TextType::class, [
 				'label'       => 'Nom d\'utilisateur',
@@ -72,16 +70,19 @@ class UserRegistrationType extends AbstractType
 						'mimeTypes'        => [
 							'image/jpeg',
 							'image/jpg',
-							'image/png'
+							'image/png',
 						],
 						'mimeTypesMessage' => 'Votre image doit être au format JPG, PNG ou JPEG',
 						'maxSizeMessage'   => 'Ce fichier de {{ size }}{{ suffix }} est trop lourd, l\'image demandée doit faire au maximum {{ limit }}{{ suffix }}',
-					])
+					]),
 				],
 			])
 			->add('save', SubmitType::class, [
 				'label' => 'Créer mon compte',
-				'attr'  => ['class' => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0'],
+				'attr'  => [
+					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+					'data-mdb-ripple-duration' => '0ms',
+				],
 			]);
 	}
 
@@ -89,7 +90,7 @@ class UserRegistrationType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => User::class,
-			'attr'       => ['novalidate' => 'novalidate']
+			'attr'       => ['novalidate' => 'novalidate'],
 		]);
 	}
 }

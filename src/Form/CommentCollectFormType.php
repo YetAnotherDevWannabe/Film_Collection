@@ -15,46 +15,44 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CommentCollectFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder
+			->add('content', TextareaType::class, [
+				'label'       => 'Laissez un commentaire...',
+				'purify_html' => true,
+				'attr'        => [
+					'placeholder' => 'Laissez un commentaire...',
+					'rows'        => 10,
+				],
+				'constraints' => [
+					new NotBlank([
+						'message' => 'Merci de renseigner un contenu',
+					]),
+					new Length([
+						'min'        => 1,
+						'max'        => 2000,
+						'minMessage' => 'Le commentaire doit contenir au moins {{ limit }} caractères',
+						'maxMessage' => 'Le commentaire doit contenir au maximum {{ limit }} caractères',
+					]),
+				],
+			])
+			->add('save', SubmitType::class, [
+				'label' => 'Publier',
+				'attr'  => [
+					'class'                    => 'gradient-basecolor-reverse gradient-compliment-reverse col-12',
+					'data-mdb-ripple-duration' => '0ms',
+				],
+			]);
+	}
 
-            ->add('content', TextareaType::class,[
-                'label' => false,
-                'purify_html' => true,
-                'attr' => [
-                    'placeholder' => 'Laissez votre commentaire...',
-                    'rows' => 10,
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Merci de renseigner un contenu',
-                    ]),
-                    new Length([
-                        'min' => 1,
-                        'max' => 2000,
-                        'minMessage' => 'Le commentaire doit contenir au moins {{ limit }} caractères',
-                        'maxMessage' => 'Le commentaire doit contenir au maximum {{ limit }} caractères',
-                    ]),
-                ]
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Publier',
-                'attr' => [
-                    'class' => 'gradient-basecolor-reverse gradient-compliment-reverse col-12'
-                ]
-            ])
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => CommentCollect::class,
-            // TODO: à enlever à la fin
-            'attr' => [
-                'novalidate' => 'novalidate',
-            ],
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults([
+			'data_class' => CommentCollect::class,
+			'attr'       => [
+				'novalidate' => 'novalidate',
+			],
+		]);
+	}
 }
