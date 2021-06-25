@@ -14,13 +14,50 @@
 
 		{# Title #}
 		<div class="row">
-			<h1 class="col-12 text-center my-5">Modifiez ci-dessous vos données</h1>
+			<h1 class="col-12 text-center my-5">Modifiez votre profil</h1>
 		</div>
 
 		{# Form to modify information #}
 		<div class="row">
 			<div class="col-12 col-md-5 col-lg-4 offset-md-4">
-				{{ form(editDataForm) }}
+
+				{{ form_start(editDataForm) }}
+
+				<div class="form-outline mt-5 mb-4">
+					{{ form_widget(editDataForm.oldPassword) }}
+					{% block oldPassword_label %}
+						<label for="{{ editDataForm.oldPassword.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ editDataForm.oldPassword.vars.label }} <span class="text-danger">*</span></label>
+					{% endblock %}
+					{{ form_errors(editDataForm.oldPassword) }}
+				</div>
+
+				<div class="form-outline my-5">
+					{{ form_widget(editDataForm.email) }}
+					{% block email_label %}
+					<label for="{{ editDataForm.email.vars.id }}" class="form-label required" style="margin-left: 0px;">
+						{{ editDataForm.email.vars.label }}
+						{% endblock %}
+						{{ form_errors(editDataForm.email) }}
+				</div>
+
+				<div class="form-outline mt-5 mb-4">
+					{{ form_widget(editDataForm.nickname) }}
+					{% block nickname_label %}
+						<label for="{{ editDataForm.nickname.vars.id }}" class="form-label required" style="margin-left: 0px;">
+							{{ editDataForm.nickname.vars.label }}
+					{% endblock %}
+					{{ form_errors(editDataForm.nickname) }}
+				</div>
+
+				<div class="ms-1 my-3"><span class="text-danger">*</span> : champ obligatoire pour toute modification</div>
+
+				{{ form_row(editDataForm.confirm) }}
+
+				{{ form_row(editDataForm.cancel) }}
+
+				{{ form_end(editDataForm) }}
+
 			</div>
 		</div>
 
@@ -31,7 +68,7 @@
 
 {# Page footer #}
 {% block footer %}
-    {% include 'partials/footer-small.html.twig' %}
+	{% include 'partials/footer-small.html.twig' %}
 {% endblock %}
 
 {# Page JS #}

@@ -34,19 +34,40 @@
 					
 							{# Affichage des erreurs générales du formulaire #}
 							{{ form_errors(contactForm) }}
-					
+
 							{# Affichage du champ sujet #}
-							{{ form_row(contactForm.subject) }}
-					
-							{# Affichage du champ email #}
-							{{ form_row(contactForm.email) }}
-					
-							{# Affichage du champ content #}
-							{{ form_row(contactForm.content) }}
-					
-							{# Affichage du captcha avec la clé publique récupérée directement grâce à la
-							passerelle faite dans twig.yaml #}
-						<div class="form-group">
+						<div class="form-outline my-5">
+							{{ form_widget(contactForm.subject) }}
+							{% block subject_label %}
+								<label for="{{ contactForm.subject.vars.id }}" class="form-label required" style="margin-left: 0px;">
+									{{ contactForm.subject.vars.label }} <span class="text-danger">*</span></label>
+							{% endblock %}
+							{{ form_errors(contactForm.subject) }}
+						</div>
+
+						{# Affichage du champ email #}
+						<div class="form-outline my-5">
+							{{ form_widget(contactForm.email) }}
+							{% block email_label %}
+								<label for="{{ contactForm.email.vars.id }}" class="form-label required" style="margin-left: 0px;">
+									{{ contactForm.email.vars.label }} <span class="text-danger">*</span>
+								</label>
+							{% endblock %}
+							{{ form_errors(contactForm.email) }}
+						</div>
+
+						{# Affichage du champ content #}
+						<div class="form-outline my-5">
+							{{ form_widget(contactForm.content) }}
+							{% block content_label %}
+								<label for="{{ contactForm.content.vars.id }}" class="form-label required" style="margin-left: 0px;">
+									{{ contactForm.content.vars.label }} <span class="text-danger">*</span></label>
+							{% endblock %}
+							{{ form_errors(contactForm.content) }}
+						</div>
+
+						{# Affichage du captcha avec la clé publique récupérée directement grâce à la passerelle faite dans twig.yaml #}
+						<div class="mt-4 d-flex justify-content-center">
 							<div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
 						</div>
 					

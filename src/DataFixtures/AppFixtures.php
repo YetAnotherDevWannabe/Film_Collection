@@ -197,6 +197,21 @@ class AppFixtures extends Fixture
 		$manager->persist($newFilm);
 		$films[] = $newFilm;
 
+		// Star Wars: The Force Awakens
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('140607')
+			->setName('Star Wars: The Force Awakens')
+			->setYear(2015)
+			->setSynopsis('Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.')
+			->setGenre('Action, Adventure, Science Fiction, Fantasy')
+			// ->setNote(73)
+			// ->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wqnLdwVXoBjKibFRR5U3y0aDUhs.jpg')
+			// ->setTrailer('erLk59H86ww')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
 		// Zack Snyder's Justice League
 		$newFilm = new Film();
 		$newFilm
@@ -242,17 +257,32 @@ class AppFixtures extends Fixture
 		$manager->persist($newFilm);
 		$films[] = $newFilm;
 
-		// Star Wars: The Force Awakens
+		// The Hobbit: The Desolation of Smaug
 		$newFilm = new Film();
 		$newFilm
-			->setTmdbId('140607')
-			->setName('Star Wars: The Force Awakens')
-			->setYear(2015)
-			->setSynopsis('Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.')
-			->setGenre('Action, Adventure, Science Fiction, Fantasy')
-			// ->setNote(73)
-			// ->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wqnLdwVXoBjKibFRR5U3y0aDUhs.jpg')
-			// ->setTrailer('erLk59H86ww')
+			->setTmdbId('57158')
+			->setName('The Hobbit: The Desolation of Smaug')
+			->setYear(2013)
+			->setSynopsis('The Dwarves, Bilbo and Gandalf have successfully escaped the Misty Mountains, and Bilbo has gained the One Ring. They all continue their journey to get their gold back from the Dragon, Smaug.')
+			->setGenre('Fantasy, Adventure, Action')
+			->setNote(76)
+			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/xQYiXsheRCDBA39DOrmaw1aSpbk.jpg')
+			->setTrailer('fnaojlfdUbs')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
+		// Spirited Away
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('129')
+			->setName('Spirited Away')
+			->setYear(2001)
+			->setSynopsis('A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.')
+			->setGenre('Animation, Family, Fantasy')
+			->setNote(85)
+			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg')
+			->setTrailer('ByXuk9QqQkk')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
 		$films[] = $newFilm;
@@ -282,7 +312,7 @@ class AppFixtures extends Fixture
 				->setPublicationDate($faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now'))
 				->setAuthor($users[rand(0, count($users) - 1)]);
 			/// COLLECT_FILM ///
-			// for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+			for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
 			$manager->persist($newCollect);
 			$collects[] = $newCollect;
 
@@ -300,6 +330,7 @@ class AppFixtures extends Fixture
 					->setPublicationDate( $faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now') )
 					->setContent( $faker->paragraph(3) )
 					->setCollect($collects[rand(0, count($collects) - 1)])
+					->setActive(true)
 				;
 				$manager->persist($comment);
 			}

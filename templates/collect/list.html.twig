@@ -18,6 +18,24 @@
 		</div>
 
 		<div class="row">
+			<div class="col-12 col-md-6 offset-md-3 mb-4">
+
+				<form class="d-flex mx-lg-1" method="GET" action=" {{ path('collect_search') }} ">
+					<input class="form-control search-outline flex-fill" type="search" placeholder="Trouver une collection" aria-label="Search" name="q">
+					<button class="btn nav-outline-btn ms-1"
+							type="submit"
+							data-mdb-ripple-color="{{ ripple_color_white }}" {# {{ ripple_color_blue }} #}
+							data-mdb-ripple-centered="true"
+							data-mdb-ripple-duration="0ms"
+					>
+						<i class="fas fa-search"></i>
+					</button>
+				</form>
+
+			</div>
+		</div>
+
+		<div class="row">
 			<div class="col-12 col-md-8 offset-md-2">
 
 				{# Total number of collections #}
@@ -69,20 +87,22 @@
 				{# List of collections #}
 				{% if collects.getTotalItemCount != 0 %}
 				<div class="row row-cols-1 row-cols-md-2">
-					{% endif %}
+				
+				{% endif %}
 
 					{% for collect in collects %}
 
 						<div class="col-12">
 							{# each collection will be in a card #}
 							<div class="card my-3 border border-basecolor gradient-basecolor-reverse-50 txt-deco-none rounded-6">
-
+								
 								{# Collect name #}
 								<div class="card-header">
 									<a class="text-compliment fw-bold" href="{{ path('collect_detail', { slug: collect.slug }) }}">
 										<i class="fas fa-film me-2"></i>{{ collect.name }}
 									</a>
 								</div>
+
 
 								{# Collect body #}
 								<div class="card-body my-0 py-0 ms-4">

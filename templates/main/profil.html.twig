@@ -37,23 +37,25 @@
 									>
 								{% else %}
 
-									<img class="img-fluid img-thumbnail-mini me-md-3" src="{{ asset('img/default_avatar.png') }}" alt="default_avatar">
+									<img class="img-fluid img-thumbnail-mini me-3"
+										 src="{{ asset('img/default_avatar.png') }}"
+										 alt="default avatar"
+									>
 
 								{% endif %}
 
 							</div>
 						</div>
 
+						{# Link to page to chage avatar #}
 						<div class="row">
 							<div class="col-12 pt-3">
+								<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a>
+
 								{% if app.user.avatar is not null %}
 
-									<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a><br>
-									<a class="text-compliment fw-bold" href="{{ path('main_avatar_delete') }}">Supprimer l'avatar</a>
-
-								{% else %}
-
-									<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a><br>
+									<br>
+									<a class="text-compliment fw-bold" href="  {{ path('main_avatar_delete') }}">Supprimer l'avatar</a>
 
 								{% endif %}
 							</div>
@@ -68,31 +70,41 @@
 						<ul class="list-group col-12 col-md-10 p-0 my-4 d-flex">
 
 							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
-								Email : <span class="text-info fw-normal">{{ app.user.email }}</span>
+								Email : <span class="text-compliment fw-normal">{{ app.user.email }}</span>
 							</li>
 
 							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
-								Pseudonyme : <span class="text-info fw-normal">{{ app.user.nickname }}</span>
+								Pseudonyme : <span class="text-compliment fw-normal">{{ app.user.nickname }}</span>
 							</li>
 
-							<li class="list-group-item text-basecolor text-muted fw-bold py-3">Date d'inscription : <span
-										class="text-info fw-normal">{{ app.user.registrationDate|date('d/m/Y à H\\hi') }}</span></li>
+							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
+								Date d'inscription :
+								<span class="text-compliment fw-normal">{{ app.user.registrationDate|date('d/m/Y') }}</span>
+								<span class="fw-normal"> à </span>
+								<span class="text-compliment fw-normal">{{ app.user.registrationDate|date('H\\hi') }}</span>
+							</li>
 
 							<li class="list-group-item text-basecolor text-muted fw-bold py-3">Compte : <span
-										class="text-info fw-normal">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
+										class="text-compliment fw-normal">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
 
 							<li class="list-group-item text-basecolor text-muted fw-normal py-2">
 								<a class="btn btn-lg btn-warning py-1 col-8 offset-2 mb-2"
 								   href="{{ path('main_profil_edit') }}"
 								   data-mdb-ripple-duration="0ms"
 								>
-									<i class="fas fa-user-edit me-1"></i>Modifier le profil
+									<i class="fas fa-user-edit me-2"></i>Modifier le profil
+								</a>
+								<a class="btn btn-lg btn-warning py-1 col-8 offset-2 mb-2"
+								   href="{{ path('main_profil_password_edit') }}"
+								   data-mdb-ripple-duration="0ms"
+								>
+									<i class="fas fa-user-edit me-2"></i>Changer le mot de passe
 								</a>
 								<a class="btn btn-lg btn-danger py-1 col-8 offset-2"
 								   href="{{ path('main_profil_delete') }}"
 								   data-mdb-ripple-duration="0ms"
 								>
-									<i class="fas fa-user-times me-1"></i>Supprimer le compte</a>
+									<i class="fas fa-user-times me-2"></i>Supprimer le compte</a>
 							</li>
 
 						</ul>

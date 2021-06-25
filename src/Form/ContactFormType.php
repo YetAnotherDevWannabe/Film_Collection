@@ -18,23 +18,6 @@ class ContactFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			// Champ email qui servira pour répondre le cas échéant
-			->add('email', EmailType::class, [
-				'label'       => 'Email',
-				'attr'        => [
-					'rows'        => 1,
-					'placeholder' => 'Votre adresse mail, par exemple : fandefilms@exemple.com',
-				],
-				'constraints' => [
-					new Email([
-						'message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide',
-					]),
-					new NotBlank([
-						'message' => 'Merci de renseigner une adresse email',
-					]),
-				],
-			])
-
 			// Sujet pour résumer et identifier plus facilement la raison du contact
 			->add('subject', TextType::class, [
 				'label'       => 'Sujet',
@@ -55,9 +38,26 @@ class ContactFormType extends AbstractType
 				],
 			])
 
+			// Champ email qui servira pour répondre le cas échéant
+			->add('email', EmailType::class, [
+				'label'       => 'Email',
+				'attr'        => [
+					'rows'        => 1,
+					'placeholder' => 'fandefilms@exemple.com',
+				],
+				'constraints' => [
+					new Email([
+						'message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide',
+					]),
+					new NotBlank([
+						'message' => 'Merci de renseigner une adresse email',
+					]),
+				],
+			])
+
 			// Contenu du message
 			->add('content', TextareaType::class, [
-				'label'       => false,
+				'label'       => 'Laissez votre message de contact...',
 				'attr'        => [
 					'class'       => 'col-12 col-md-3',
 					'rows'        => 16,
@@ -79,9 +79,10 @@ class ContactFormType extends AbstractType
 
 			//Ajout d'un champ de type bouton de validation, envoyer est le texte du bouton
 			->add('save', SubmitType::class, [
-				'label' => 'Envoyer le message de contact',
+				'label' => 'Envoyer le message',
 				'attr'  => [
-					'class' => 'contact-btn btn-outline-primary text-center col-12 mt-3 mb-4',
+					'class' => 'btn btn-block contact-btn mx-0 my-4',
+					'data-mdb-ripple-duration' => '0ms',
 				],
 			]);
 

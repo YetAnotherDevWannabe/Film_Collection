@@ -31,19 +31,8 @@ class EditProfileFormType extends AbstractType
 					]),
 				],
 			])
-			->add('password', PasswordType::class, [
-				'label'       => 'Mot de passe',
-				'required'    => false,
-				'constraints' => [
-					new Regex([
-						'pattern' => '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ !\"\#\$%&\'\(\)*+,\-.\/:;<=>?@[\\^\]_`\{|\}~])^.{8,4096}$/',
-						'message' => 'Votre mot de passe doit contenir au moins 8 caractères dont une minuscule, une majuscule, un caractère spécial, un chiffre',
-					]),
-				],
-
-			])
 			->add('nickname', TextType::class, [
-				'label'       => "Nom d\'utilisateur",
+				'label'       => "Nom d'utilisateur",
 				'required'    => false,
 				'constraints' => [
 					new Length([
@@ -54,19 +43,43 @@ class EditProfileFormType extends AbstractType
 					]),
 				],
 			])
-			->add('save', SubmitType::class, [
-				'label' => 'Enregistrer',
-				'attr'  => [
-					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
-					'data-mdb-ripple-duration' => '0ms',
+			->add('oldPassword', PasswordType::class, [
+				'label'       => 'Vérification du mot de passe',
+				'required'    => false,
+				'constraints' => [
+					new Regex([
+						'pattern' => '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ !\"\#\$%&\'\(\)*+,\-.\/:;<=>?@[\\^\]_`\{|\}~])^.{8,4096}$/',
+						'message' => 'Votre mot de passe n\'est pas conforme',
+					]),
 				],
-			]);
+			])
+			->add('confirm', SubmitType::class,
+				[
+					'label_html' => true,
+					'label' => '<i class="fas fa-check me-2"></i>Enregistrer',
+					'attr'  => [
+						// 'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+						'class'                    => 'btn btn-block btn-success mx-0 mb-4',
+						'data-mdb-ripple-duration' => '0ms',
+					],
+				])
+			->add('cancel', SubmitType::class,
+				[
+					'label_html' => true,
+					'label'      => '<i class="fas fa-chevron-left"></i><i class="fas fa-chevron-left me-2"></i>Annuler',
+					'attr'       => [
+						'class'                    => 'btn btn-block btn-danger',
+						'data-mdb-ripple-duration' => '0ms',
+					],
+				]);
 	}
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
-
+			'attr' => [
+				'novalidate' => 'novalidate',
+			],
 		]);
 	}
 }

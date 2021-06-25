@@ -57,6 +57,7 @@ class CollectController extends AbstractController
 		return $this->render('collect/add.html.twig', ['collectForm' => $collectForm->createView(),]);
 	}
 
+
 	/**
 	 * Controller for the collect list page
 	 * @Route("/liste/", name="list")
@@ -65,7 +66,7 @@ class CollectController extends AbstractController
 	{
 		$requestedPage = $request->query->getInt('page', 1);
 		// If requested page < 1 error 404
-		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
+		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		// Create a query for paginator to get only the collections shown on the current page
@@ -76,9 +77,11 @@ class CollectController extends AbstractController
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
+		if ( ceil(( $collects->getTotalItemCount() / $collectNumberByPage )) < $requestedPage ) throw new NotFoundHttpException();
 
 		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
 	}
+
 
 	/**
 	 * Controller for the collect view page
@@ -86,82 +89,84 @@ class CollectController extends AbstractController
 	 */
 	public function detailCollect(Request $request, Collect $collect): Response
 	{
-	    //if user is not connected we call directly the view without processing the form below
-        if (!$this->getUser()){
+		//if user is not connected we call directly the view without processing the form below
+		if ( !$this->getUser() )
+		{
 
-            return $this->render('collect/detail.html.twig',
-                [
-                    'collect' => $collect,
-                ]);
-        }
+			return $this->render('collect/detail.html.twig',
+				[
+					'collect' => $collect,
+				]);
+		}
 
-        $comment = new CommentCollect();
-        $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-        $commentForm->handleRequest($request);
+		$comment = new CommentCollect();
+		$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+		$commentForm->handleRequest($request);
 
-        //Verification that the form has been sent and has no errors
-        if ($commentForm->isSubmitted() && $commentForm->isValid()){
+		//Verification that the form has been sent and has no errors
+		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
+		{
 
-            $comment
-                ->setPublicationDate(new \DateTime())
-                ->setCollect($collect)
-                ->setUser($this->getUser())
-                ->setActive(true);
+			$comment
+				->setPublicationDate(new \DateTime())
+				->setCollect($collect)
+				->setUser($this->getUser())
+				->setActive(true);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($comment);
+			$em->flush();
 
-            $this->addFlash('success', 'Commentaire publié avec succès !');
+			$this->addFlash('success', 'Commentaire publié avec succès !');
 
-            return $this->redirectToRoute('collect_detail', [
-                'slug' => $collect->getSlug()
-            ]);
+			return $this->redirectToRoute('collect_detail', [
+				'slug' => $collect->getSlug(),
+			]);
 
-        }
+		}
 
-        return $this->render('collect/detail.html.twig',
-            [
-                'collect' => $collect,
-                'commentForm' => $commentForm->createView(),
-            ]);
+		return $this->render('collect/detail.html.twig',
+			[
+				'collect'     => $collect,
+				'commentForm' => $commentForm->createView(),
+			]);
 	}
+
 
 	/**
 	 * Controller for the commentCollect deletion
 	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
-     * @Security ("is_granted('ROLE_USER')")
+	 * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
 	{
-	    $user = $this->getUser();
-        $userRole = $this->getUser()->getRoles()[0];
+		$user = $this->getUser();
+		$userRole = $this->getUser()->getRoles()[0];
 		$tokenCSRF = $request->query->get('csrf_token');
 
 		// Verify if token is valid
 		if ( !$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) )
 		{
-
 			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
+		}
+
+		else if ( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() )
+		{
+
+			// disable the comment (deletion for user)
+			$commentCollect
+				->setActive(false);
+
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+
+			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
 
 		}
 
-		else if( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() ){
-
-            // disable the comment (deletion for user)
-            $commentCollect
-                ->setActive(false);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
-
-        }
-
-        else
+		else
 		{
-            $this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
+			$this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
 		}
 
 		return $this->redirectToRoute('collect_detail', [
@@ -169,15 +174,17 @@ class CollectController extends AbstractController
 		]);
 	}
 
+
 	/**
 	 * Controller for the collect deletion
 	 * @Route("/supprimer/{id}", name="delete")
+	 * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function deleteCollect(Collect $collect, Request $request): Response
 	{
 		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
 		$user = $this->getUser();
-		if ( $user->getRoles() != 'ROLE_ADMIN' && $user->getId() != $collect->getAuthor()->getId() )
+		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ( $user && $user->getId() != $collect->getAuthor()->getId() ) ) //TODO: Suppr impossible if user author
 		{
 			return $this->redirectToRoute('collect_list');
 		}
@@ -213,15 +220,16 @@ class CollectController extends AbstractController
 			]);
 	}
 
+
 	/**
 	 * Controller for the search page
 	 * @Route("/{collect_id}/ajouter/film/{id}/", name="film_add")
 	 * @Entity("collect", expr="repository.find(collect_id)")
 	 * @Security("is_granted('ROLE_USER')")
 	 */
-	public function filmAdd(Collect $collect, Film $film, Request $request): Response //Collect $collect, Film $film,
+	public function filmAdd(Collect $collect, Film $film, Request $request): Response
 	{
-		if ($this->getUser() != $collect->getAuthor() || !$this->getUser())
+		if ( $this->getUser() != $collect->getAuthor() || !$this->getUser() )
 		{
 			return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		}
@@ -236,5 +244,50 @@ class CollectController extends AbstractController
 
 		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
+	}
+
+
+	/**
+	 * @Route("/recherche/collection", name="search")
+	 */
+	public function collectSearch(Request $request, PaginatorInterface $paginator): Response
+	{
+		// On récupère dans l'URL la donnée GET['page'] (si elle n'existe pas, la valeur par défaut sera "1")
+		$requestedPage = $request->query->getInt('page', 1);
+
+		// Si le numéro de page demandé dans l'URL est inférieur à 1, erreur 404
+		if ( $requestedPage < 1 )
+		{
+			throw new NotFoundHttpException();
+		}
+
+
+		// Récupération du manager général des entités
+		$em = $this->getDoctrine()->getManager();
+
+		// Récupération de la recherche dans le formulaire
+		$search = $request->query->get('q');
+
+		// Création de la requête
+		$query = $em
+			->createQuery('SELECT a FROM App\Entity\Collect a WHERE a.name LIKE :search ORDER BY a.publicationDate DESC')
+			->setParameters(['search' => '%' . $search . '%']);
+
+		// Get the number of collection to show on each page from services.yaml
+		$collectNumberByPage = $this->getParameter('entity_number_by_page');
+
+		// Récupération des articles
+		$collects = $paginator->paginate(
+			$query,
+			$requestedPage,
+			$collectNumberByPage
+		);
+		if ( !empty($collects->getItems()) && ceil(( $collects->getTotalItemCount() / $collectNumberByPage )) < $requestedPage ) throw new NotFoundHttpException();
+
+		$em = $this->getDoctrine()->getManager();
+		$collectRepo = $em->getRepository(Collect::class);
+
+
+		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
 	}
 }
