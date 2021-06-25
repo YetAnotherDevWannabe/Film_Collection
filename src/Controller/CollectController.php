@@ -104,10 +104,11 @@ class CollectController extends AbstractController
 		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
 		{
 
-			$comment
-				->setPublicationDate(new \DateTime())
-				->setCollect($collect)
-				->setUser($this->getUser());
+            $comment
+                ->setPublicationDate(new \DateTime())
+                ->setCollect($collect)
+                ->setUser($this->getUser())
+                ->setActive(true);
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($comment);
@@ -131,11 +132,12 @@ class CollectController extends AbstractController
 	/**
 	 * Controller for the commentCollect deletion
 	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
-	 * @Security("is_granted('ROLE_USER')")
+     * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
 	{
-		$user = $this->getUser();
+	    $user = $this->getUser();
+        $userRole = $this->getUser()->getRoles()[0];
 		$tokenCSRF = $request->query->get('csrf_token');
 
 		// Verify if token is valid
@@ -144,18 +146,22 @@ class CollectController extends AbstractController
 			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
 		}
 
-		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ($user && $user->getId() != $commentCollect->getUser()->getId()) ) //TODO: Suppr impossible if user author
-		{
-			$this->addFlash('error', 'Action impossible.');
-		}
-		else
-		{
-			// deletion of commnent
-			$em = $this->getDoctrine()->getManager();
-			$em->remove($commentCollect);
-			$em->flush();
+		else if( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() ){
 
-			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+            // disable the comment (deletion for user)
+            $commentCollect
+                ->setActive(false);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+
+        }
+
+        else
+		{
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
 		}
 
 		return $this->redirectToRoute('collect_detail', [
