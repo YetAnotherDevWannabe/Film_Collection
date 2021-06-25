@@ -61,7 +61,7 @@
 					{# If film got poster we show him else we use default_poster #}
 					{% if film.poster is not null %}
 
-						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+						<img id="poster" class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
 
 					{% else %}
 
@@ -168,4 +168,6 @@
 {% endblock %}
 
 {# Page JS #}
-{% block js %}{% endblock %}
+{% block js %}
+	<script src="{{ asset('js/script.js') }}"></script>
+{% endblock %}
