@@ -375,5 +375,4 @@ class MainController extends AbstractController
 			'contactForm' => $contactForm->createView(),
 		]);
 	}
-
 }

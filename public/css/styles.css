@@ -63,49 +63,49 @@ form input,
 .gradient-basecolor
 {
 	background : #6a85b6;
-	background : linear-gradient(to right, rgba(106, 133, 182, 0.8), rgba(186, 200, 224, 0.5));
-	background : -webkit-linear-gradient(to right, rgba(106, 133, 182, 0.8), rgba(186, 200, 224, 0.5));
-	box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);
+	background : linear-gradient(to right, rgba(106, 133, 182, 1), rgba(186, 200, 224, 1));
+	background : -webkit-linear-gradient(to right, rgba(106, 133, 182,1), rgba(186, 200, 224, 1));
+	/*box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);*/
 }
 
 .gradient-basecolor-reverse
 {
 	background : #6a85b6;
-	background : linear-gradient(to right, rgba(186, 200, 224, .5), rgba(106, 133, 182, 0.8));
-	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, .5), rgba(106, 133, 182, 0.8));
-	box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);
+	background : linear-gradient(to right, rgba(186, 200, 224, 1), rgba(106, 133, 182, 1));
+	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 1), rgba(106, 133, 182, 1));
+	/*box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);*/
 }
 
 .gradient-basecolor-reverse-50
 {
 	background : #6a85b6;
-	background : linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
-	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 0.25), rgba(106, 133, 182, 0.4));
-	box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);
+	background : linear-gradient(to right, rgba(186, 200, 224, 1), rgba(106, 133, 182, .5));
+	background : -webkit-linear-gradient(to right, rgba(186, 200, 224, 1), rgba(106, 133, 182, .5));
+	/*box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);*/
 }
 
 .gradient-compliment:hover
 {
 	background : #b39865;
-	background : linear-gradient(to right, rgba(151, 124, 74, 0.8), rgba(198, 177, 139, 0.5));
-	background : -webkit-linear-gradient(to right, rgba(151, 124, 74, 0.8), rgba(198, 177, 139, 0.5));
-	box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);
+	background : linear-gradient(to right, rgba(151, 124, 74, 1), rgba(198, 177, 139, 1));
+	background : -webkit-linear-gradient(to right, rgba(151, 124, 74, 1), rgba(198, 177, 139, 1));
+	/*box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);*/
 }
 
 .gradient-compliment-reverse:hover
 {
 	background : #b39865;
-	background : linear-gradient(to right, rgba(198, 177, 139, 0.5), rgba(151, 124, 74, 0.8));
-	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 0.5), rgba(151, 124, 74, 0.8));
-	box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);
+	background : linear-gradient(to right, rgba(198, 177, 139, 1), rgba(151, 124, 74, 1));
+	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 1), rgba(151, 124, 74, 1));
+	/*box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);*/
 }
 
 .gradient-compliment-reverse-50:hover
 {
 	background : #b39865;
-	background : linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
-	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 0.25), rgba(151, 124, 74, 0.4));
-	box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);
+	background : linear-gradient(to right, rgba(198, 177, 139, 1), rgba(151, 124, 74, 1));
+	background : -webkit-linear-gradient(to right, rgba(198, 177, 139, 0.1), rgba(151, 124, 74, 1));
+	/*box-shadow : 0 2px 5px 0 rgba(0, 0, 0, .2), 0 2px 10px 0 rgba(0, 0, 0, .1);*/
 }
 
 .text-basecolor

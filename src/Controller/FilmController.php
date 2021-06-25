@@ -143,7 +143,7 @@ class FilmController extends AbstractController
 
 		// Récupération des articles
 		$films = $paginator->paginate($query, $requestedPage, $filmNumberByPage);
-		if ( ceil(( $films->getTotalItemCount() / $filmNumberByPage )) < $requestedPage ) throw new NotFoundHttpException();
+		if ( !empty($films->getItems()) && ceil(( $films->getTotalItemCount() / $filmNumberByPage )) < $requestedPage ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		$filmRepo = $em->getRepository(Film::class);

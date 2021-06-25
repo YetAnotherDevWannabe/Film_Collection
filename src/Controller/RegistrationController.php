@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -20,7 +21,7 @@ class RegistrationController extends AbstractController
 	/**
 	 * @Route("/inscription/", name="main_register")
 	 */
-	public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, RecaptchaValidator $recaptcha, SluggerInterface $slugger): Response
+	public function register(Request $request, UserPasswordHasherInterface $passwordHasher, RecaptchaValidator $recaptcha, SluggerInterface $slugger): Response
 	{
 		//TODO: avatar ne marche pas
 		//This is the redirection of the user to homepage if he is already connected
@@ -44,37 +45,38 @@ class RegistrationController extends AbstractController
 			if ( $registrationForm->isValid() )
 			{
 
-                //We get the avatar field
-                $avatar = $registrationForm->get('avatar')->getData();
+				//We get the avatar field
+				$avatar = $registrationForm->get('avatar')->getData();
 
-                //Condition if the avatar field is used, since it is not required
-                if($avatar){
-                    $originalFileName = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFileName = $slugger->slug($originalFileName);
-                    $newFileName = $safeFileName . '-' . uniqid() . '.' . $avatar->guessExtension();
+				//Condition if the avatar field is used, since it is not required
+				if ( $avatar )
+				{
+					$originalFileName = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
+					$safeFileName = $slugger->slug($originalFileName);
+					$newFileName = $safeFileName . '-' . uniqid() . '.' . $avatar->guessExtension();
 
-                    $avatar->move(
-                        $this->getParameter('users_uploaded_avatar_dir'),
-                        $newFileName
-                    );
-                }
+					$avatar->move(
+						$this->getParameter('users_uploaded_avatar_dir'),
+						$newFileName
+					);
+				}
 
 				$user
 					->setPassword(
-						$passwordEncoder->encodePassword(
+						$passwordHasher->hashPassword(
 							$user,
 							$registrationForm->get('plainPassword')->getData()
 						)
 					)
 					->setActive(true)
 					->setRoles(["ROLE_USER"])
-					->setRegistrationDate(new DateTime())
-				;
+					->setRegistrationDate(new DateTime());
 
-                if($avatar){
-                    $user
-                    ->setAvatar($newFileName);
-                }
+				if ( $avatar )
+				{
+					$user
+						->setAvatar($newFileName);
+				}
 
 				//We use the entity manager to save the new user in the database
 				$em = $this->getDoctrine()->getManager();

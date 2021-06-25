@@ -303,7 +303,7 @@ class AppFixtures extends Fixture
 		$manager->persist($newCollect);
 		$collects[] = $newCollect;
 
-		for ($i = 0; $i < 22; $i++)
+		for ($i = 0; $i < 12; $i++)
 		{
 			// Collect'
 			$newCollect = new Collect();
@@ -312,7 +312,7 @@ class AppFixtures extends Fixture
 				->setPublicationDate($faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now'))
 				->setAuthor($users[rand(0, count($users) - 1)]);
 			/// COLLECT_FILM ///
-			// for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+			for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
 			$manager->persist($newCollect);
 			$collects[] = $newCollect;
 
