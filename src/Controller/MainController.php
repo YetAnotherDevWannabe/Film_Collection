@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Avatar;
 use App\Form\AvatarEditFormType;
 use App\Form\AvatarDeleteFormType;
+use App\Form\EditPasswordFormType;
 use App\Form\ProfilDeleteFormType;
 use App\Form\ProfilEditFormType;
 use App\Form\RegistrationFormType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -24,11 +26,14 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 
+/**
+ * @Route("/", name="main_")
+ */
 class MainController extends AbstractController
 {
 	/**
 	 * Controller for the home page
-	 * @Route("/", name="main_home")
+	 * @Route("/", name="home")
 	 */
 	public function home(): Response
 	{
@@ -43,7 +48,8 @@ class MainController extends AbstractController
 
 	/**
 	 * Controller for the profil page
-	 * @Route("/profil/", name="main_profil")
+	 * @Route("/profil/", name="profil")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
 	public function profil(): Response
 	{
@@ -52,83 +58,57 @@ class MainController extends AbstractController
 
 
 	/**
-	 * @Route("/profil/edit/", name="main_profil_edit")
+	 * @Route("/profil/edit/", name="profil_edit")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
-	public function profilEdit(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+	public function profilEdit(Request $request, UserPasswordHasherInterface $passwordHasher): Response
 	{
-
-		//This is a form to modify data
 		$editDataForm = $this->createForm(EditProfileFormType::class);
-
-		//We fill the form with  POST data obtained from $request object
 		$editDataForm->handleRequest($request);
 
-		//Conditions if the form was succesffully filled in
-		if ( $editDataForm->isSubmitted() )
+		// If Cancel button is clicked
+		if ( $editDataForm->getClickedButton() === $editDataForm->get('cancel') )
 		{
-			if ( $editDataForm->isValid() )
+			return $this->redirectToRoute('main_profil');
+		}
+
+		//Conditions if the form was successfully filled in
+		if ( $editDataForm->isSubmitted() && $editDataForm->isValid() )
+		{
+			$user = $this->getUser();
+
+			$oldPasswordField = $editDataForm->get('oldPassword');
+			if ( !$oldPasswordField->isEmpty() )
 			{
-
-				$user = $this->getUser();
-
-
-				/*$user
-					->setNickname($editDataForm->get('nickname')->getData())
-					->setEmail($editDataForm->get('email')->getData())
-					->setPassword(
-					$passwordEncoder->encodePassword(
-						$user,
-						$editDataForm->get('password')->getData()
-					)
-				)
-				;*/
-
-
-				//We test below if any field is not blank, we set the new data filled in by the current connected user
-
-				$emailField = $editDataForm->get('email');
-
-				if ( !$emailField->isEmpty() )
+				$oldPassword = $request->request->get('edit_profile_form')['oldPassword'];
+				if ( !$passwordHasher->isPasswordValid($user, $oldPassword) )
 				{
-					$user->setEmail($emailField->getData());
+					$this->addFlash('error', 'Le mot de passe n\'est pas correct');
+					return $this->redirectToRoute('main_profil');
 				}
-
-				$nicknameField = $editDataForm->get('nickname');
-
-				if ( !$nicknameField->isEmpty() )
+				else
 				{
-					$user->setNickname($nicknameField->getData());
-				}
+					//We test below if any field is not blank, we set the new data filled in by the current connected user
+					$emailField = $editDataForm->get('email');
+					if ( !$emailField->isEmpty() )
+					{
+						$user->setEmail($emailField->getData());
+					}
 
-				$passwordField = $editDataForm->get('password');
+					$nicknameField = $editDataForm->get('nickname');
+					if ( !$nicknameField->isEmpty() )
+					{
+						$user->setNickname($nicknameField->getData());
+					}
 
-				if ( !$passwordField->isEmpty() )
-				{
-					$user->setPassword(
-						$passwordEncoder->encodePassword(
-							$user,
-							$editDataForm->get('password')->getData()
-						)
-					);
+					//We use the entity manager to save changes
+					$em = $this->getDoctrine()->getManager();
+					$em->flush($user);
 
-				}
-
-                //We use the entity manager to save changes
-                $em = $this->getDoctrine()->getManager();
-
-                $em->flush();
-
-				$em->refresh($user);
-
-                //Success message when the user successfully edited at least one field
-				if(!$emailField->isEmpty() || !$nicknameField->isEmpty() || !$passwordField->isEmpty()){
 					$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+					return $this->redirectToRoute('main_login');
 				}
-
-				return $this->redirectToRoute('main_profil');
-
 			}
-
 		}
 
 		return $this->render('main/edit.html.twig', [
@@ -138,8 +118,59 @@ class MainController extends AbstractController
 
 
 	/**
+	 * @Route("/profil/password/edit/", name="profil_password_edit")
+	 * @Security("is_granted('ROLE_USER')")
+	 */
+	public function profilPasswordEdit(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+	{
+		$editPasswordForm = $this->createForm(EditPasswordFormType::class);
+		$editPasswordForm->handleRequest($request);
+
+		//Conditions if the form was successfully filled in
+		if ( $editPasswordForm->isSubmitted() && $editPasswordForm->isValid() )
+		{
+			$user = $this->getUser();
+			$oldPassword = $request->request->get('edit_profile_form_oldPassword')['oldPassword'];
+
+			if ( $passwordHasher->isPasswordValid($user, $oldPassword) )
+			{
+				$passwordField = $editPasswordForm->get('newPassword');
+				if ( !$passwordField->isEmpty() )
+				{
+					$user->setPassword(
+						$passwordHasher->hashPassword(
+							$user,
+							$editPasswordForm->get('newPassword')->getData()
+						)
+					);
+				}
+
+				//We use the entity manager to save changes
+				$em = $this->getDoctrine()->getManager();
+				$em->flush();
+				$em->refresh($user);
+
+				//Success message
+				$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
+
+				return $this->redirectToRoute('main_profil');
+			}
+			else
+			{
+				$this->addFlash('error', 'Votre ancien mot de passe est incorrect.');
+			}
+		}
+
+		return $this->render('main/edit-password.html.twig', [
+			'editPasswordForm' => $editPasswordForm->createView(),
+		]);
+	}
+
+
+	/**
 	 * Controller for the profil suppression page
-	 * @Route("/profil/delete/", name="main_profil_delete")
+	 * @Route("/profil/delete/", name="profil_delete")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
 	public function profilDelete(TokenStorageInterface $tokenStorage, Request $request): Response
 	{
@@ -148,11 +179,13 @@ class MainController extends AbstractController
 
 		$form->handleRequest($request);
 
-		if($form->getClickedButton() == $form->get('cancel')){
+		if ( $form->getClickedButton() == $form->get('cancel') )
+		{
 			return $this->redirectToRoute('main_profil');
 		}
 
-		if($form->isSubmitted() && $form->isValid()){
+		if ( $form->isSubmitted() && $form->isValid() )
+		{
 			$user = $this->getUser();
 
 			$user
@@ -170,14 +203,14 @@ class MainController extends AbstractController
 
 
 		return $this->render('main/profil-delete.html.twig', [
-			'form' => $form->createView()
+			'form' => $form->createView(),
 		]);
 	}
 
 
 	/**
-	 * @Route("/profil/edit/avatar/", name="main_avatar_edit")
-	 * 
+	 * @Route("/profil/edit/avatar/", name="avatar_edit")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
 	public function editAvatar(Request $request): Response
 	{
@@ -185,7 +218,7 @@ class MainController extends AbstractController
 		$form = $this->createForm(AvatarEditFormType::class);
 		$form->handleRequest($request);
 
-		if($form->isSubmitted() && $form->isValid())
+		if ( $form->isSubmitted() && $form->isValid() )
 		{
 
 			$avatar = $form->get('avatar')->getData();
@@ -202,7 +235,8 @@ class MainController extends AbstractController
 			{
 				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
 
-			} while( file_exists( $profilAvatarDir . $newFileName) );
+			}
+			while ( file_exists($profilAvatarDir . $newFileName) );
 
 			$connectedUser->setAvatar($newFileName);
 			$em = $this->getDoctrine()->getManager();
@@ -224,9 +258,10 @@ class MainController extends AbstractController
 
 	}
 
+
 	/**
 	 * Controller for the avatar suppression page
-	 * @Route("/profil/avatar/delete/", name="main_avatar_delete")
+	 * @Route("/profil/avatar/delete/", name="avatar_delete")
 	 * @Security("is_granted('ROLE_USER')")
 	 */
 	public function avatarDelete(Request $request): Response
@@ -234,7 +269,8 @@ class MainController extends AbstractController
 
 		$connectedUser = $this->getUser();
 
-		if($connectedUser->getAvatar() == null){
+		if ( $connectedUser->getAvatar() == null )
+		{
 			return $this->redirectToRoute('main_profil');
 		}
 
@@ -244,17 +280,19 @@ class MainController extends AbstractController
 
 		// Si le bouton annuler est cliqué
 
-		if($form->getClickedButton() == $form->get('cancel')){
+		if ( $form->getClickedButton() == $form->get('cancel') )
+		{
 			return $this->redirectToRoute('main_profil');
 		}
 
-		if($form->isSubmitted() && $form->isValid()){
+		if ( $form->isSubmitted() && $form->isValid() )
+		{
 
 			// Suppression de l'avatar
 			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
 
 			// Suppression de l'image
-			unlink( $profilAvatarDir . $connectedUser->getAvatar() );
+			unlink($profilAvatarDir . $connectedUser->getAvatar());
 
 			// Suppression du nom de l'image dans l'utilisateur
 			$connectedUser->setAvatar(null);
@@ -274,67 +312,68 @@ class MainController extends AbstractController
 
 	/**
 	 * Controller for the copyright page
-	 * @Route("/copyright/", name="main_copyright")
+	 * @Route("/copyright/", name="copyright")
 	 */
 	public function copyright(): Response
 	{
 		return $this->render('main/copyright.html.twig');
 	}
 
+
 	/**
-     * @Route("/contact/", name="contact")
-     */
+	 * @Route("/contact/", name="contact")
+	 */
+	public function contactForm(Request $request, RecaptchaValidator $recaptcha, MailerInterface $mailer): Response
+	{
+		// Création d'un nouveau formulaire et d'un nouveau message de contact
+		$contactForm = $this->createForm(ContactFormType::class);
 
-	public function contactForm(Request $request, RecaptchaValidator $recaptcha, MailerInterface $mailer ): Response
-    {
-        // Création d'un nouveau formulaire et d'un nouveau message de contact
-        $contactForm = $this->createForm(ContactFormType::class);
+		// Symfony va remplir $newContact grâce aux données du formulaire envoyé
+		$contactForm->handleRequest($request);
 
-        // Symfony va remplir $newContact grâce aux données du formulaire envoyé
-        $contactForm->handleRequest($request);
+		// Pour savoir si le formulaire a été envoyé et validé, on a accès à cette condition :
+		if ( $contactForm->isSubmitted() )
+		{
 
-        // Pour savoir si le formulaire a été envoyé et validé, on a accès à cette condition :
-        if($contactForm->isSubmitted()) {
-
-            // Si le captcha n'est pas valide, on crée une nouvelle erreur dans le formulaire
-            if(!$recaptcha->verify( $request->request->get('g-recaptcha-response', ""), $request->server->get('REMOTE_ADDR') )){
+			// Si le captcha n'est pas valide, on crée une nouvelle erreur dans le formulaire
+			if ( !$recaptcha->verify($request->request->get('g-recaptcha-response', ""), $request->server->get('REMOTE_ADDR')) )
+			{
 
 				// Ajout d'une nouvelle erreur manuellement dans le formulaire
 				$contactForm->addError(new FormError('Veuillez valider le captcha !'));
 			}
 
-			if($contactForm->isValid()){
+			if ( $contactForm->isValid() )
+			{
 
-				$email = (new TemplatedEmail())
+				$email = ( new TemplatedEmail() )
 					->from(new Address('noreply@moviebrary.fr', 'noreply'))
 					->to('contact@moviebrary.fr')
 					->subject($contactForm->get("subject")->getData())
 					->htmlTemplate('email/contact.html.twig')    // Fichier twig du mail en version html
 					->textTemplate('email/contact.txt.twig')     // Fichier twig du mail en version text
-					
+
 					->context([
 						'contact_email' => $contactForm->get("email")->getData(),
-						'content' => $contactForm->get("content")->getData()
-					])
-					
-				;
+						'content'       => $contactForm->get("content")->getData(),
+					]);
 				// Envoi du mail
 				$mailer->send($email);
 
 				// Création d'un message flash de type "success"
 				$this->addFlash('success', 'Votre message de contact a bien été envoyé, nous vous répondrons dans les meilleurs délais !');
-	
+
 				// Redirection de l'utilisateur
 				return $this->redirectToRoute('contact');
 
 			}
-					
-		}		
 
-        //Pour que la vue puisse afficher le formulaire, on doit lui envoyer le formulaire généré, avec $formContact->createView()
-	    return $this->render('main/contact.html.twig', [
-		'contactForm' => $contactForm->createView()
-	    ]);
-    }
+		}
+
+		//Pour que la vue puisse afficher le formulaire, on doit lui envoyer le formulaire généré, avec $formContact->createView()
+		return $this->render('main/contact.html.twig', [
+			'contactForm' => $contactForm->createView(),
+		]);
+	}
 
 }

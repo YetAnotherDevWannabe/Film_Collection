@@ -86,72 +86,70 @@ class CollectController extends AbstractController
 	 */
 	public function detailCollect(Request $request, Collect $collect): Response
 	{
+		//if user is not connected we call directly the view without processing the form below
+		if ( !$this->getUser() )
+		{
 
-	    //if user is not connected we call directly the view without processing the form below
-        if (!$this->getUser()){
+			return $this->render('collect/detail.html.twig',
+				[
+					'collect' => $collect,
+				]);
+		}
 
-            return $this->render('collect/detail.html.twig',
-                [
-                    'collect' => $collect,
-                ]);
-        }
+		$comment = new CommentCollect();
+		$commentForm = $this->createForm(CommentCollectFormType::class, $comment);
+		$commentForm->handleRequest($request);
 
-        $comment = new CommentCollect();
-        $commentForm = $this->createForm(CommentCollectFormType::class, $comment);
-        $commentForm->handleRequest($request);
+		//Verification that the form has been sent and has no errors
+		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
+		{
 
-        //Verification that the form has been sent and has no errors
-        if ($commentForm->isSubmitted() && $commentForm->isValid()){
+			$comment
+				->setPublicationDate(new \DateTime())
+				->setCollect($collect)
+				->setUser($this->getUser());
 
-            $comment
-                ->setPublicationDate(new \DateTime())
-                ->setCollect($collect)
-                ->setUser($this->getUser());
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($comment);
+			$em->flush();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
+			$this->addFlash('success', 'Commentaire publié avec succès !');
 
-            $this->addFlash('success', 'Commentaire publié avec succès !');
+			return $this->redirectToRoute('collect_detail', [
+				'slug' => $collect->getSlug(),
+			]);
 
-            return $this->redirectToRoute('collect_detail', [
-                'slug' => $collect->getSlug()
-            ]);
+		}
 
-        }
-
-        return $this->render('collect/detail.html.twig',
-            [
-                'collect' => $collect,
-                'commentForm' => $commentForm->createView(),
-            ]);
+		return $this->render('collect/detail.html.twig',
+			[
+				'collect'     => $collect,
+				'commentForm' => $commentForm->createView(),
+			]);
 	}
 
 	/**
 	 * Controller for the commentCollect deletion
 	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
+	 * @Security("is_granted('ROLE_USER')")
 	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
 	{
-        $user = $this->getUser();
+		$user = $this->getUser();
 		$tokenCSRF = $request->query->get('csrf_token');
 
 		// Verify if token is valid
 		if ( !$this->isCsrfTokenValid('collect_comment_delete' . $commentCollect->getId(), $tokenCSRF) )
 		{
-
 			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
-
 		}
 
-		else if( $user->getRoles() != 'ROLE_ADMIN' || $user->getId() != $commentCollect->getUser()->getId() ){
-
-            $this->addFlash('error', 'Action impossible.');
-        }
-
-        else
+		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ($user && $user->getId() != $commentCollect->getUser()->getId()) ) //TODO: Suppr impossible if user author
 		{
-
+			$this->addFlash('error', 'Action impossible.');
+		}
+		else
+		{
 			// deletion of commnent
 			$em = $this->getDoctrine()->getManager();
 			$em->remove($commentCollect);
@@ -173,7 +171,7 @@ class CollectController extends AbstractController
 	{
 		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
 		$user = $this->getUser();
-		if ( $user->getRoles() != 'ROLE_ADMIN' && $user->getId() != $collect->getAuthor()->getId() )
+		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ($user && $user->getId() != $collect->getAuthor()->getId()) ) //TODO: Suppr impossible if user author
 		{
 			return $this->redirectToRoute('collect_list');
 		}
@@ -217,7 +215,7 @@ class CollectController extends AbstractController
 	 */
 	public function filmAdd(Collect $collect, Film $film, Request $request): Response //Collect $collect, Film $film,
 	{
-		if ($this->getUser() != $collect->getAuthor() || !$this->getUser())
+		if ( $this->getUser() != $collect->getAuthor() || !$this->getUser() )
 		{
 			return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		}

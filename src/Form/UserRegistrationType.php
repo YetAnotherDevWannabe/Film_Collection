@@ -29,7 +29,6 @@ class UserRegistrationType extends AbstractType
 					new Email(['message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide.']),
 					new NotBlank(['message' => 'L\'adresse email ne peut pas être vide.']),
 				],
-				'label_attr'  => ['help' => ' : champs obligatoires',],
 			])
 			->add('plainPassword', RepeatedType::class, [
 				'mapped'          => false,
@@ -46,7 +45,6 @@ class UserRegistrationType extends AbstractType
 						'message' => 'Votre mot de passe doit contenir au moins 8 caractères a-z, A-A, 0-9 un caractère spécial',
 					]),
 				],
-
 			])
 			->add('nickname', TextType::class, [
 				'label'       => 'Nom d\'utilisateur',

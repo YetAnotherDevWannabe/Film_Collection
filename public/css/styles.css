@@ -23,7 +23,11 @@ p
 	font-family: 'Open Sans', sans-serif;
 }
 
-form textarea
+form textarea,
+#comment_collect_form_content
+form input,
+#contact_form_subject,
+#contact_form_email
 {
 	background-color: #fff !important;
 }
@@ -46,6 +50,11 @@ form textarea
 .mb-05
 {
 	margin-b: 3px !important;
+}
+
+.ripple-surface
+{
+	overflow : initial !important;
 }
 
 
@@ -185,11 +194,6 @@ form textarea
 .btn-nav
 {
 	padding : .735rem 1.75rem !important;
-}
-
-.ripple-surface
-{
-	overflow : initial !important;
 }
 
 
@@ -334,7 +338,8 @@ form textarea
 
 /* Avatar Comment Collect */
 /*------------------------*/
-.comment-profil-photo{
+.comment-profil-photo
+{
 	width: 84px;
 	height: 84px;
 }
@@ -392,7 +397,16 @@ form textarea
 .contact-btn
 {
 	color : whitesmoke;
-	border-color: whitesmoke;
+	border : .125rem solid whitesmoke !important;
+	font-weight: bold;
+}
+
+.contact-btn:hover
+{
+	color : var(--compliment);
+	border : .15rem solid whitesmoke !important;
+	background-color: whitesmoke;
+	font-weight: bold;
 }
 
 

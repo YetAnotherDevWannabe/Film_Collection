@@ -29,8 +29,8 @@ security:
             login_throttling:
                 max_attempts: 5
                 interval: '15 minutes'
-            form_login:
-                always_use_default_target_path: true
+#            form_login:
+#                always_use_default_target_path: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

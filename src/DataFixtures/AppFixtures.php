@@ -197,6 +197,21 @@ class AppFixtures extends Fixture
 		$manager->persist($newFilm);
 		$films[] = $newFilm;
 
+		// Star Wars: The Force Awakens
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('140607')
+			->setName('Star Wars: The Force Awakens')
+			->setYear(2015)
+			->setSynopsis('Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.')
+			->setGenre('Action, Adventure, Science Fiction, Fantasy')
+			// ->setNote(73)
+			// ->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wqnLdwVXoBjKibFRR5U3y0aDUhs.jpg')
+			// ->setTrailer('erLk59H86ww')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
 		// Zack Snyder's Justice League
 		$newFilm = new Film();
 		$newFilm
@@ -238,21 +253,6 @@ class AppFixtures extends Fixture
 			->setNote(77)
 			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/w5JWQo7ArqmoegKYiQbv8TeAJmg.jpg')
 			->setTrailer('FX2ukwKgWlo')
-			->setUser($userAdmin);
-		$manager->persist($newFilm);
-		$films[] = $newFilm;
-
-		// Star Wars: The Force Awakens
-		$newFilm = new Film();
-		$newFilm
-			->setTmdbId('140607')
-			->setName('Star Wars: The Force Awakens')
-			->setYear(2015)
-			->setSynopsis('Thirty years after defeating the Galactic Empire, Han Solo and his allies face a new threat from the evil Kylo Ren and his army of Stormtroopers.')
-			->setGenre('Action, Adventure, Science Fiction, Fantasy')
-			// ->setNote(73)
-			// ->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wqnLdwVXoBjKibFRR5U3y0aDUhs.jpg')
-			// ->setTrailer('erLk59H86ww')
 			->setUser($userAdmin);
 		$manager->persist($newFilm);
 		$films[] = $newFilm;
@@ -300,6 +300,7 @@ class AppFixtures extends Fixture
 					->setPublicationDate( $faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now') )
 					->setContent( $faker->paragraph(3) )
 					->setCollect($collects[rand(0, count($collects) - 1)])
+					->setActive(true)
 				;
 				$manager->persist($comment);
 			}
