@@ -257,6 +257,36 @@ class AppFixtures extends Fixture
 		$manager->persist($newFilm);
 		$films[] = $newFilm;
 
+		// The Hobbit: The Desolation of Smaug
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('57158')
+			->setName('The Hobbit: The Desolation of Smaug')
+			->setYear(2013)
+			->setSynopsis('The Dwarves, Bilbo and Gandalf have successfully escaped the Misty Mountains, and Bilbo has gained the One Ring. They all continue their journey to get their gold back from the Dragon, Smaug.')
+			->setGenre('Fantasy, Adventure, Action')
+			->setNote(76)
+			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/xQYiXsheRCDBA39DOrmaw1aSpbk.jpg')
+			->setTrailer('fnaojlfdUbs')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
+		// Spirited Away
+		$newFilm = new Film();
+		$newFilm
+			->setTmdbId('129')
+			->setName('Spirited Away')
+			->setYear(2001)
+			->setSynopsis('A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.')
+			->setGenre('Animation, Family, Fantasy')
+			->setNote(85)
+			->setPoster('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg')
+			->setTrailer('ByXuk9QqQkk')
+			->setUser($userAdmin);
+		$manager->persist($newFilm);
+		$films[] = $newFilm;
+
 
 		////////////////
 		/// COLLECTS ///
@@ -273,7 +303,7 @@ class AppFixtures extends Fixture
 		$manager->persist($newCollect);
 		$collects[] = $newCollect;
 
-		for ($i = 0; $i < 12; $i++)
+		for ($i = 0; $i < 22; $i++)
 		{
 			// Collect'
 			$newCollect = new Collect();

@@ -54,7 +54,7 @@ class FilmController extends AbstractController
 	{
 		$requestedPage = $request->query->getInt('page', 1);
 		// If requested page < 1 error 404
-		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
+		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		$query = $em->createQuery('SELECT f FROM App\Entity\Film f ORDER BY f.id ASC');
@@ -64,6 +64,7 @@ class FilmController extends AbstractController
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$films = $paginator->paginate($query, $requestedPage, $filmNumberByPage);
+		if ( ceil(($films->getTotalItemCount() / $filmNumberByPage)) < $requestedPage ) throw new NotFoundHttpException();
 
 		return $this->render('film/list.html.twig', ['films' => $films,]);
 	}
@@ -124,15 +125,11 @@ class FilmController extends AbstractController
 	 */
 	public function filmSearch(Request $request, PaginatorInterface $paginator): Response
 	{
-		// On récupère dans l'URL la donnée GET['page'] (si elle n'existe pas, la valeur par défaut sera "1")
 		$requestedPage = $request->query->getInt('page', 1);
-
 		// Si le numéro de page demandé dans l'URL est inférieur à 1, erreur 404
-		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
+		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
 
-		// Récupération du manager général des entités
 		$em = $this->getDoctrine()->getManager();
-
 		// Récupération de la recherche dans le formulaire
 		$search = $request->query->get('q');
 
@@ -141,12 +138,12 @@ class FilmController extends AbstractController
 			->createQuery('SELECT a FROM App\Entity\Film a WHERE a.name LIKE :search ORDER BY a.year DESC')
 			->setParameters(['search' => '%' . $search . '%']);
 
+		// Get the number of collection to show on each page from services.yaml
+		$filmNumberByPage = $this->getParameter('entity_number_by_page');
+
 		// Récupération des articles
-		$films = $paginator->paginate(
-			$query,
-			$requestedPage,
-			5
-		);
+		$films = $paginator->paginate($query, $requestedPage, $filmNumberByPage);
+		if ( ceil(( $films->getTotalItemCount() / $filmNumberByPage )) < $requestedPage ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		$filmRepo = $em->getRepository(Film::class);

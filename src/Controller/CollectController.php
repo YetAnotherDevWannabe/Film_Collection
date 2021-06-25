@@ -65,7 +65,7 @@ class CollectController extends AbstractController
 	{
 		$requestedPage = $request->query->getInt('page', 1);
 		// If requested page < 1 error 404
-		if ( $requestedPage < 1 /*|| $requestedPage > 1*/ ) throw new NotFoundHttpException();
+		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
 		// Create a query for paginator to get only the collections shown on the current page
@@ -76,6 +76,7 @@ class CollectController extends AbstractController
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
+		if ( ceil(( $collects->getTotalItemCount() / $collectNumberByPage )) < $requestedPage ) throw new NotFoundHttpException();
 
 		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
 	}
@@ -104,11 +105,11 @@ class CollectController extends AbstractController
 		if ( $commentForm->isSubmitted() && $commentForm->isValid() )
 		{
 
-            $comment
-                ->setPublicationDate(new \DateTime())
-                ->setCollect($collect)
-                ->setUser($this->getUser())
-                ->setActive(true);
+			$comment
+				->setPublicationDate(new \DateTime())
+				->setCollect($collect)
+				->setUser($this->getUser())
+				->setActive(true);
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($comment);
@@ -132,12 +133,12 @@ class CollectController extends AbstractController
 	/**
 	 * Controller for the commentCollect deletion
 	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
-     * @Security ("is_granted('ROLE_USER')")
+	 * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
 	{
-	    $user = $this->getUser();
-        $userRole = $this->getUser()->getRoles()[0];
+		$user = $this->getUser();
+		$userRole = $this->getUser()->getRoles()[0];
 		$tokenCSRF = $request->query->get('csrf_token');
 
 		// Verify if token is valid
@@ -146,22 +147,23 @@ class CollectController extends AbstractController
 			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
 		}
 
-		else if( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() ){
-
-            // disable the comment (deletion for user)
-            $commentCollect
-                ->setActive(false);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
-
-        }
-
-        else
+		else if ( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() )
 		{
-            $this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
+
+			// disable the comment (deletion for user)
+			$commentCollect
+				->setActive(false);
+
+			$em = $this->getDoctrine()->getManager();
+			$em->flush();
+
+			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+
+		}
+
+		else
+		{
+			$this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
 		}
 
 		return $this->redirectToRoute('collect_detail', [
@@ -177,7 +179,7 @@ class CollectController extends AbstractController
 	{
 		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
 		$user = $this->getUser();
-		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ($user && $user->getId() != $collect->getAuthor()->getId()) ) //TODO: Suppr impossible if user author
+		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ( $user && $user->getId() != $collect->getAuthor()->getId() ) ) //TODO: Suppr impossible if user author
 		{
 			return $this->redirectToRoute('collect_list');
 		}
@@ -219,7 +221,7 @@ class CollectController extends AbstractController
 	 * @Entity("collect", expr="repository.find(collect_id)")
 	 * @Security("is_granted('ROLE_USER')")
 	 */
-	public function filmAdd(Collect $collect, Film $film, Request $request): Response //Collect $collect, Film $film,
+	public function filmAdd(Collect $collect, Film $film, Request $request): Response
 	{
 		if ( $this->getUser() != $collect->getAuthor() || !$this->getUser() )
 		{
