@@ -13,8 +13,12 @@
 {# Page content #}
 {% block body %}
 
+	{% for error in contactForm.vars.errors %}
+		{{ flash_message('error', error.message) }}
+	{% endfor %}
 
-	
+	{# Error flash messages #}
+	{% include 'partials/flash-error.html.twig' %}
 
 	<div class="container-fluid">
 		<div class="row">
@@ -33,7 +37,7 @@
 							{{ form_start(contactForm) }}
 					
 							{# Affichage des erreurs générales du formulaire #}
-							{{ form_errors(contactForm) }}
+{#							{{ form_errors(contactForm) }}#}
 
 							{# Affichage du champ sujet #}
 						<div class="form-outline my-5">
