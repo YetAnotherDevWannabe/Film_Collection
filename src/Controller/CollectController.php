@@ -229,4 +229,45 @@ class CollectController extends AbstractController
 		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()] );
 		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
 	}
+
+	
+	/**
+	 * @Route("/recherche/collection", name="search")
+	 */
+	public function collectSearch(Request $request, PaginatorInterface $paginator): Response
+	{
+		   // On récupère dans l'URL la donnée GET['page'] (si elle n'existe pas, la valeur par défaut sera "1")
+		   $requestedPage = $request->query->getInt('page', 1);
+
+		   // Si le numéro de page demandé dans l'URL est inférieur à 1, erreur 404
+		   if($requestedPage < 1){
+			   throw new NotFoundHttpException();
+		   }
+   
+   
+		  // Récupération du manager général des entités
+		  $em = $this->getDoctrine()->getManager();
+   
+		  // Récupération de la recherche dans le formulaire
+		  $search = $request->query->get('q');
+   
+		  // Création de la requête
+		  $query = $em
+		   ->createQuery('SELECT a FROM App\Entity\Collect a WHERE a.name LIKE :search ORDER BY a.publicationDate DESC')
+		   ->setParameters(['search' => '%' . $search . '%'])
+	   ;
+   
+		   // Récupération des articles
+		   $collects = $paginator->paginate(
+			   $query,
+			   $requestedPage,
+			   5
+		   );
+   
+		$em = $this->getDoctrine()->getManager();
+		$collectRepo = $em->getRepository(Collect::class);
+		
+
+		return $this->render('collect/list.html.twig', [ 'collects' => $collects,]);
+	}
 }
