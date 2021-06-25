@@ -39,56 +39,73 @@ class CommentCollect
 	 */
 	private $collect;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+         	{
+         		return $this->id;
+         	}
 
 	public function getUser(): ?User
-	{
-		return $this->user;
-	}
+         	{
+         		return $this->user;
+         	}
 
 	public function setUser(?User $user): self
-	{
-		$this->user = $user;
-
-		return $this;
-	}
+         	{
+         		$this->user = $user;
+         
+         		return $this;
+         	}
 
 	public function getContent(): ?string
-	{
-		return $this->content;
-	}
+         	{
+         		return $this->content;
+         	}
 
 	public function setContent(string $content): self
-	{
-		$this->content = $content;
-
-		return $this;
-	}
+         	{
+         		$this->content = $content;
+         
+         		return $this;
+         	}
 
 	public function getPublicationDate(): ?\DateTimeInterface
-	{
-		return $this->publicationDate;
-	}
+         	{
+         		return $this->publicationDate;
+         	}
 
 	public function setPublicationDate(\DateTimeInterface $publicationDate): self
-	{
-		$this->publicationDate = $publicationDate;
-
-		return $this;
-	}
+         	{
+         		$this->publicationDate = $publicationDate;
+         
+         		return $this;
+         	}
 
 	public function getCollect(): ?Collect
-	{
-		return $this->collect;
-	}
+         	{
+         		return $this->collect;
+         	}
 
 	public function setCollect(?Collect $collect): self
-	{
-		$this->collect = $collect;
+         	{
+         		$this->collect = $collect;
+         
+         		return $this;
+         	}
 
-		return $this;
-	}
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
 }

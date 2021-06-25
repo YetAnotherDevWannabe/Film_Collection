@@ -98,7 +98,7 @@
 									</div>
 
 									{# if user is admin or author of this comment, we show the deletion btn #}
-									{% if is_granted('ROLE_ADMIN') or (app.user and app.user.id == comment.user.id) %}
+{#									{% if is_granted('ROLE_ADMIN') or (app.user and app.user.id == comment.user.id) %}#}
 
 										<div class="admin-button-article text-end">
 											<a onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')" class="text-danger"
@@ -106,7 +106,7 @@
 														class="fas fa-trash-alt me-1"></i>Supprimer</a>
 										</div>
 
-									{% endif %}
+{#									{% endif %}#}
 								</div>
 							</div>
 

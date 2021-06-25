@@ -86,7 +86,6 @@ class CollectController extends AbstractController
 	 */
 	public function detailCollect(Request $request, Collect $collect): Response
 	{
-
 	    //if user is not connected we call directly the view without processing the form below
         if (!$this->getUser()){
 
@@ -106,7 +105,8 @@ class CollectController extends AbstractController
             $comment
                 ->setPublicationDate(new \DateTime())
                 ->setCollect($collect)
-                ->setUser($this->getUser());
+                ->setUser($this->getUser())
+                ->setActive(true);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
@@ -130,10 +130,12 @@ class CollectController extends AbstractController
 	/**
 	 * Controller for the commentCollect deletion
 	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
+     * @Security ("is_granted('ROLE_USER')")
 	 */
 	public function deleteCommentCollect(CommentCollect $commentCollect, Request $request): Response
 	{
-        $user = $this->getUser();
+	    $user = $this->getUser();
+        $userRole = $this->getUser()->getRoles()[0];
 		$tokenCSRF = $request->query->get('csrf_token');
 
 		// Verify if token is valid
@@ -144,20 +146,22 @@ class CollectController extends AbstractController
 
 		}
 
-		else if( $user->getRoles() != 'ROLE_ADMIN' || $user->getId() != $commentCollect->getUser()->getId() ){
+		else if( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() ){
 
-            $this->addFlash('error', 'Action impossible.');
+            // disable the comment (deletion for user)
+            $commentCollect
+                ->setActive(false);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+
         }
 
         else
 		{
-
-			// deletion of commnent
-			$em = $this->getDoctrine()->getManager();
-			$em->remove($commentCollect);
-			$em->flush();
-
-			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
 		}
 
 		return $this->redirectToRoute('collect_detail', [
