@@ -66,7 +66,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
 		if ( !$user->getActive() )
 		{
-			// TODO: error message not showing
 			// Error flash message
 			$this->session->getFlashBag()->add('error', 'Compte désactivé');
 			// Redirect the user to the 'main_logout' page after connection
@@ -87,5 +86,3 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 		return $this->urlGenerator->generate(self::LOGIN_ROUTE);
 	}
 }
-
-// TODO: add 'novalidate' to connexion form

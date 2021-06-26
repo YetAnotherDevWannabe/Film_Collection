@@ -48,7 +48,7 @@ class EditPasswordFormType extends AbstractType
 			->add('save', SubmitType::class, [
 				'label' => 'Enregistrer',
 				'attr'  => [
-					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+					'class'                    => 'btn btn-block stop-mdb gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
 					'data-mdb-ripple-duration' => '0',
 				],
 			]);

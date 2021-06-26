@@ -58,8 +58,7 @@ class EditProfileFormType extends AbstractType
 					'label_html' => true,
 					'label' => '<i class="fas fa-check me-2"></i>Enregistrer',
 					'attr'  => [
-						// 'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
-						'class'                    => 'btn btn-block btn-success mx-0 mb-4',
+						'class'                    => 'btn btn-block stop-mdb btn-success mx-0 mb-4',
 						'data-mdb-ripple-duration' => '0',
 					],
 				])
@@ -68,7 +67,7 @@ class EditProfileFormType extends AbstractType
 					'label_html' => true,
 					'label'      => '<i class="fas fa-chevron-left"></i><i class="fas fa-chevron-left me-2"></i>Annuler',
 					'attr'       => [
-						'class'                    => 'btn btn-block btn-danger',
+						'class'                    => 'btn btn-block stop-mdb btn-danger',
 						'data-mdb-ripple-duration' => '0',
 					],
 				]);

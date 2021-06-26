@@ -6,7 +6,7 @@
 parameters:
     site_name: "Movie' brary"
     google_recaptcha_private_key: '%env(GOOGLE_RECAPTCHA_PRIVATE_KEY)%'
-    hompage_collection_number: 2
+    hompage_entity_number: 2
     entity_number_by_page: 10
     # %kernel.project_dir% = "public" folder
     users_uploaded_avatar_dir: '%kernel.project_dir%/public/img/uploads/avatar/'

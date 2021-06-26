@@ -12,27 +12,40 @@
 			background-image      : url('{{ asset('/img/cinemaa.jpg') }}');
 			background-attachment : fixed;
 			background-size       : cover;
-			height                : 150px;
+			height                : 200px;
 		}
 
 		.bg-cover-2
 		{
-			background-image      : url('{{ asset('/img/cinemab.jpg') }}');
+			background-image      : url('{{ asset('/img/cinemabb.jpg') }}');
 			background-attachment : fixed;
 			background-size       : cover;
-			height                : 150px;
+			height                : 200px;
+		}
+
+		.bg-cover-3
+		{
+			background-image      : url('{{ asset('/img/cinemacc.jpg') }}');
+			background-attachment : fixed;
+			background-size       : cover;
+			height                : 200px;
 		}
 
 		@media screen and (min-width : 768px)
 		{
 			.bg-cover
 			{
-				height          : 400px;
+				height : 400px;
 			}
 
 			.bg-cover-2
 			{
-				height          : 400px;
+				height : 400px;
+			}
+
+			.bg-cover-3
+			{
+				height : 400px;
 			}
 		}
 	</style>
@@ -41,56 +54,182 @@
 {# Page content #}
 {% block body %}
 
-<div class="container-fluid">
+	<div class="container-fluid">
 
-	{# Titre H1 #}
-	<div class="row">
-		<h1 class="col-12 text-center my-4 mt-5">Bienvenue chez <span class="ms-2 text-compliment">{{ site_name }}</span></h1>
-		<img class="mb-2" style="width: 250px; margin: auto" src="{{ asset('img/logo.png') }}" alt="logo">
-	</div>
+		{# Titre H1 #}
+		<div class="row">
+			<h1 class="col-12 text-center my-4 mt-5">Bienvenue chez <span class="ms-2 text-compliment">{{ site_name }}</span></h1>
+			<img class="mb-2" style="width: 250px; margin: auto" src="{{ asset('img/logo.png') }}" alt="logo">
+		</div>
 
-	<p class="col-8 offset-2 my-5">
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium atque eaque enim esse et eveniet excepturi expedita minus molestiae, molestias obcaecati,
-		perferendis possimus quia reprehenderit sunt. Aliquam at consequuntur dolorum esse hic in ipsa laboriosam minus temporibus ullam! Accusantium delectus dignissimos
-		dolores doloribus error facere magni maiores non nulla quos?
-	</p>
+		<p class="col-8 offset-2 my-5">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium atque eaque enim esse et eveniet excepturi expedita minus molestiae, molestias obcaecati,
+			perferendis possimus quia reprehenderit sunt. Aliquam at consequuntur dolorum esse hic in ipsa laboriosam minus temporibus ullam! Accusantium delectus dignissimos
+			dolores doloribus error facere magni maiores non nulla quos?
+		</p>
 
-	<section class="row my-5 bg-cover"></section>
+		<section class="row my-5 bg-cover"></section>
 
-	<div class="row">
-		<div class="col-12 col-md-8 offset-md-2">
+		<div class="row">
+			<div class="col-12 col-md-8 offset-md-2">
+				<div class="row">
+					<p class=" my-5">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
+						rerum
+						saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
+						quia
+						tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
+						rerum
+						saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
+						quia
+						tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
+						rerum
+						saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
+						quia
+						tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
+					</p>
+				</div>
+
+			</div>
+
+			<section class="my-5 bg-cover-2"></section>
+
 			<div class="row">
-				<p class=" my-5">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
-					rerum
-					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
-					quia
-					tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
-					rerum
-					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
-					quia
-					tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur dolorem, esse laboriosam laborum placeat praesentium ratione, recusandae
-					rerum
-					saepe sint, tenetur? Accusamus ad at explicabo quaerat quibusdam! Aliquam aut, consectetur eos est et facilis impedit laborum, natus nobis odit quasi,
-					quia
-					tempora. Aliquam dignissimos dolorem earum eveniet nemo numquam.
-				</p>
+
+				<div class="col-12 col-md-5 offset-md-1 list-group mb-5">
+					<img src="{{ asset('img/popcorn.png') }}" height="510px" style="object-fit: contain" alt="popcorn">
+				</div>
+
+				<div class="col-12 col-md-5  list-group mb-5">
+
+					{# Admin films list #}
+					{% for film in films %}
+
+						<a href="{{ path('film_detail', {slug: film.slug}) }}"
+						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+						   aria-current="true"
+						>
+							<div class="card">
+								<div class="row g-0">
+									<div class="col-4 ps-2 pt-3 ps-md-0 pt-md-0 d-lg-block" style="max-width: 150px">
+
+										{# If film got poster we show him else we use default_poster #}
+										{% if film.poster is not null %}
+											<img class="img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain" src="{{ film.poster }}"
+												 alt="{{ film.name }}" title="Poster">
+										{% else %}
+											<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain"
+												 src="{{ asset('img/default_poster.png') }}" alt="Pas d\'image" title="Poster">
+										{% endif %}
+
+									</div>
+									<div class="col-8">
+										<div class="card-body">
+											<h5 class="card-title">{{ film.name }} ({{ film.year }})</h5>
+											<p class="card-text fs-7 text-muted mb-2">{{ film.synopsis|excerpt(100) }}</p>
+											<p class="card-text"><small class="text-black-50">{{ film.genre }}</small></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+
+					{% endfor %}
+
+				</div>
+			</div>
+
+
+			<section class="my-5 bg-cover-3"></section>
+
+
+			<div class="row">
+
+				<div class="col-12 col-md-5 offset-md-1 list-group mb-5">
+
+					{% for collect in collects %}
+
+						<div class="col-12">
+							{# each collection will be in a card #}
+							<div class="card my-3 border border-basecolor gradient-basecolor-reverse-50 txt-deco-none rounded-6">
+
+								{# Collect name #}
+								<div class="card-header">
+									<a class="text-compliment fw-bold" href="{{ path('collect_detail', { slug: collect.slug }) }}">
+										<i class="fas fa-film me-2"></i>{{ collect.name }}
+									</a>
+								</div>
+
+
+								{# Collect body #}
+								<div class="card-body my-0 py-0 ms-4">
+									<div>
+
+										{# Calcul note moyenne #}
+										{% set total = 0 %}
+
+										{% for film in collect.getFilmCollect() %}
+											{% set total = total + film.note %}
+										{% endfor %}
+
+										{% if collect.getFilmCollect()|length != 0 %}
+											{% set note_med = total / (collect.getFilmCollect()|length) %}
+										{% else %}
+											{% set note_med = 'Pas de films' %}
+										{% endif %}
+
+										{# Most likely a number of film in the list and median film note #}
+										<p class="text-basecolor mb-0 mt-2">Nombre de films :
+											<span class="text-compliment">{{ collect.getFilmCollect()|length }}</span>
+										</p>
+										<p class="text-basecolor mb-0 mt-1">Note moyenne des films :
+											<span class="text-compliment">{{ note_med }}</span>
+										</p>
+										<div class="blockquote-footer my-1 py-0 ms-2">
+											<small class="text-muted">
+												publié le <strong class="text-compliment">{{ collect.publicationDate|date('d/m/Y') }}</strong>
+												à <strong class="text-compliment">{{ collect.publicationDate|date('H\\hi') }}</strong>
+												par <strong class="text-compliment">{{ collect.author.nickname }}</strong>
+											</small>
+										</div>
+									</div>
+								</div>
+
+								{# Collection footer #}
+								<div class="card-footer pt-0">
+									{# Show modify/delete buttons depending on connected user role #}
+									<p class="mb-0 mt-2 me-1">
+										{# Read collection #}
+										<a href="{{ path('collect_detail', { slug: collect.slug }) }}" class="text-primary me-1">
+											<i class="far fa-eye me-1 text-primary"></i>Voir collection
+										</a>
+									</p>
+								</div>
+
+							</div>
+
+						</div>
+
+					{% endfor %}
+				</div>
+
+				<div class="col-12 col-md-5 offset-md-1 list-group mb-5">
+					<img src="{{ asset('img/bobine_film.png') }}" height="440px" style="object-fit: contain" alt="popcorn">
+				</div>
+
 			</div>
 
 		</div>
-
-		<section class="my-5 bg-cover-2"></section>
-
 	</div>
 
-	{% endblock %}
+{% endblock %}
 
-	{# Page footer #}
-	{% block footer %}
-		{% include 'partials/footer-full.html.twig' %}
-	{% endblock %}
+{# Page footer #}
+{% block footer %}
+	{% include 'partials/footer-full.html.twig' %}
+{% endblock %}
 
-	{# Page JS #}
-	{% block js %}{% endblock %}
+{# Page JS #}
+{% block js %}{% endblock %}

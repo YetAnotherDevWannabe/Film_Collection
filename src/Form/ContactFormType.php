@@ -81,7 +81,7 @@ class ContactFormType extends AbstractType
 			->add('save', SubmitType::class, [
 				'label' => 'Envoyer le message',
 				'attr'  => [
-					'class' => 'btn btn-block contact-btn mx-0 my-4',
+					'class' => 'btn btn-block stop-mdb contact-btn mx-0 my-4',
 					'data-mdb-ripple-duration' => '0',
 				],
 			]);

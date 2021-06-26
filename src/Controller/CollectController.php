@@ -172,36 +172,36 @@ class CollectController extends AbstractController
 	 */
 	public function deleteCollect(Collect $collect, Request $request): Response
 	{
-		// Redirects to 'collect_list' if user is not either ADMIN or the AUTHOR
-		$user = $this->getUser();
-		if ( $user->getRoles()[0] != 'ROLE_ADMIN' || ( $user && $user->getId() != $collect->getAuthor()->getId() ) ) //TODO: Suppr impossible if user author
-		{
-			return $this->redirectToRoute('collect_list');
-		}
-
-		// Creates form for display
 		$collectDeleteForm = $this->createForm(CollectDeleteFormType::class);
 		$collectDeleteForm->handleRequest($request);
 
-		// If Cancel button is clicked
-		if ( $collectDeleteForm->getClickedButton() === $collectDeleteForm->get('cancel') )
+		$user = $this->getUser();
+		$userRole = $this->getUser()->getRoles()[0];
+		$tokenCSRF = $request->query->get('csrf_token');
+
+		if ( $userRole == 'ROLE_ADMIN' || $user->getId() == $collect->getAuthor()->getId() )
 		{
-			return $this->redirectToRoute('collect_list');
-		}
+			// If Cancel button is clicked
+			if ( $collectDeleteForm->getClickedButton() === $collectDeleteForm->get('cancel') )
+			{
+				return $this->redirectToRoute('collect_list');
+			}
 
-		if ( $collectDeleteForm->isSubmitted() && $collectDeleteForm->isValid() )
+			if ( $collectDeleteForm->isSubmitted() && $collectDeleteForm->isValid() )
+			{
+				// disable the comment
+				$em = $this->getDoctrine()->getManager();
+				$em->remove($collect);
+				$em->flush();
+
+				$this->addFlash('success', 'Collection supprimée.');
+				return $this->redirectToRoute('collect_list');
+			}
+		}
+		else
 		{
-
-			// Remove collect from DB
-			$em = $this->getDoctrine()->getManager();
-			$em->remove($collect);
-			$em->flush();
-
-			// Success flash message
-			$this->addFlash('success', 'Collection supprimé.');
-			return $this->redirectToRoute('collect_list');
+			$this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
 		}
-
 
 		return $this->render('collect/delete.html.twig',
 			[

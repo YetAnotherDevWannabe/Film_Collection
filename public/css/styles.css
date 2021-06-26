@@ -52,10 +52,23 @@ form input,
 	margin-b: 3px !important;
 }
 
-/*.ripple-surface*/
-/*{*/
-/*	overflow : hidden !important;*/
-/*}*/
+.ripple-surface
+{
+	overflow : hidden !important;
+
+	display: initial !important;
+	position: initial !important;
+	vertical-align: center !important;
+}
+
+.stop-mdb
+{
+	overflow : hidden !important;
+
+	display: initial !important;
+	position: initial !important;
+	vertical-align: center !important;
+}
 
 
 /* Navbar */
@@ -269,13 +282,8 @@ form input,
 }
 
 
-/* Register */
-/*----------*/
-/* TODO: Régler problème couleur bouton INSCRIPTION qui garde le gradient-basecolor-reverse */
-
-
 /* Film list */
-/*TROUVER LE RESPONSABLE
+/*
 .list-group
 {
 	padding-left : .75rem !important;

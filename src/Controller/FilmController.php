@@ -39,7 +39,6 @@ class FilmController extends AbstractController
 			$em->persist($newFilm);
 			$em->flush();
 
-			// TODO: redirect to added film page correctly
 			$this->addFlash('success', 'Le film a bien été ajouté.</br><a class="text-basecolor fs-6" href="/film/ajouter/"><i class="fas fa-plus me-1"></i>Ajouter un autre film</a>');
 			// return $this->redirectToRoute('film_list');
 			return $this->redirectToRoute('film_detail', ['slug' => $newFilm->getSlug()]);

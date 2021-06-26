@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Collect;
+use App\Entity\Film;
 use App\Entity\User;
 use App\Entity\Avatar;
 use App\Form\AvatarEditFormType;
@@ -40,7 +42,19 @@ class MainController extends AbstractController
 		// $this->addFlash('info', 'info');
 		// $this->addFlash('success', 'success');
 
-		return $this->render('main/index.html.twig');
+		$filmRepo = $this->getDoctrine()->getRepository(Film::class);
+		$CollectRepo = $this->getDoctrine()->getRepository(Collect::class);
+
+		$hompageEntityNumber = $this->getParameter('hompage_entity_number');
+
+		$films = $filmRepo->findBy([], ['id' => 'DESC'], $hompageEntityNumber);
+		$collects = $CollectRepo->findBy([], ['id' => 'DESC'], $hompageEntityNumber);
+
+		return $this->render('main/index.html.twig',
+			[
+				'films'    => $films,
+				'collects' => $collects,
+			]);
 	}
 
 
@@ -221,16 +235,14 @@ class MainController extends AbstractController
 			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
 			$connectedUser = $this->getUser();
 
-			// TODO : à décommenter quand l'upload à l'inscription fonctionnera
-			// if($connectedUser->getAvatar() != null)
-			// {
-			// 	unlink( $profilAvatarDir . $connectedUser->getAvatar() );
-			// }
+			if($connectedUser->getAvatar() != null)
+			{
+				unlink( $profilAvatarDir . $connectedUser->getAvatar() );
+			}
 
 			do
 			{
 				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
-
 			}
 			while ( file_exists($profilAvatarDir . $newFileName) );
 

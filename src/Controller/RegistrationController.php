@@ -23,7 +23,6 @@ class RegistrationController extends AbstractController
 	 */
 	public function register(Request $request, UserPasswordHasherInterface $passwordHasher, RecaptchaValidator $recaptcha, SluggerInterface $slugger): Response
 	{
-		//TODO: avatar ne marche pas
 		//This is the redirection of the user to homepage if he is already connected
 		if ( $this->getUser() )
 		{

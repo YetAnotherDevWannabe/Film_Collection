@@ -43,7 +43,6 @@
 					</ul>
 
 					{% if is_granted("ROLE_ADMIN") %}
-						{# TODO: faire lien de suppression avec CSRF #}
 						<a class="btn btn-danger mt-4 mt-md-0" href="{{ path('film_delete', { id: film.id, csrf_token: csrf_token('film_delete' ~ film.id ) }) }}">Supprimer le film</a>
 					{% endif %}
 
@@ -99,7 +98,6 @@
 								<i class="text-compliment {{ film.note >= 85 and film.note < 90 ? 'fas fa-star-half-alt' : film.note >= 90 ? 'fas fa-star' : 'far fa-star' }}"></i>
 								<i class="text-compliment {{ film.note >= 95 and film.note < 100 ? 'fas fa-star-half-alt' : film.note >= 100 ? 'fas fa-star' : 'far fa-star' }}"></i>
 
-								{# TODO: Modify the notation bar ? #}
 								<div class="progress progress-back" style="height: 8px;">
 									<div
 											class="progress-bar progress-bar-striped bg-compliment"

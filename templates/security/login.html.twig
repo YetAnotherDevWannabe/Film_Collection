@@ -10,7 +10,6 @@
 {# Page content #}
 {% block body %}
 
-	{# TODO: Use our flash error message if needed #}
 	{# If there is an error we display it using flash messages #}
 	{% if error %}
 		{{ flash_message('error', error.messageKey|trans(error.messageData, 'security')) }}

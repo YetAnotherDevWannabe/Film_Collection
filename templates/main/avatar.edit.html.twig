@@ -30,9 +30,11 @@
 				<div class="row">
 					<div class="col-12 col-md-8 offset-md-2">
 
+{#						{{ dump(avatarForm) }}#}
+{#						{{ dump(avatarForm['avatar'].vars.id) }}#}
 						{{ form_start(avatarForm) }}
 
-						<div class="my-5">
+						<div class="my-4">
 							{% block avatar_label %}
 								<label for="{{ avatarForm.avatar.vars.id }}" class="form-label required" style="margin-left: 0px;">
 									{{ avatarForm.avatar.vars.label }}
@@ -40,6 +42,21 @@
 							{% endblock %}
 							{{ form_widget(avatarForm.avatar) }}
 							{{ form_errors(avatarForm.avatar) }}
+
+							{# TODO: ajouter le support des erreurs #}
+							{#<div class="my-4">#}
+							{#	<label for="avatarForm['avatar'].vars.id"  class="form-label required" style="margin-left: 0px;">#}
+							{#		{{ avatarForm['avatar'].vars.label }}#}
+							{#	</label>#}
+							{#	<input type="file"#}
+							{#		   id="{{ avatarForm['avatar'].vars.id }}"#}
+							{#		   name="{{ avatarForm['avatar'].vars.full_name }}"#}
+							{#		   required="required"#}
+							{#		   accept="{{ avatarForm['avatar'].vars.attr['accept'] }}"#}
+							{#		   class="form-control"#}
+							{#	>#}
+							{#</div>#}
+
 						</div>
 
 						{{ form_row(avatarForm.save) }}

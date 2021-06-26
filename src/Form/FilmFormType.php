@@ -111,7 +111,6 @@ class FilmFormType extends AbstractType
 					'type'        => 'integer', // to be stored as int (0 to 100) in DB instead of fraction (0 to 1)
 					'scale'       => 0,
 					'symbol'      => false,
-					// TODO: '%' in twig page not correct height
 					'attr'        =>
 						[
 							'maxlength'   => 3,
@@ -162,7 +161,7 @@ class FilmFormType extends AbstractType
 				[
 					'label' => 'Ajouter film',
 					'attr'  => [
-						'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+						'class'                    => 'btn btn-block stop-mdb gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
 						'data-mdb-ripple-duration' => '0',
 					],
 				]
