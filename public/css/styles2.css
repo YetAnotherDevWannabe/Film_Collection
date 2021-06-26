@@ -188,6 +188,12 @@ form input,
 	border-radius    : .25rem !important;
 }
 
+.nav-drop-active
+{
+	background-color : #ebe4d6 !important;
+	border-radius    : .25rem !important;
+}
+
 .search-outline
 {
 	border : .125rem solid var(--compliment) !important;
