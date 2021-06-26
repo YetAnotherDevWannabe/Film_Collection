@@ -22,16 +22,43 @@
 			<p class="col-12 text-center mb-1">Nombre de films : {{ films.getTotalItemCount }}</p>
 		</div>
 
-		{# Show sorting & pagination if any collection is present #}
-		{% if films.getTotalItemCount > entity_number_by_page %}
-
+		{# Show sorting & pagination if any films is present #}
+		{% if films is not empty and films.getTotalItemCount > 1 %}
 			<div class="row">
-				<div class="col-12 my-1 text-center">
+				<div class="col-12 my-1 text-center tri">
+
 					<div class="d-inline-block">
-						{{ knp_pagination_render(films) }}
+
+						{# Sorting films by Date #}
+						<div class="page-item d-inline-block">
+							<p class="page-link text-basecolor my-0">
+								{{ knp_pagination_sortable(films, 'Trier par date', 'f.year') }}
+							</p>
+						</div>{#
+						Sorting films by name
+						#}
+						<div class="page-item d-inline-block">
+							<p class="page-link text-basecolor my-0">
+								{{ knp_pagination_sortable(films, 'Trier par titre', 'f.name') }}
+							</p>
+						</div>
+
 					</div>
+
 				</div>
 			</div>
+
+			{% if films.getTotalItemCount > entity_number_by_page %}
+
+				<div class="row">
+					<div class="col-12 my-1 text-center">
+						<div class="d-inline-block">
+							{{ knp_pagination_render(films) }}
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
 
 		{% endif %}
 
@@ -51,9 +78,9 @@
 
 									{# If film got poster we show him else we use default_poster #}
 									{% if film.poster is not null %}
-										<img class="img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+										<img class="img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain" src="{{ film.poster }}" alt="{{ film.name }}" title="Poster">
 									{% else %}
-										<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+										<img class="poster2 img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain" src="{{ asset('img/default_poster.png') }}" alt="Pas d\'image" title="Poster">
 									{% endif %}
 
 								</div>
@@ -74,16 +101,43 @@
 
 		</div>
 
-		{# Show sorting & pagination if any collection is present #}
-		{% if films.getTotalItemCount > entity_number_by_page %}
-
+		{# Show sorting & pagination if any films is present #}
+		{% if films is not empty and films.getTotalItemCount > 1 %}
 			<div class="row">
-				<div class="col-12 my-1 text-center">
+				<div class="col-12 my-1 text-center tri">
+
 					<div class="d-inline-block">
-						{{ knp_pagination_render(films) }}
+
+						{# Sorting films by Date #}
+						<div class="page-item d-inline-block">
+							<p class="page-link text-basecolor my-0">
+								{{ knp_pagination_sortable(films, 'Trier par date', 'f.year') }}
+							</p>
+						</div>{#
+						Sorting films by name
+						#}
+						<div class="page-item d-inline-block">
+							<p class="page-link text-basecolor my-0">
+								{{ knp_pagination_sortable(films, 'Trier par titre', 'f.name') }}
+							</p>
+						</div>
+
 					</div>
+
 				</div>
 			</div>
+
+			{% if films.getTotalItemCount > entity_number_by_page %}
+
+				<div class="row">
+					<div class="col-12 my-1 text-center">
+						<div class="d-inline-block">
+							{{ knp_pagination_render(films) }}
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
 
 		{% endif %}
 

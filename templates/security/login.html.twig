@@ -50,6 +50,10 @@
 				{# Invisible security token anti CSRF #}
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
+				{# Redirect after login #}
+				{#<input type="hidden" name="_target_path" value="{{ path('main_home') }}"/>#}
+				{#<input type="hidden" name="_failure_path" value="{{ path('main_login') }}"/>#}
+
 				{# Submit button #}
 				<input type="submit"
 					   class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4"

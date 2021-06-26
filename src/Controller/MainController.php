@@ -31,7 +31,6 @@ use Symfony\Component\Mime\Address;
 class MainController extends AbstractController
 {
 	/**
-	 * Controller for the home page
 	 * @Route("/", name="home")
 	 */
 	public function home(): Response
@@ -46,7 +45,6 @@ class MainController extends AbstractController
 
 
 	/**
-	 * Controller for the profil page
 	 * @Route("/profil/", name="profil")
 	 * @Security("is_granted('ROLE_USER')")
 	 */
@@ -105,7 +103,7 @@ class MainController extends AbstractController
 					$em->flush($user);
 
 					$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
-					return $this->redirectToRoute('main_login');
+					return $this->redirectToRoute('main_profil');
 				}
 			}
 		}
@@ -152,7 +150,8 @@ class MainController extends AbstractController
 				//Success message
 				$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
 
-				return $this->redirectToRoute('main_profil');
+				// return $this->redirectToRoute('main_profil');
+				return $this->redirectToRoute('main_logoff');
 			}
 			else
 			{
@@ -167,7 +166,6 @@ class MainController extends AbstractController
 
 
 	/**
-	 * Controller for the profil suppression page
 	 * @Route("/profil/delete/", name="profil_delete")
 	 * @Security("is_granted('ROLE_USER')")
 	 */
@@ -254,7 +252,6 @@ class MainController extends AbstractController
 
 
 	/**
-	 * Controller for the avatar suppression page
 	 * @Route("/profil/avatar/delete/", name="avatar_delete")
 	 * @Security("is_granted('ROLE_USER')")
 	 */
@@ -305,7 +302,6 @@ class MainController extends AbstractController
 
 
 	/**
-	 * Controller for the copyright page
 	 * @Route("/copyright/", name="copyright")
 	 */
 	public function copyright(): Response
@@ -317,7 +313,7 @@ class MainController extends AbstractController
 	/**
 	 * @Route("/contact/", name="contact")
 	 */
-	public function contactForm(Request $request, RecaptchaValidator $recaptcha, MailerInterface $mailer): Response
+	public function contact(Request $request, RecaptchaValidator $recaptcha, MailerInterface $mailer): Response
 	{
 		// Création d'un nouveau formulaire et d'un nouveau message de contact
 		$contactForm = $this->createForm(ContactFormType::class);

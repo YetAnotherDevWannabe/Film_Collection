@@ -63,17 +63,13 @@ class UserRegistrationType extends AbstractType
 			])
 			->add('avatar', FileType::class, [
 				'label'       => 'Avatar',
-				'attr'        => ['accept' => 'image/jpeg, image/jpg, image/png',],
+				'attr'        => ['accept' => 'image/jpeg, image/png',],
 				'constraints' => [
 					new File([
 						'maxSize'          => '1M',
-						'mimeTypes'        => [
-							'image/jpeg',
-							'image/jpg',
-							'image/png',
-						],
-						'mimeTypesMessage' => 'Votre image doit être au format JPG, PNG ou JPEG',
-						'maxSizeMessage'   => 'Ce fichier de {{ size }}{{ suffix }} est trop lourd, l\'image demandée doit faire au maximum {{ limit }}{{ suffix }}',
+						'mimeTypes'        => ['image/jpeg', 'image/png',],
+						'mimeTypesMessage' => 'Votre image doit être de type JPG ou PNG',
+						'maxSizeMessage'   => 'Fichier trop volumineux ({{ size }}{{ suffix }}). La taille maximum est {{ limit }}{{ suffix }}',
 					]),
 				],
 			])

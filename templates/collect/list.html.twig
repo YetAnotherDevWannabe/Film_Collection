@@ -116,13 +116,8 @@
 										{% if collect.getFilmCollect()|length != 0 %}
 											{% set note_med = total / (collect.getFilmCollect()|length) %}
 										{% else %}
-											{% set note_med = 'Pas de films dans la collection' %}
+											{% set note_med = 'Pas de films' %}
 										{% endif %}
-
-
-
-
-
 
 										{# Most likely a number of film in the list and median film note #}
 										<p class="text-basecolor mb-0 mt-2">Nombre de films :
@@ -183,7 +178,7 @@
 
 									<div class="col-10 text-start shadow-custom bg-white px-3 pt-2 custom-border-radius">
 										<span class="fs-5 color-tw-info">Aucune collection</span>
-										<p class="mt-2"><a class="fs-6 text-dark" href="{{ path('collect_new') }}">Créer une collection ICI</a></p>
+										<p class="mt-2  text-dark">Créer une collection <a class="fs-6 text-primary font-weight-bold" href="{{ path('collect_new') }}">ICI</a></p>
 									</div>
 
 								</div>

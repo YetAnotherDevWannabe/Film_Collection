@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Entity\CommentCollect;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -11,7 +12,8 @@ class AppExtension extends AbstractExtension
 {
 	private $session;
 
-	public function __construct(SessionInterface $session){
+	public function __construct(SessionInterface $session)
+	{
 		$this->session = $session;
 	}
 
@@ -23,6 +25,7 @@ class AppExtension extends AbstractExtension
 			// Reference: https://twig.symfony.com/doc/2.x/advanced.html#automatic-escaping
 			new TwigFilter('count_size', [$this, 'countSize']),    // Création d' un filtre appelé "count_size" dans twig, qui appellera la méthode "countSize"
 			new TwigFilter('excerpt', [$this, 'excerpt']),         // Création d' un filtre appelé "excerpt" dans twig, qui appellera la méthode "excerpt"
+			new TwigFilter('count_active_comment', [$this, 'countActiveComment']),
 		];
 	}
 
@@ -43,6 +46,19 @@ class AppExtension extends AbstractExtension
 	public function excerpt(string $value, int $maxSize): string
 	{
 		return mb_strimwidth($value, 0, $maxSize + 4, ' ...');
+	}
+
+	/**
+	 * Filtre pour compter le nombre de commentaire actif
+	 */
+	public function countActiveComment(CommentCollect $commentsCollect): int
+	{
+		$activeComment = 0;
+		foreach ( $commentsCollect as $commentCollect )
+		{
+			if ( $commentCollect->getActive() ) $activeComment++;
+		}
+		return $activeComment;
 	}
 
 

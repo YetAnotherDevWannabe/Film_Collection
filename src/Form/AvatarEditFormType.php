@@ -18,22 +18,16 @@ class AvatarEditFormType extends AbstractType
 		$builder
 			->add('avatar', FileType::class, [
 				'label'       => 'Ajouter un avatar',
-				'attr'        => [
-					'accept' => 'image/jpeg, image/png',
-				],
+				'attr'        => ['accept' => 'image/jpeg, image/png',],
 				'constraints' => [
 					new NotBlank([
 						'message' => 'Vous devez sélectionner un fichier',
 					]),
 					new File([
 						'maxSize'          => '1M',
-						'mimeTypes'        => [
-							'image/jpeg',
-							'image/png',
-						],
-						'mimeTypesMessage' => 'L\'image doit être de type jpg ou png',
-						// TODO: maxSizeMessage not getting used
-						'maxSizeMessage'   => 'Fichier trop volumineux {{ size }}{{ suffix }}, la taille maximum est {{ limit }}{{ suffix }}',
+						'mimeTypes'        => ['image/jpeg', 'image/png',],
+						'mimeTypesMessage' => 'Votre image doit être de type JPG ou PNG',
+						'maxSizeMessage'   => 'Fichier trop volumineux ({{ size }}{{ suffix }}). La taille maximum est {{ limit }}{{ suffix }}',
 					]),
 				],
 			])

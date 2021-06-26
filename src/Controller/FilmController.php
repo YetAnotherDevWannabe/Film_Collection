@@ -41,11 +41,13 @@ class FilmController extends AbstractController
 
 			// TODO: redirect to added film page correctly
 			$this->addFlash('success', 'Le film a bien été ajouté.</br><a class="text-basecolor fs-6" href="/film/ajouter/"><i class="fas fa-plus me-1"></i>Ajouter un autre film</a>');
-			return $this->redirectToRoute('film_list');
+			// return $this->redirectToRoute('film_list');
+			return $this->redirectToRoute('film_detail', ['slug' => $newFilm->getSlug()]);
 		}
 
 		return $this->render('film/add.html.twig', ['filmForm' => $filmForm->createView(),]);
 	}
+
 
 	/**
 	 * @Route("/liste/", name="list")
@@ -57,7 +59,7 @@ class FilmController extends AbstractController
 		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
 
 		$em = $this->getDoctrine()->getManager();
-		$query = $em->createQuery('SELECT f FROM App\Entity\Film f ORDER BY f.id ASC');
+		$query = $em->createQuery('SELECT f FROM App\Entity\Film f ORDER BY f.id DESC');
 
 		// Get the number of collection to show on each page from services.yaml
 		$filmNumberByPage = $this->getParameter('entity_number_by_page');
@@ -69,11 +71,13 @@ class FilmController extends AbstractController
 		return $this->render('film/list.html.twig', ['films' => $films,]);
 	}
 
+
 	/**
 	 * @Route("/detail/{slug}/", name="detail")
 	 */
 	public function filmDetail(Film $film, Request $request): Response
 	{
+		dump($request);
 		if ( $this->getUser() )
 		{
 			$userCollects = $this->getUser()->getCollects();
@@ -93,6 +97,7 @@ class FilmController extends AbstractController
 				'lastPage'     => $lastPage,
 			]);
 	}
+
 
 	/**
 	 * @Route("/supression/{id}/", name="delete")
@@ -117,8 +122,10 @@ class FilmController extends AbstractController
 			$this->addFlash('success', 'Film supprimé !');
 		}
 
-		return $this->redirectToRoute('admin_film_delete');
+		return $this->redirectToRoute('film_list');
+		// return $this->redirectToRoute($request->headers->get('referer'));
 	}
+
 
 	/**
 	 * @Route("/recherche/", name="search")

@@ -24,7 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class CollectController extends AbstractController
 {
 	/**
-	 * Page controller to create a new collection
 	 * @Route("/ajouter/", name="new")
 	 * @Security ("is_granted('ROLE_USER')")
 	 */
@@ -59,7 +58,6 @@ class CollectController extends AbstractController
 
 
 	/**
-	 * Controller for the collect list page
 	 * @Route("/liste/", name="list")
 	 */
 	public function listCollect(Request $request, PaginatorInterface $paginator): Response
@@ -77,15 +75,15 @@ class CollectController extends AbstractController
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
-		if ( ceil(( $collects->getTotalItemCount() / $collectNumberByPage )) < $requestedPage ) throw new NotFoundHttpException();
+		dump($collects);
+		 if ( ceil(( $collects->getTotalItemCount() / $collectNumberByPage )) < $requestedPage && $collects->getTotalItemCount() != 0 ) throw new NotFoundHttpException();
 
 		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
 	}
 
 
 	/**
-	 * Controller for the collect view page
-	 * @Route("/detail/{slug}/", name="detail")
+	 * @Route("/{slug}/", name="detail")
 	 */
 	public function detailCollect(Request $request, Collect $collect): Response
 	{
@@ -134,7 +132,6 @@ class CollectController extends AbstractController
 
 
 	/**
-	 * Controller for the commentCollect deletion
 	 * @Route("/commentaire/suppression/{id}", name="comment_delete")
 	 * @Security ("is_granted('ROLE_USER')")
 	 */
@@ -149,34 +146,27 @@ class CollectController extends AbstractController
 		{
 			$this->addFlash('error', 'Token de sécurité invalide, veuillez ré-essayer.');
 		}
-
 		else if ( $userRole == 'ROLE_ADMIN' || $user->getId() == $commentCollect->getUser()->getId() )
 		{
 
-			// disable the comment (deletion for user)
-			$commentCollect
-				->setActive(false);
+			// disable the comment
+			$commentCollect->setActive(false);
 
 			$em = $this->getDoctrine()->getManager();
 			$em->flush();
 
 			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
-
 		}
-
 		else
 		{
 			$this->addFlash('error', 'Vous n\'êtes pas autorisé à faire cette action.');
 		}
 
-		return $this->redirectToRoute('collect_detail', [
-			'slug' => $commentCollect->getCollect()->getSlug(),
-		]);
+		return $this->redirectToRoute('collect_detail', ['slug' => $commentCollect->getCollect()->getSlug(),]);
 	}
 
 
 	/**
-	 * Controller for the collect deletion
 	 * @Route("/supprimer/{id}", name="delete")
 	 * @Security ("is_granted('ROLE_USER')")
 	 */
@@ -222,7 +212,6 @@ class CollectController extends AbstractController
 
 
 	/**
-	 * Controller for the search page
 	 * @Route("/{collect_id}/ajouter/film/{id}/", name="film_add")
 	 * @Entity("collect", expr="repository.find(collect_id)")
 	 * @Security("is_granted('ROLE_USER')")
@@ -240,7 +229,7 @@ class CollectController extends AbstractController
 		$em->flush($collect);
 
 		// Message flash
-		$this->addFlash('success', '<span class="text-compliment">' . $film->getName() . '</span> a ajouté à la collection <span class="text-compliment">' . $collect->getName() . '</span> !');
+		$this->addFlash('success', $film->getName() . ' a été ajouté à la collection <a href="/collection/'. $collect->getName() .'" class="text-compliment">' . $collect->getName() . '</a> !');
 
 		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));

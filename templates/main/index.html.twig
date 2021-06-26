@@ -7,20 +7,34 @@
 {# Page CSS #}
 {% block css %}
 	<style>
-	.bg-cover
-	{
-		background-image      : url('{{ asset('/img/cinema.jpg') }}');
-		background-attachment : fixed;
-		background-size       : cover;
-		height                : 400px;
-	}
-	.bg-cover-2
-	{
-		background-image      : url('{{ asset('/img/DolbyCinema.jpg') }}');
-		background-attachment : fixed;
-		background-size       : cover;
-		height                : 400px;
-	}
+		.bg-cover
+		{
+			background-image      : url('{{ asset('/img/cinemaa.jpg') }}');
+			background-attachment : fixed;
+			background-size       : cover;
+			height                : 150px;
+		}
+
+		.bg-cover-2
+		{
+			background-image      : url('{{ asset('/img/cinemab.jpg') }}');
+			background-attachment : fixed;
+			background-size       : cover;
+			height                : 150px;
+		}
+
+		@media screen and (min-width : 768px)
+		{
+			.bg-cover
+			{
+				height          : 400px;
+			}
+
+			.bg-cover-2
+			{
+				height          : 400px;
+			}
+		}
 	</style>
 {% endblock %}
 
@@ -36,7 +50,9 @@
 	</div>
 
 	<p class="col-8 offset-2 my-5">
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium atque eaque enim esse et eveniet excepturi expedita minus molestiae, molestias obcaecati, perferendis possimus quia reprehenderit sunt. Aliquam at consequuntur dolorum esse hic in ipsa laboriosam minus temporibus ullam! Accusantium delectus dignissimos dolores doloribus error facere magni maiores non nulla quos?
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium atque eaque enim esse et eveniet excepturi expedita minus molestiae, molestias obcaecati,
+		perferendis possimus quia reprehenderit sunt. Aliquam at consequuntur dolorum esse hic in ipsa laboriosam minus temporibus ullam! Accusantium delectus dignissimos
+		dolores doloribus error facere magni maiores non nulla quos?
 	</p>
 
 	<section class="row my-5 bg-cover"></section>
@@ -65,7 +81,7 @@
 
 		</div>
 
-		<section class="row my-5 bg-cover-2"></section>
+		<section class="my-5 bg-cover-2"></section>
 
 	</div>
 

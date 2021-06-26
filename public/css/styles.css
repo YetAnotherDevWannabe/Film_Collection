@@ -409,7 +409,9 @@ form input,
 	font-weight: bold;
 }
 
-/*JS PROPERTY OVERLAY*/
+
+/* JS PROPERTY OVERLAY */
+/*---------------------*/
 .overlay{
 	position: fixed;
 	top: 0;
@@ -423,13 +425,16 @@ form input,
 }
 
 
-.overlay img{
+.overlay img
+{
 	width: 25%;
 }
 
-#poster{
-	cursor: pointer;
+#poster
+{
+	cursor : pointer;
 }
+
 
 /* Responsive */
 /*------------*/

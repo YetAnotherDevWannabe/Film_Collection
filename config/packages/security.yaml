@@ -31,6 +31,8 @@ security:
                 interval: '15 minutes'
 #            form_login:
 #                always_use_default_target_path: true
+#                use_referer: true
+#                failure_path: login_failure_route_name
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

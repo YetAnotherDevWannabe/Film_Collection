@@ -44,7 +44,7 @@
 
 					{% if is_granted("ROLE_ADMIN") %}
 						{# TODO: faire lien de suppression avec CSRF #}
-						<a class="btn btn-danger" href="">Supprimer le film</a>
+						<a class="btn btn-danger mt-4 mt-md-0" href="{{ path('film_delete', { id: film.id, csrf_token: csrf_token('film_delete' ~ film.id ) }) }}">Supprimer le film</a>
 					{% endif %}
 
 				</div>
@@ -61,11 +61,11 @@
 					{# If film got poster we show him else we use default_poster #}
 					{% if film.poster is not null %}
 
-						<img id="poster" class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ film.poster }}" alt="{{ film.name }}">
+						<img id="poster" class="poster img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain" src="{{ film.poster }}" alt="{{ film.name }}">
 
 					{% else %}
 
-						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
+						<img class="poster img-fluid img-thumbnail-mini border border-4 me-3" style="object-fit: contain" src="{{ asset('img/default_poster.png') }}" alt="pas d\'image">
 
 					{% endif %}
 
@@ -85,10 +85,10 @@
 						{# Note #}
 						<h5 class="mt-2">
 							Note : {{ film.note }} {% if film.note %}%{% else %}Pas de note{% endif %}
-
+							<br class="d-md-none">
 							{% if film.note %}
 
-								<i class="ms-2 text-compliment {{ film.note >= 5 and film.note < 10 ? 'fas fa-star-half-alt' : film.note >= 10 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="ms-0 ms-md-2 text-compliment {{ film.note >= 5 and film.note < 10 ? 'fas fa-star-half-alt' : film.note >= 10 ? 'fas fa-star' : 'far fa-star' }}"></i>
 								<i class="text-compliment {{ film.note >= 15 and film.note < 20 ? 'fas fa-star-half-alt' : film.note >= 20 ? 'fas fa-star' : 'far fa-star' }}"></i>
 								<i class="text-compliment {{ film.note >= 25 and film.note < 30 ? 'fas fa-star-half-alt' : film.note >= 30 ? 'fas fa-star' : 'far fa-star' }}"></i>
 								<i class="text-compliment {{ film.note >= 35 and film.note < 40 ? 'fas fa-star-half-alt' : film.note >= 40 ? 'fas fa-star' : 'far fa-star' }}"></i>
@@ -147,7 +147,7 @@
 					</div>
 				{% endif %}
 
-				<div class="col-lg-8 p-4">
+				<div class="col-lg-8 p-4 mt-4">
 					<a href="{{ app.request.headers.get('referer') }}"
 					   class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0"
 					   data-mdb-ripple-duration="0"
