@@ -82,7 +82,7 @@ class ContactFormType extends AbstractType
 				'label' => 'Envoyer le message',
 				'attr'  => [
 					'class' => 'btn btn-block contact-btn mx-0 my-4',
-					'data-mdb-ripple-duration' => '0ms',
+					'data-mdb-ripple-duration' => '0',
 				],
 			]);
 

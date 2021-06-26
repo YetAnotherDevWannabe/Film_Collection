@@ -52,10 +52,10 @@ form input,
 	margin-b: 3px !important;
 }
 
-.ripple-surface
-{
-	overflow : initial !important;
-}
+/*.ripple-surface*/
+/*{*/
+/*	overflow : hidden !important;*/
+/*}*/
 
 
 /* Navbar */

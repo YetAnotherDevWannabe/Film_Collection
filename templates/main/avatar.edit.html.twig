@@ -10,16 +10,45 @@
 {# Page content #}
 {% block body %}
 
+	{% for error in avatarForm.vars.errors %}
+		{{ flash_message('error', error.message) }}
+	{% endfor %}
+
+	{# Error flash messages #}
+	{% include 'partials/flash-error.html.twig' %}
+
 	<div class="container-fluid">
 
-	{# Titre H1 #}
-	<div class="row my-3">
-		<h1 class="col-12 text-center my-5">Modification de l'avatar</h1>
-	</div>
+		{# Titre H1 #}
+		<div class="row">
+			<h1 class="col-12 text-center my-5">Modification de l'avatar</h1>
+		</div>
 
 		<div class="row">
-			<div class="col-12 col-md-4 offset-md-4">
-				{{ form(avatarForm) }}
+			<div class="col-12 col-md-8 offset-md-2">
+
+				<div class="row">
+					<div class="col-12 col-md-8 offset-md-2">
+
+						{{ form_start(avatarForm) }}
+
+						<div class="my-5">
+							{% block avatar_label %}
+								<label for="{{ avatarForm.avatar.vars.id }}" class="form-label required" style="margin-left: 0px;">
+									{{ avatarForm.avatar.vars.label }}
+								</label>
+							{% endblock %}
+							{{ form_widget(avatarForm.avatar) }}
+							{{ form_errors(avatarForm.avatar) }}
+						</div>
+
+						{{ form_row(avatarForm.save) }}
+
+						{{ form_end(avatarForm) }}
+
+					</div>
+				</div>
+
 			</div>
 		</div>
 

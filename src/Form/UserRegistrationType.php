@@ -81,7 +81,7 @@ class UserRegistrationType extends AbstractType
 				'label' => 'Créer mon compte',
 				'attr'  => [
 					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
-					'data-mdb-ripple-duration' => '0ms',
+					'data-mdb-ripple-duration' => '0',
 				],
 			]);
 	}

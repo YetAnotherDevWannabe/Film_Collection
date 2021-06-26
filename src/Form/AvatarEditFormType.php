@@ -32,15 +32,16 @@ class AvatarEditFormType extends AbstractType
 							'image/png',
 						],
 						'mimeTypesMessage' => 'L\'image doit être de type jpg ou png',
+						// TODO: maxSizeMessage not getting used
 						'maxSizeMessage'   => 'Fichier trop volumineux {{ size }}{{ suffix }}, la taille maximum est {{ limit }}{{ suffix }}',
 					]),
 				],
 			])
-			->add('valider', SubmitType::class, [
+			->add('save', SubmitType::class, [
 				'label' => 'Valider',
 				'attr'  => [
-					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
-					'data-mdb-ripple-duration' => '0ms',
+					'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 my-5',
+					'data-mdb-ripple-duration' => '0',
 				],
 			]);
 	}

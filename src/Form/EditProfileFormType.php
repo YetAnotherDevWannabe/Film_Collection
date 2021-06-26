@@ -60,7 +60,7 @@ class EditProfileFormType extends AbstractType
 					'attr'  => [
 						// 'class'                    => 'btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
 						'class'                    => 'btn btn-block btn-success mx-0 mb-4',
-						'data-mdb-ripple-duration' => '0ms',
+						'data-mdb-ripple-duration' => '0',
 					],
 				])
 			->add('cancel', SubmitType::class,
@@ -69,7 +69,7 @@ class EditProfileFormType extends AbstractType
 					'label'      => '<i class="fas fa-chevron-left"></i><i class="fas fa-chevron-left me-2"></i>Annuler',
 					'attr'       => [
 						'class'                    => 'btn btn-block btn-danger',
-						'data-mdb-ripple-duration' => '0ms',
+						'data-mdb-ripple-duration' => '0',
 					],
 				]);
 	}

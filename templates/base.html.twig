@@ -20,6 +20,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 	{# MDBootstrap CSS file #}
+	{#<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">#}
 	<link rel="stylesheet" href="{{ asset('css/mdbootstrap.min.css') }}">
 
 	{# Custom CSS file #}
@@ -53,7 +54,7 @@
 				<div class="collapse navbar-collapse mb-0" id="navbarSupportedContent">
 
 					{# LOGO & TITLE #}
-					<a class="navbar-brand my-2 my-lg-0" href="{{ path('main_home') }}" data-mdb-ripple-duration="0ms">
+					<a class="navbar-brand my-2 my-lg-0" href="{{ path('main_home') }}" data-mdb-ripple-duration="0">
 						<img src="{{ asset('favicon.png') }}"
 							 alt="logo"
 							 loading="lazy"
@@ -68,7 +69,7 @@
 						<li class="nav-item mx-lg-1">
 							<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
 							   href="{{ path('main_home') }}"
-							   data-mdb-ripple-duration="0ms"
+							   data-mdb-ripple-duration="0"
 							>
 								<i class="fas fa-home me-2"></i>Accueil
 							</a>
@@ -84,7 +85,7 @@
 							   role="button"
 							   data-mdb-toggle="dropdown"
 							   aria-expanded="false"
-							   data-mdb-ripple-duration="0ms"
+							   data-mdb-ripple-duration="0"
 							>
 								<i class="fas fa-layer-group me-2"></i>Collections
 							</a>
@@ -122,7 +123,7 @@
 							   role="button"
 							   data-mdb-toggle="dropdown"
 							   aria-expanded="false"
-							   data-mdb-ripple-duration="0ms"
+							   data-mdb-ripple-duration="0"
 							>
 								<i class="fas fa-film me-2"></i>Films
 							</a>
@@ -163,7 +164,7 @@
 								   role="button"
 								   data-mdb-toggle="dropdown"
 								   aria-expanded="false"
-								   data-mdb-ripple-duration="0ms"
+								   data-mdb-ripple-duration="0"
 								>
 									{% if app.user.avatar is not null %}
 
@@ -220,7 +221,7 @@
 							<li class="nav-item mx-lg-1">
 								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
 								   href="{{ path('main_register') }}"
-								   data-mdb-ripple-duration="0ms"
+								   data-mdb-ripple-duration="0"
 								>
 									<i class="fas fa-user-plus me-2"></i>Inscription
 								</a>
@@ -228,7 +229,7 @@
 							<li class="nav-item mx-lg-1">
 								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
 								   href="{{ path('main_login') }}"
-								   data-mdb-ripple-duration="0ms"
+								   data-mdb-ripple-duration="0"
 								>
 									<i class="fas fa-sign-in-alt me-2"></i>Connexion
 								</a>
@@ -247,7 +248,7 @@
 						<input class="form-control search-outline flex-fill" type="search" placeholder="Trouver un film" aria-label="Search" name="q">
 						<button class="btn nav-outline-btn ms-1"
 								type="submit"
-								data-mdb-ripple-duration="0ms"
+								data-mdb-ripple-duration="0"
 						>
 							<i class="fas fa-search"></i>
 						</button>
@@ -274,14 +275,22 @@
 
 
 	{# MDBooststrap JS file #}
+	{#<script type="text/javascript" src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>#}
 	<script type="text/javascript" src="{{ asset('js/mdbootstrap.min.js') }}"></script>
 
 	{# Custom JS file/block if needed #}
 	{% block js %}{% endblock %}
 
+	{# Easter Egg #}
 	<script>
-		document.querySelector('#button').addEventListener('click', function(){
-			var KICKASSVERSION='2.0';var s = document.createElement('script');s.type='text/javascript';document.body.appendChild(s);s.src='https://hi.kickassapp.com/kickass.js';void(0);
+		document.querySelector('#button').addEventListener('click', function()
+		{
+			var KICKASSVERSION='2.0';
+			var s = document.createElement('script');
+			s.type='text/javascript';
+			document.body.appendChild(s);
+			s.src='https://hi.kickassapp.com/kickass.js';
+			void(0);
 		});
 	</script>
 </body>

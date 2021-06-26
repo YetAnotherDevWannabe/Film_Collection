@@ -299,7 +299,7 @@ class AppFixtures extends Fixture
 			->setPublicationDate($faker->dateTimeBetween('-6 weeks', '-5 weeks'))
 			->setAuthor($userAdmin);
 		/// COLLECT_FILM ///
-		for ($i = 0; $i < rand(0, 5); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+		for ($i = 0; $i < rand(3, 7); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
 		$manager->persist($newCollect);
 		$collects[] = $newCollect;
 
@@ -312,7 +312,7 @@ class AppFixtures extends Fixture
 				->setPublicationDate($faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now'))
 				->setAuthor($users[rand(0, count($users) - 1)]);
 			/// COLLECT_FILM ///
-			for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+			// for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
 			$manager->persist($newCollect);
 			$collects[] = $newCollect;
 

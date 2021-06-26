@@ -8,6 +8,7 @@ use App\Form\AvatarEditFormType;
 use App\Form\AvatarDeleteFormType;
 use App\Form\EditPasswordFormType;
 use App\Form\ProfilDeleteFormType;
+use App\Form\DisableAccountFormType;
 use App\Form\ProfilEditFormType;
 use App\Form\RegistrationFormType;
 use App\Form\ContactFormType;
@@ -19,8 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use App\Form\EditProfileFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -130,7 +129,7 @@ class MainController extends AbstractController
 		if ( $editPasswordForm->isSubmitted() && $editPasswordForm->isValid() )
 		{
 			$user = $this->getUser();
-			$oldPassword = $request->request->get('edit_profile_form_oldPassword')['oldPassword'];
+			$oldPassword = $request->request->get('edit_password_form')['oldPassword'];
 
 			if ( $passwordHasher->isPasswordValid($user, $oldPassword) )
 			{
@@ -172,39 +171,40 @@ class MainController extends AbstractController
 	 * @Route("/profil/delete/", name="profil_delete")
 	 * @Security("is_granted('ROLE_USER')")
 	 */
-	public function profilDelete(TokenStorageInterface $tokenStorage, Request $request): Response
+	public function profilDelete(Request $request): Response
 	{
 
-		$form = $this->createForm(DisableAccountFormType::class);
+		$profilDeleteForm = $this->createForm(DisableAccountFormType::class);
+		$profilDeleteForm->handleRequest($request);
 
-		$form->handleRequest($request);
-
-		if ( $form->getClickedButton() == $form->get('cancel') )
+		// If Cancel button is clicked
+		if ( $profilDeleteForm->getClickedButton() === $profilDeleteForm->get('cancel') )
 		{
 			return $this->redirectToRoute('main_profil');
 		}
 
-		if ( $form->isSubmitted() && $form->isValid() )
+		// If Confirm button is clicked
+		if ( $profilDeleteForm->isSubmitted() && $profilDeleteForm->isValid() )
 		{
-			$user = $this->getUser();
 
-			$user
-				->setActive(false);
-
+			//Get connected user
+			$connectedUser = $this->getUser();
+			// Deactivate account in DB but keep it in the DB
+			$connectedUser->setActive(false);
 			$em = $this->getDoctrine()->getManager();
 			$em->flush();
 
-			$tokenStorage->setToken();
-
+			// Success flash message
 			$this->addFlash('success', 'Votre compte a bien été supprimé');
 
-			return $this->redirectToRoute('main_home');
+			// Redirect to 'main_home' page
+			return $this->redirectToRoute('main_logout');
 		}
 
-
-		return $this->render('main/profil-delete.html.twig', [
-			'form' => $form->createView(),
-		]);
+		return $this->render('main/profil-delete.html.twig',
+			[
+				'profilDeleteForm' => $profilDeleteForm->createView(),
+			]);
 	}
 
 
@@ -214,21 +214,19 @@ class MainController extends AbstractController
 	 */
 	public function editAvatar(Request $request): Response
 	{
+		$avatarForm = $this->createForm(AvatarEditFormType::class);
+		$avatarForm->handleRequest($request);
 
-		$form = $this->createForm(AvatarEditFormType::class);
-		$form->handleRequest($request);
-
-		if ( $form->isSubmitted() && $form->isValid() )
+		if ( $avatarForm->isSubmitted() && $avatarForm->isValid() )
 		{
-
-			$avatar = $form->get('avatar')->getData();
+			$avatar = $avatarForm->get('avatar')->getData();
 			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
 			$connectedUser = $this->getUser();
 
 			// TODO : à décommenter quand l'upload à l'inscription fonctionnera
-			// if($connectedUser->getAvatar() != null){
+			// if($connectedUser->getAvatar() != null)
+			// {
 			// 	unlink( $profilAvatarDir . $connectedUser->getAvatar() );
-
 			// }
 
 			do
@@ -242,18 +240,14 @@ class MainController extends AbstractController
 			$em = $this->getDoctrine()->getManager();
 			$em->flush();
 
-			$avatar->move(
-				$profilAvatarDir,
-				$newFileName
-			);
+			$avatar->move($profilAvatarDir, $newFileName);
 
 			$this->addFlash('succès', 'Votre avatar a été modifié !');
 			return $this->redirectToRoute('main_profil');
-
 		}
 
 		return $this->render('main/avatar.edit.html.twig', [
-			'avatarForm' => $form->createView(),
+			'avatarForm' => $avatarForm->createView(),
 		]);
 
 	}
@@ -348,7 +342,7 @@ class MainController extends AbstractController
 
 				$email = ( new TemplatedEmail() )
 					->from(new Address('noreply@moviebrary.fr', 'noreply'))
-					->to('contact@moviebrary.fr')
+					->to($contactForm->get("email")->getData())
 					->subject($contactForm->get("subject")->getData())
 					->htmlTemplate('email/contact.html.twig')    // Fichier twig du mail en version html
 					->textTemplate('email/contact.txt.twig')     // Fichier twig du mail en version text
@@ -364,7 +358,7 @@ class MainController extends AbstractController
 				$this->addFlash('success', 'Votre message de contact a bien été envoyé, nous vous répondrons dans les meilleurs délais !');
 
 				// Redirection de l'utilisateur
-				return $this->redirectToRoute('contact');
+				return $this->redirectToRoute('main_contact');
 
 			}
 

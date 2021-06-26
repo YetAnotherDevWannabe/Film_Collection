@@ -34,7 +34,7 @@
 									<a class="btn btn-sm"
 									   onclick="return confirm('Voulez-vous supprimer ce film ? (action irréversible)')"
 									   href="{{ path('film_delete', { id: film.id, csrf_token: csrf_token('film_delete' ~ film.id ) }) }}"
-									   data-mdb-ripple-duration="0ms"
+									   data-mdb-ripple-duration="0"
 									>
 										Supprimer
 									</a>
@@ -49,7 +49,7 @@
 									<a class="btn btn-sm"
 									   onclick="return confirm('Voulez-vous supprimer ce film ? (action irréversible)')"
 									   href="{{ path('film_delete', { id: film.id, csrf_token: csrf_token('film_delete' ~ film.id ) }) }}"
-									   data-mdb-ripple-duration="0ms"
+									   data-mdb-ripple-duration="0"
 									>
 										delete
 									</a>

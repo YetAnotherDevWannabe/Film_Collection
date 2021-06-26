@@ -41,7 +41,7 @@ class CommentCollectFormType extends AbstractType
 				'label' => 'Publier',
 				'attr'  => [
 					'class'                    => 'gradient-basecolor-reverse gradient-compliment-reverse col-12',
-					'data-mdb-ripple-duration' => '0ms',
+					'data-mdb-ripple-duration' => '0',
 				],
 			]);
 	}
