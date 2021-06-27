@@ -192,6 +192,25 @@ form input,
 	color            : var(--secondcolor100);
 }
 
+.search-outline-comp-collect
+{
+	background-color : transparent;
+	border           : .125rem solid var(--complimain100);
+	color            : var(--complimain100);
+	box-shadow       : none;
+	text-decoration  : none;
+	padding          : .625rem 1.5625rem .5625rem;
+	font-size        : .875rem;
+	line-height      : 1.6;
+	padding          : 10px 15px;
+}
+
+.search-outline-comp-collect:hover
+{
+	background-color : var(--complimain100);
+	color            : white;
+}
+
 .dropdown-hr
 {
 	height     : 0;
