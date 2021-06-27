@@ -236,9 +236,9 @@ class MainController extends AbstractController
 			$connectedUser = $this->getUser();
 
 			// Delete old avatar
-			if($connectedUser->getAvatar() != null)
+			if ( $connectedUser->getAvatar() != null )
 			{
-				unlink( $profilAvatarDir . $connectedUser->getAvatar() );
+				unlink($profilAvatarDir . $connectedUser->getAvatar());
 			}
 
 			// Rename avatar file with new unique name
@@ -351,15 +351,16 @@ class MainController extends AbstractController
 			{
 
 				$email = ( new TemplatedEmail() )
-					->from(new Address('noreply@moviebrary.fr', 'noreply'))
-					->to($contactForm->get("email")->getData())
+					->from(new Address($contactForm->get("email")->getData(), 'noreply'))
+					->to('contact@moviebrary.fr')
 					->subject($contactForm->get("subject")->getData())
 					->htmlTemplate('email/contact.html.twig')    // Fichier twig du mail en version html
 					->textTemplate('email/contact.txt.twig')     // Fichier twig du mail en version text
 
 					->context([
-						'contact_email' => $contactForm->get("email")->getData(),
-						'content'       => $contactForm->get("content")->getData(),
+						'contact_email'   => $contactForm->get("email")->getData(),
+						'contact_subject' => $contactForm->get("subject")->getData(),
+						'content'         => $contactForm->get("content")->getData(),
 					]);
 				// Envoi du mail
 				$mailer->send($email);
@@ -367,8 +368,13 @@ class MainController extends AbstractController
 				// Création d'un message flash de type "success"
 				$this->addFlash('success', 'Votre message de contact a bien été envoyé, nous vous répondrons dans les meilleurs délais !');
 
-				// Redirection de l'utilisateur
-				return $this->redirectToRoute('main_contact');
+				// return $this->redirectToRoute('main_contact');
+				return $this->render('email/contact.html.twig',
+					[
+						'contact_email'   => $contactForm->get("email")->getData(),
+						'contact_subject' => $contactForm->get("subject")->getData(),
+						'content'         => $contactForm->get("content")->getData(),
+					]);
 
 			}
 
