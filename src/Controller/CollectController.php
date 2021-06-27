@@ -49,7 +49,7 @@ class CollectController extends AbstractController
 			$em->flush();
 
 			// Success flash message
-			$this->addFlash('success', 'Votre collection a bien été créé.');
+			$this->addFlash('success', 'Votre collection a bien été créée.');
 			return $this->redirectToRoute('collect_list');
 		}
 
