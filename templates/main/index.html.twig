@@ -58,7 +58,7 @@
 
 		{# Titre H1 #}
 		<div class="row">
-			<h1 class="col-12 text-center my-4 mt-5">Bienvenue chez <span class="ms-2 text-compliment">{{ site_name }}</span></h1>
+			<h1 class="col-12 text-center my-4 mt-5">Bienvenue chez <span class="ms-2 text-complimain">{{ site_name }}</span></h1>
 			<img class="mb-2" style="width: 250px; margin: auto" src="{{ asset('img/logo.png') }}" alt="logo">
 		</div>
 
@@ -99,7 +99,7 @@
 			<div class="row">
 
 				<div class="col-12 col-md-5 offset-md-1 list-group mb-5">
-					<img src="{{ asset('img/popcorn.png') }}" height="510px" style="object-fit: contain" alt="popcorn">
+					<img src="{{ asset('img/bobine_film.png') }}" height="510px" style="object-fit: contain" alt="popcorn">
 				</div>
 
 				<div class="col-12 col-md-5  list-group mb-5">
@@ -108,7 +108,7 @@
 					{% for film in films %}
 
 						<a href="{{ path('film_detail', {slug: film.slug}) }}"
-						   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+						   class="list-group-item list-group-item-action list-group-gradient-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
 						   aria-current="true"
 						>
 							<div class="card">
@@ -153,11 +153,11 @@
 
 						<div class="col-12">
 							{# each collection will be in a card #}
-							<div class="card my-3 border border-basecolor gradient-basecolor-reverse-50 txt-deco-none rounded-6">
+							<div class="card my-3 border border-basecolor list-group-gradient-50 txt-deco-none rounded-6">
 
 								{# Collect name #}
 								<div class="card-header">
-									<a class="text-compliment fw-bold" href="{{ path('collect_detail', { slug: collect.slug }) }}">
+									<a class="text-primary text-maincolor-hover-underline fw-bold" href="{{ path('collect_detail', { slug: collect.slug }) }}">
 										<i class="fas fa-film me-2"></i>{{ collect.name }}
 									</a>
 								</div>
@@ -176,22 +176,23 @@
 
 										{% if collect.getFilmCollect()|length != 0 %}
 											{% set note_med = total / (collect.getFilmCollect()|length) %}
+											{% set note_med = note_med|round(2) %}
 										{% else %}
 											{% set note_med = 'Pas de films' %}
 										{% endif %}
 
 										{# Most likely a number of film in the list and median film note #}
-										<p class="text-basecolor mb-0 mt-2">Nombre de films :
-											<span class="text-compliment">{{ collect.getFilmCollect()|length }}</span>
+										<p class="text-dark mb-0 mt-2">Nombre de films :
+											<span class="text-primary">{{ collect.getFilmCollect()|length }}</span>
 										</p>
-										<p class="text-basecolor mb-0 mt-1">Note moyenne des films :
-											<span class="text-compliment">{{ note_med }}</span>
+										<p class="text-dark mb-0 mt-1">Note moyenne des films :
+											<span class="text-primary">{{ note_med }}</span>
 										</p>
 										<div class="blockquote-footer my-1 py-0 ms-2">
-											<small class="text-muted">
-												publié le <strong class="text-compliment">{{ collect.publicationDate|date('d/m/Y') }}</strong>
-												à <strong class="text-compliment">{{ collect.publicationDate|date('H\\hi') }}</strong>
-												par <strong class="text-compliment">{{ collect.author.nickname }}</strong>
+											<small class="text-dark">
+												publié le <strong class="text-primary">{{ collect.publicationDate|date('d/m/Y') }}</strong>
+												à <strong class="text-primary">{{ collect.publicationDate|date('H\\hi') }}</strong>
+												par <strong class="text-primary">{{ collect.author.nickname }}</strong>
 											</small>
 										</div>
 									</div>
@@ -202,7 +203,7 @@
 									{# Show modify/delete buttons depending on connected user role #}
 									<p class="mb-0 mt-2 me-1">
 										{# Read collection #}
-										<a href="{{ path('collect_detail', { slug: collect.slug }) }}" class="text-primary me-1">
+										<a href="{{ path('collect_detail', { slug: collect.slug }) }}" class="text-primary text-maincolor-hover-underline me-1">
 											<i class="far fa-eye me-1 text-primary"></i>Voir collection
 										</a>
 									</p>
@@ -216,7 +217,7 @@
 				</div>
 
 				<div class="col-12 col-md-5 offset-md-1 list-group mb-5">
-					<img src="{{ asset('img/bobine_film.png') }}" height="440px" style="object-fit: contain" alt="popcorn">
+					<img src="{{ asset('img/popcorn.png') }}" height="440px" style="object-fit: contain" alt="popcorn">
 				</div>
 
 			</div>

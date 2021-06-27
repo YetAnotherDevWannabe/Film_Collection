@@ -76,7 +76,6 @@ class FilmController extends AbstractController
 	 */
 	public function filmDetail(Film $film, Request $request): Response
 	{
-		dump($request);
 		if ( $this->getUser() )
 		{
 			$userCollects = $this->getUser()->getCollects();

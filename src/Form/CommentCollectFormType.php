@@ -40,7 +40,7 @@ class CommentCollectFormType extends AbstractType
 			->add('save', SubmitType::class, [
 				'label' => 'Publier',
 				'attr'  => [
-					'class'                    => 'stop-mdb gradient-basecolor-reverse gradient-compliment-reverse col-12',
+					'class'                    => 'stop-mdb text-complimain text-maincolor-hover gradient-basecolor-reverse gradient-compliment-reverse col-12',
 					'data-mdb-ripple-duration' => '0',
 				],
 			]);

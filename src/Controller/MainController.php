@@ -165,7 +165,7 @@ class MainController extends AbstractController
 				$this->addFlash('success', 'Vos modifications ont bien été prises en compte');
 
 				// return $this->redirectToRoute('main_profil');
-				return $this->redirectToRoute('main_logoff');
+				return $this->redirectToRoute('main_logout');
 			}
 			else
 			{
@@ -235,11 +235,13 @@ class MainController extends AbstractController
 			$profilAvatarDir = $this->getParameter('users_uploaded_avatar_dir');
 			$connectedUser = $this->getUser();
 
+			// Delete old avatar
 			if($connectedUser->getAvatar() != null)
 			{
 				unlink( $profilAvatarDir . $connectedUser->getAvatar() );
 			}
 
+			// Rename avatar file with new unique name
 			do
 			{
 				$newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $avatar->guessExtension();
@@ -250,6 +252,7 @@ class MainController extends AbstractController
 			$em = $this->getDoctrine()->getManager();
 			$em->flush();
 
+			// Save new avatar in correct folder
 			$avatar->move($profilAvatarDir, $newFileName);
 
 			$this->addFlash('succès', 'Votre avatar a été modifié !');
@@ -259,7 +262,6 @@ class MainController extends AbstractController
 		return $this->render('main/avatar.edit.html.twig', [
 			'avatarForm' => $avatarForm->createView(),
 		]);
-
 	}
 
 

@@ -14,15 +14,15 @@
 
 		{# Titre H1 #}
 		<div class="row">
-			<h1 class="col-12 text-center my-5">Collections</h1>
+			<h1 class="col-12 text-center my-5">Collections {% if search %}({{ search }}){% endif %}</h1>
 		</div>
 
 		<div class="row">
 			<div class="col-12 col-md-6 offset-md-3 mb-4">
 
 				<form class="d-flex mx-lg-1" method="GET" action=" {{ path('collect_search') }} ">
-					<input class="form-control search-outline flex-fill" type="search" placeholder="Trouver une collection" aria-label="Search" name="q">
-					<button class="btn nav-outline-btn ms-1"
+					<input class="form-control search-outline-comp flex-fill" type="search" placeholder="Trouver une collection" aria-label="Search" name="q">
+					<button class="btn bg-comp_txt-main ms-1"
 							type="submit"
 							data-mdb-ripple-duration="0"
 					>
@@ -92,11 +92,11 @@
 
 						<div class="col-12">
 							{# each collection will be in a card #}
-							<div class="card my-3 border border-basecolor gradient-basecolor-reverse-50 txt-deco-none rounded-6">
+							<div class="card my-3 border border-basecolor list-group-gradient-50 txt-deco-none rounded-6">
 								
 								{# Collect name #}
 								<div class="card-header">
-									<a class="text-compliment fw-bold" href="{{ path('collect_detail', { slug: collect.slug }) }}">
+									<a class="text-primary fw-bold" href="{{ path('collect_detail', { slug: collect.slug }) }}">
 										<i class="fas fa-film me-2"></i>{{ collect.name }}
 									</a>
 								</div>
@@ -115,22 +115,23 @@
 
 										{% if collect.getFilmCollect()|length != 0 %}
 											{% set note_med = total / (collect.getFilmCollect()|length) %}
+											{% set note_med = note_med|round(2) %}
 										{% else %}
 											{% set note_med = 'Pas de films' %}
 										{% endif %}
 
 										{# Most likely a number of film in the list and median film note #}
-										<p class="text-basecolor mb-0 mt-2">Nombre de films :
-											<span class="text-compliment">{{ collect.getFilmCollect()|length }}</span>
+										<p class="text-dark mb-0 mt-2">Nombre de films :
+											<span class="text-primary">{{ collect.getFilmCollect()|length }}</span>
 										</p>
-										<p class="text-basecolor mb-0 mt-1">Note moyenne des films :
-											<span class="text-compliment">{{ note_med }}</span>
+										<p class="text-dark mb-0 mt-1">Note moyenne des films :
+											<span class="text-primary">{{ note_med }}</span>
 										</p>
 										<div class="blockquote-footer my-1 py-0 ms-2">
-											<small class="text-muted">
-												publié le <strong class="text-compliment">{{ collect.publicationDate|date('d/m/Y') }}</strong>
-												à <strong class="text-compliment">{{ collect.publicationDate|date('H\\hi') }}</strong>
-												par <strong class="text-compliment">{{ collect.author.nickname }}</strong>
+											<small class="text-dark">
+												publié le <strong class="text-primary">{{ collect.publicationDate|date('d/m/Y') }}</strong>
+												à <strong class="text-primary">{{ collect.publicationDate|date('H\\hi') }}</strong>
+												par <strong class="text-primary">{{ collect.author.nickname }}</strong>
 											</small>
 										</div>
 									</div>

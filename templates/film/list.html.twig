@@ -63,13 +63,13 @@
 		{% endif %}
 
 		<div class="row">
-			<div class="col-12 col-md-8 offset-md-2 list-group mb-5">
+			<div class="col-12 col-md-8 offset-md-2 list-group mb-5 p-0">
 
 				{# Admin films list #}
 				{% for film in films %}
 
 					<a href="{{ path('film_detail', {slug: film.slug}) }}"
-					   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+					   class="list-group-item list-group-item-action list-group-gradient-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
 					   aria-current="true"
 					>
 						<div class="card">

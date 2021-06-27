@@ -34,7 +34,7 @@ class CollectFormType extends AbstractType
 				[
 					'label' => 'Créer ma collection',
 					'attr'  => [
-						'class'                    => 'btn btn-block stop-mdb gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
+						'class'                    => 'btn btn-block stop-mdb text-complimain text-maincolor-hover gradient-basecolor-reverse gradient-compliment-reverse mx-0 mb-4',
 						'data-mdb-ripple-duration' => '0',
 					],
 				]

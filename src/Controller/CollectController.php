@@ -62,6 +62,7 @@ class CollectController extends AbstractController
 	 */
 	public function listCollect(Request $request, PaginatorInterface $paginator): Response
 	{
+		$search = false;
 		$requestedPage = $request->query->getInt('page', 1);
 		// If requested page < 1 error 404
 		if ( $requestedPage < 1 ) throw new NotFoundHttpException();
@@ -75,10 +76,9 @@ class CollectController extends AbstractController
 
 		// On stock dans $articles le nombre d' articles de la page demandé dans l' URL
 		$collects = $paginator->paginate($query, $requestedPage, $collectNumberByPage);
-		dump($collects);
 		 if ( ceil(( $collects->getTotalItemCount() / $collectNumberByPage )) < $requestedPage && $collects->getTotalItemCount() != 0 ) throw new NotFoundHttpException();
 
-		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
+		return $this->render('collect/list.html.twig', ['collects' => $collects, 'search' => $search]);
 	}
 
 
@@ -155,7 +155,7 @@ class CollectController extends AbstractController
 			$em = $this->getDoctrine()->getManager();
 			$em->flush();
 
-			$this->addFlash('success', 'Votre commentaire à bien été supprimer !');
+			$this->addFlash('success', 'Votre commentaire à bien été supprimé !');
 		}
 		else
 		{
@@ -223,16 +223,30 @@ class CollectController extends AbstractController
 			return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
 		}
 
-		$collect->addFilmCollect($film);
+		// Check if film already in the collection
+		$alreadyInCollect = false;
+		foreach ($collect->getFilmCollect() as $item)
+		{
+			if ( $item->getId() == $film->getId() )
+			{
+				$alreadyInCollect = true;
+			}
+		}
+		if ($alreadyInCollect)
+		{
+			$this->addFlash('info', '<span class="text-complimain font-weight-bold">'. $film->getName() . '</span> fait déjà partie de la collection <span class="text-complimain font-weight-bold">' . $collect->getName() . '</span>.');
+			return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
+		}
 
+
+		$collect->addFilmCollect($film);
 		$em = $this->getDoctrine()->getManager();
 		$em->flush($collect);
 
 		// Message flash
-		$this->addFlash('success', $film->getName() . ' a été ajouté à la collection <a href="/collection/'. $collect->getName() .'" class="text-compliment">' . $collect->getName() . '</a> !');
+		$this->addFlash('success', $film->getName() . ' a été ajouté à la collection <a href="/collection/'. $collect->getName() .'" class="text-complimain">' . $collect->getName() . '</a> !');
 
 		return $this->redirectToRoute('film_detail', ['slug' => $film->getSlug()]);
-		// return $this->redirectToRoute('film_detail', array('slug' => $film->getSlug()));
 	}
 
 
@@ -249,7 +263,6 @@ class CollectController extends AbstractController
 		{
 			throw new NotFoundHttpException();
 		}
-
 
 		// Récupération du manager général des entités
 		$em = $this->getDoctrine()->getManager();
@@ -277,6 +290,6 @@ class CollectController extends AbstractController
 		$collectRepo = $em->getRepository(Collect::class);
 
 
-		return $this->render('collect/list.html.twig', ['collects' => $collects,]);
+		return $this->render('collect/list.html.twig', ['collects' => $collects, 'search' => $search]);
 	}
 }

@@ -18,7 +18,7 @@
 				
 				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-center my-5">
 
-					<a class="btn gradient-basecolor-reverse gradient-compliment-reverse dropdown-toggle"
+					<a class="btn gradient-basecolor-reverse text-complimain gradient-compliment-reverse text-maincolor-hover dropdown-toggle"
 					   href="#"
 					   id="collectDropdownMenuLink"
 					   role="button"
@@ -34,7 +34,6 @@
 
 							{% for userCollect in userCollects %}
 
-{#								{{ dump(userCollect.getFilmCollect()) }}#}
 								{% set activeBgColor = 0 %}
 								{% for userCollectFilm in userCollect.getFilmCollect() %}
 									{% if userCollectFilm.id == film.id %}
@@ -96,16 +95,16 @@
 							<br class="d-md-none">
 							{% if film.note %}
 
-								<i class="ms-0 ms-md-2 text-compliment {{ film.note >= 5 and film.note < 10 ? 'fas fa-star-half-alt' : film.note >= 10 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 15 and film.note < 20 ? 'fas fa-star-half-alt' : film.note >= 20 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 25 and film.note < 30 ? 'fas fa-star-half-alt' : film.note >= 30 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 35 and film.note < 40 ? 'fas fa-star-half-alt' : film.note >= 40 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 45 and film.note < 50 ? 'fas fa-star-half-alt' : film.note >= 50 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 55 and film.note < 60 ? 'fas fa-star-half-alt' : film.note >= 60 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 65 and film.note < 70 ? 'fas fa-star-half-alt' : film.note >= 70 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 75 and film.note < 80 ? 'fas fa-star-half-alt' : film.note >= 80 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 85 and film.note < 90 ? 'fas fa-star-half-alt' : film.note >= 90 ? 'fas fa-star' : 'far fa-star' }}"></i>
-								<i class="text-compliment {{ film.note >= 95 and film.note < 100 ? 'fas fa-star-half-alt' : film.note >= 100 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="ms-0 ms-md-2 text-complimain {{ film.note >= 5 and film.note < 10 ? 'fas fa-star-half-alt' : film.note >= 10 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 15 and film.note < 20 ? 'fas fa-star-half-alt' : film.note >= 20 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 25 and film.note < 30 ? 'fas fa-star-half-alt' : film.note >= 30 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 35 and film.note < 40 ? 'fas fa-star-half-alt' : film.note >= 40 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 45 and film.note < 50 ? 'fas fa-star-half-alt' : film.note >= 50 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 55 and film.note < 60 ? 'fas fa-star-half-alt' : film.note >= 60 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 65 and film.note < 70 ? 'fas fa-star-half-alt' : film.note >= 70 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 75 and film.note < 80 ? 'fas fa-star-half-alt' : film.note >= 80 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 85 and film.note < 90 ? 'fas fa-star-half-alt' : film.note >= 90 ? 'fas fa-star' : 'far fa-star' }}"></i>
+								<i class="text-complimain {{ film.note >= 95 and film.note < 100 ? 'fas fa-star-half-alt' : film.note >= 100 ? 'fas fa-star' : 'far fa-star' }}"></i>
 
 								<div class="progress progress-back" style="height: 8px;">
 									<div
@@ -156,7 +155,8 @@
 
 				<div class="col-lg-8 p-4 mt-4">
 					<a href="{{ app.request.headers.get('referer') }}"
-					   class="btn btn-block gradient-basecolor-reverse gradient-compliment-reverse mx-0"
+					   class="btn btn-block gradient-basecolor-reverse text-complimain gradient-compliment-reverse text-maincolor-hover mx-0"
+
 					   data-mdb-ripple-duration="0"
 					>
 						Retour à la liste

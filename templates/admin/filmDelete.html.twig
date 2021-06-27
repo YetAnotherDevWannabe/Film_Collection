@@ -29,7 +29,7 @@
 
 							{% if loop.index % 2 != 0 %}
 
-								<li class="list-group-item list-group-gradient-reverse-50 list-group-gradient-reverse-50-hover-2 d-flex justify-content-between align-items-center">
+								<li class="list-group-item list-group-gradient-reverse-50 list-group-gradient-reverse-50-hover-2 text-black d-flex justify-content-between align-items-center">
 									{{ film.name }} ({{ film.year }})
 									<a class="btn btn-sm"
 									   onclick="return confirm('Voulez-vous supprimer ce film ? (action irréversible)')"
@@ -44,7 +44,7 @@
 
 							{% if loop.index % 2 == 0 %}
 
-								<li class="list-group-item list-group-item-light list-group-gradient-reverse-50-hover d-flex justify-content-between align-items-center">
+								<li class="list-group-item list-group-item-light list-group-gradient-reverse-50-hover-2 text-black d-flex justify-content-between align-items-center">
 									{{ film.name }} ({{ film.year }})
 									<a class="btn btn-sm"
 									   onclick="return confirm('Voulez-vous supprimer ce film ? (action irréversible)')"

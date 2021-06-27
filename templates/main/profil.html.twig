@@ -23,7 +23,7 @@
 
 
 					<!-- {# Left block #} -->
-					<div class="col-12 col-md-3 gradient-basecolor-reverse-50 px-2 py-3 text-center rounded-start">
+					<div class="col-12 col-md-3 list-group-gradient-reverse-50 px-2 py-3 text-center rounded-start">
 
 						<!-- {# Avatar #} -->
 						<div class="row">
@@ -50,12 +50,12 @@
 						{# Link to page to chage avatar #}
 						<div class="row">
 							<div class="col-12 pt-3">
-								<a class="text-compliment fw-bold" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a>
+								<a class="btn gradient-basecolor text-complimain gradient-compliment-reverse text-maincolor-hover mb-2" href="{{ path('main_avatar_edit') }}">Modifier l'avatar</a>
 
 								{% if app.user.avatar is not null %}
 
 									<br>
-									<a class="text-compliment fw-bold" href="  {{ path('main_avatar_delete') }}">Supprimer l'avatar</a>
+									<a class="btn gradient-basecolor text-complimain gradient-compliment-reverse text-maincolor-hover " href="  {{ path('main_avatar_delete') }}">Supprimer l'avatar</a>
 
 								{% endif %}
 							</div>
@@ -64,37 +64,37 @@
 
 
 					<!-- {# Right block #} -->
-					<div class="col-12 col-md-9 px-2 py-3 gradient-basecolor d-flex justify-content-center align-items-center rounded-end">
+					<div class="col-12 col-md-9 px-2 py-3 list-group-gradient-main-50 d-flex justify-content-center align-items-center rounded-end">
 
 						<!-- {# Account information #} -->
 						<ul class="list-group col-12 col-md-10 p-0 my-4 d-flex">
 
-							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
-								Email : <span class="text-compliment fw-normal">{{ app.user.email }}</span>
+							<li class="list-group-item text-dark fw-bold py-3">
+								Email : <span class="text-primary fw-normal">{{ app.user.email }}</span>
 							</li>
 
-							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
-								Pseudonyme : <span class="text-compliment fw-normal">{{ app.user.nickname }}</span>
+							<li class="list-group-item text-dark fw-bold py-3">
+								Pseudonyme : <span class="text-primary fw-normal">{{ app.user.nickname }}</span>
 							</li>
 
-							<li class="list-group-item text-basecolor text-muted fw-bold py-3">
+							<li class="list-group-item text-dark fw-bold py-3">
 								Date d'inscription :
-								<span class="text-compliment fw-normal">{{ app.user.registrationDate|date('d/m/Y') }}</span>
+								<span class="text-primary fw-normal">{{ app.user.registrationDate|date('d/m/Y') }}</span>
 								<span class="fw-normal"> à </span>
-								<span class="text-compliment fw-normal">{{ app.user.registrationDate|date('H\\hi') }}</span>
+								<span class="text-primary fw-normal">{{ app.user.registrationDate|date('H\\hi') }}</span>
 							</li>
 
-							<li class="list-group-item text-basecolor text-muted fw-bold py-3">Compte : <span
-										class="text-compliment fw-normal">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
+							<li class="list-group-item text-dark fw-bold py-3">Compte : <span
+										class="text-primary fw-normal">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }}</span></li>
 
-							<li class="list-group-item text-basecolor text-muted fw-normal py-2">
-								<a class="btn btn-lg btn-warning py-1 col-8 offset-2 mb-2"
+							<li class="list-group-item text-dark fw-normal py-2">
+								<a class="btn btn-lg gradient-basecolor text-complimain gradient-compliment-reverse text-maincolor-hover py-1 col-8 offset-2 mb-2"
 								   href="{{ path('main_profil_edit') }}"
 								   data-mdb-ripple-duration="0"
 								>
 									<i class="fas fa-user-edit me-2"></i>Modifier le profil
 								</a>
-								<a class="btn btn-lg btn-warning py-1 col-8 offset-2 mb-2"
+								<a class="btn btn-lg gradient-basecolor text-complimain gradient-compliment-reverse text-maincolor-hover py-1 col-8 offset-2 mb-2"
 								   href="{{ path('main_profil_password_edit') }}"
 								   data-mdb-ripple-duration="0"
 								>

@@ -19,13 +19,13 @@
 		</div>
 
 		<div class="row">
-			<div class="col-12 col-md-8 offset-md-2 list-group">
+			<div class="col-12 col-md-8 offset-md-2 list-group p-0">
 
 				{# Admin films list #}
 				{% for film in collect.getFilmCollect() %}
 
 					<a href="{{ path('film_detail', {slug: film.slug}) }}"
-					   class="list-group-item list-group-item-action gradient-basecolor-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
+					   class="list-group-item list-group-item-action list-group-gradient-reverse-50 list-group-gradient-reverse-50-hover-2 p-3"
 					   aria-current="true"
 					>
 						<div class="card">
@@ -86,9 +86,9 @@
 		{# Bloc des commentaires #}
 		<div class="row">
 
-			<div class="col-12 col-md-8 offset-md-2">
+			<div class="col-12 col-md-8 offset-md-2 p-0">
 
-				<div class="gradient-basecolor-reverse-50 rounded p-4 my-5">
+				<div class="list-group-gradient-reverse-50 rounded p-4 my-5">
 
 					{# Calcul note moyenne #}
 					{% set total = 0 %}

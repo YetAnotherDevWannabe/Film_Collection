@@ -6,7 +6,7 @@ use App\Entity\Collect;
 use App\Entity\CommentCollect;
 use App\Entity\Film;
 use App\Entity\User;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -14,12 +14,12 @@ use Faker;
 class AppFixtures extends Fixture
 {
 	// Nécessaire pour récupérer l' encodeur dans une variable
-	private $encoder;
+	private $hasher;
 
 	// Nécessaire pour utiliser un service (ici UserPasswordEncoderInterface) depuis un autre service
-	public function __construct(UserPasswordEncoderInterface $encoder)
+	public function __construct(UserPasswordHasherInterface $hasher)
 	{
-		$this->encoder = $encoder;
+		$this->hasher = $hasher;
 	}
 
 
@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
 		$userAdmin
 			->setEmail('admin@email.com')
 			->setRoles(['ROLE_ADMIN'])
-			->setPassword($this->encoder->encodePassword($userAdmin, 'Aa111111!'))
+			->setPassword($this->hasher->hashPassword($userAdmin, 'Aa111111!'))
 			->setNickname('admin')
 			->setRegistrationDate($faker->dateTimeBetween('-6 weeks', '-5 weeks'))
 			->setActive(true)
@@ -49,7 +49,7 @@ class AppFixtures extends Fixture
 		$user
 			->setEmail('user@email.com')
 			->setRoles(['ROLE_USER'])
-			->setPassword($this->encoder->encodePassword($user, 'Uu111111!'))
+			->setPassword($this->hasher->hashPassword($user, 'Uu111111!'))
 			->setNickname('user')
 			->setRegistrationDate($faker->dateTimeBetween('-4 weeks', 'now'))
 			->setActive(true)
@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
 			$user
 				->setEmail($faker->unique()->email)
 				->setRoles(['ROLE_USER'])
-				->setPassword($this->encoder->encodePassword($user, 'Aa111111!'))
+				->setPassword($this->hasher->hashPassword($user, 'Aa111111!'))
 				->setNickname($faker->unique()->userName)
 				->setRegistrationDate($faker->dateTimeBetween('-4 weeks', 'now'))
 				->setActive(true)

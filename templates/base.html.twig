@@ -34,7 +34,7 @@
 	<main class="flex-shrink-0">
 
 		{# Navbar #}
-		<nav class="navbar navbar-expand-xl navbar-light gradient-basecolor">
+		<nav class="navbar navbar-expand-xl gradient-basecolor">
 			<div class="container-fluid">
 
 				{# Bouton toggle #}
@@ -66,7 +66,7 @@
 
 						{# HOME button #}
 						<li class="nav-item mx-lg-1">
-							<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_home' ? ' nav-btn' : ' text-dark' }}"
+							<a class="nav-link btn btn-lg w-100 btn-nav-padding bg-comp_txt-main-hover{{ route == 'main_home' ? ' bg-comp_txt-main' : ' bg-none_txt-comp' }}"
 							   href="{{ path('main_home') }}"
 							   data-mdb-ripple-duration="0"
 							>
@@ -77,7 +77,8 @@
 
 						{# Left side dropdown 1 #}
 						<li class="nav-item dropdown mx-lg-1">
-							<a class="nav-link btn btn-lg w-100 btn-nav dropdown-toggle nav-btn-hover{{ (route == 'collect_list' or route == 'collect_new') ? ' nav-btn' : ' text-dark' }}"
+							<a class="nav-link btn btn-lg w-100 dropdown-toggle btn-nav-padding bg-comp_txt-main-hover{{
+							(route == 'collect_list' or route == 'collect_new') ? ' bg-comp_txt-main' : ' bg-none_txt-comp' }}"
 							   href="#"
 							   id="collectsDropdownMenuLink"
 							   role="button"
@@ -90,8 +91,8 @@
 							<ul class="dropdown-menu dropdown-menu-bg dropdown-menu-start dropdown-menu-lg-end" aria-labelledby="collectsDropdownMenuLink">
 
 								<li>
-									<a class="dropdown-item nav-drop-hover" href="{{ path('collect_list') }}">
-										<i class="fas fa-list-ul me-2"></i>Listes de collections
+									<a class="dropdown-item nav-drop-hover text-dark" href="{{ path('collect_list') }}">
+										<i class="fas fa-list-ul text-black me-2"></i>Listes de collections
 									</a>
 								</li>
 
@@ -99,8 +100,8 @@
 								{% if is_granted('ROLE_USER') %}
 									<li class="dropdown-hr my-1"></li>
 									<li>
-										<a class="dropdown-item nav-drop-hover" href="{{ path('collect_new') }}">
-											<i class="far fa-plus-square me-2"></i>Nouvelle collection
+										<a class="dropdown-item nav-drop-hover text-dark" href="{{ path('collect_new') }}">
+											<i class="far fa-plus-square text-black me-2"></i>Nouvelle collection
 										</a>
 									</li>
 								{% endif %}
@@ -111,8 +112,8 @@
 
 						{# Left side dropdown 2 #}
 						<li class="nav-item dropdown mx-lg-1">
-							<a class="nav-link btn btn-lg w-100 btn-nav dropdown-toggle nav-btn-hover{{
-							   (route == 'film_list' or route == 'film_new' or route == 'film_add' or route == 'film_detail') ? ' nav-btn' : ' text-dark' }}"
+							<a class="nav-link btn btn-lg w-100 dropdown-toggle btn-nav-padding bg-comp_txt-main-hover{{
+							   (route == 'film_list' or route == 'film_new' or route == 'film_add' or route == 'film_detail') ? ' bg-comp_txt-main' : ' bg-none_txt-comp' }}"
 							   href="#"
 							   id="filmsDropdownMenuLink"
 							   role="button"
@@ -126,7 +127,7 @@
 
 								<li>
 									<a class="dropdown-item nav-drop-hover" href="{{ path('film_list') }}">
-										<i class="fas fa-list-ul me-2"></i>Listes des films
+										<i class="fas fa-list-ul text-black me-2"></i>Listes des films
 									</a>
 								</li>
 
@@ -135,7 +136,7 @@
 									<li class="dropdown-hr my-1"></li>
 									<li>
 										<a class="dropdown-item nav-drop-hover" href="{{ path('film_add') }}">
-											<i class="far fa-plus-square me-2"></i>Ajouter un film
+											<i class="far fa-plus-square text-black me-2"></i>Ajouter un film
 										</a>
 									</li>
 								{% endif %}
@@ -153,7 +154,7 @@
 
 							{# Dropdown de droite: User #}
 							<li class="nav-item dropdown mx-lg-1">
-								<a class="nav-link btn w-100 dropdown-toggle nav-btn-hover{{ (route == 'main_profil' or route == 'main_logout') ? ' nav-btn' : ' text-dark' }}"
+								<a class="nav-link btn w-100 dropdown-toggle bg-comp_txt-main-hover{{ (route == 'main_profil' or route == 'main_logout') ? ' bg-comp_txt-main' : ' bg-none_txt-comp' }}"
 								   href="#"
 								   id="profilDropdownMenuLink"
 								   role="button"
@@ -188,7 +189,7 @@
 								<ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end dropdown-menu-bg" aria-labelledby="profilDropdownMenuLink">
 
 									<li>
-										<a class="dropdown-item nav-drop-hover" href="{{ path('main_profil') }}"><i class="fa fa-user-cog me-2"></i>Mon profil</a>
+										<a class="dropdown-item nav-drop-hover" href="{{ path('main_profil') }}"><i class="fa fa-user-cog text-black me-2"></i>Mon profil</a>
 									</li>
 
 									{% if is_granted('ROLE_ADMIN') %}
@@ -196,7 +197,7 @@
 										<li class="dropdown-hr my-1"></li>
 
 										<li>
-											<a class="dropdown-item nav-drop-hover" href="{{ path('admin_home') }}"><i class="fas fa-tools text-black-75 me-2"></i>Administration</a>
+											<a class="dropdown-item nav-drop-hover" href="{{ path('admin_home') }}"><i class="fas fa-tools text-black me-2"></i>Administration</a>
 										</li>
 
 									{% endif %}
@@ -204,7 +205,7 @@
 									<li class="dropdown-hr my-1"></li>
 
 									<li>
-										<a class="dropdown-item nav-drop-hover" href="{{ path('main_logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a>
+										<a class="dropdown-item nav-drop-hover" href="{{ path('main_logout') }}"><i class="fas fa-sign-out-alt text-black me-2"></i>Déconnexion</a>
 									</li>
 
 								</ul>
@@ -214,7 +215,7 @@
 						{% else %}{# if user is not connected #}
 
 							<li class="nav-item mx-lg-1">
-								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_register' ? ' nav-btn' : ' text-dark' }}"
+								<a class="nav-link btn btn-lg w-100 btn-nav-padding bg-comp_txt-main-hover{{ route == 'main_register' ? ' bg-comp_txt-main' : ' bg-none_txt-comp' }}"
 								   href="{{ path('main_register') }}"
 								   data-mdb-ripple-duration="0"
 								>
@@ -222,7 +223,7 @@
 								</a>
 							</li>
 							<li class="nav-item mx-lg-1">
-								<a class="nav-link btn btn-lg w-100 btn-nav nav-btn-hover{{ route == 'main_login' ? ' nav-btn' : ' text-dark' }}"
+								<a class="nav-link btn btn-lg w-100 btn-nav-padding bg-comp_txt-main-hover{{ route == 'main_login' ? ' bg-comp_txt-main' : ' bg-none_txt-comp' }}"
 								   href="{{ path('main_login') }}"
 								   data-mdb-ripple-duration="0"
 								>
@@ -238,13 +239,13 @@
 
 					{# Search #}
 					<form class="d-flex mx-lg-1" method="GET" action=" {{ path('film_search') }} ">
-						<input class="form-control search-outline flex-fill" type="search" placeholder="Trouver un film" aria-label="Search" name="q">
-						<button class="btn nav-outline-btn ms-1"
-								type="submit"
-								data-mdb-ripple-duration="0"
-						>
-							<i class="fas fa-search"></i>
-						</button>
+							<input class="form-control search-outline-comp input-bg-white flex-fill" type="search" placeholder="Trouver un film" aria-label="Search" name="q">
+							<button class="btn search-outline-comp ms-1"
+									type="submit"
+									data-mdb-ripple-duration="0"
+							>
+								<i class="fas fa-search"></i>
+							</button>
 					</form>
 				</div>
 			</div>
