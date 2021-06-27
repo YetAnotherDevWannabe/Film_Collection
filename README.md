@@ -13,14 +13,15 @@ git clone https://github.com/YetAnotherDevWannabe/Film_Collection.git
 ### 3. Modifier les paramètres d'environnement dans le fichier ```.env.local``` :
 
 - Copier le texte ci-dessous dans le fichier ```.env.local```
-	```
+```
 ###> Accès BDD à modifier ###
 DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7"
 
 ###> Clés Google reCAPTCHA à changer ###
 GOOGLE_RECAPTCHA_SITE_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
-GOOGLE_RECAPTCHA_PRIVATE_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXX
-	```
+GOOGLE_RECAPTCHA_PRIVATE_KEY=
+```
+
 - Changer ```db_user```, ```db_password``` et ```db_name```
 - Modifier les clés Google reCAPTCHA publique et privée
 
