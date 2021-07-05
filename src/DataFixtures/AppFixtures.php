@@ -39,8 +39,7 @@ class AppFixtures extends Fixture
 			->setPassword($this->hasher->hashPassword($userAdmin, 'Aa111111!'))
 			->setNickname('admin')
 			->setRegistrationDate($faker->dateTimeBetween('-6 weeks', '-5 weeks'))
-			->setActive(true)
-		;
+			->setActive(true);
 		$manager->persist($userAdmin);
 		$users[] = $userAdmin;
 
@@ -52,12 +51,11 @@ class AppFixtures extends Fixture
 			->setPassword($this->hasher->hashPassword($user, 'Uu111111!'))
 			->setNickname('user')
 			->setRegistrationDate($faker->dateTimeBetween('-4 weeks', 'now'))
-			->setActive(true)
-		;
+			->setActive(true);
 		$manager->persist($user);
 		$users[] = $user;
 
-		for ($i = 0; $i < 5; $i++)
+		for ( $i = 0; $i < 25; $i++ )
 		{
 			$user = new User();
 			$user
@@ -66,8 +64,7 @@ class AppFixtures extends Fixture
 				->setPassword($this->hasher->hashPassword($user, 'Aa111111!'))
 				->setNickname($faker->unique()->userName)
 				->setRegistrationDate($faker->dateTimeBetween('-4 weeks', 'now'))
-				->setActive(true)
-			;
+				->setActive(true);
 			$manager->persist($user);
 			$users[] = $user;
 		}
@@ -299,11 +296,14 @@ class AppFixtures extends Fixture
 			->setPublicationDate($faker->dateTimeBetween('-6 weeks', '-5 weeks'))
 			->setAuthor($userAdmin);
 		/// COLLECT_FILM ///
-		for ($i = 0; $i < rand(3, 7); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+		for ( $j = 0; $j < rand(3, 7); $j++ )
+		{
+			$newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+		}
 		$manager->persist($newCollect);
 		$collects[] = $newCollect;
 
-		for ($i = 0; $i < 12; $i++)
+		for ( $k = 0; $k < 12; $k++ )
 		{
 			// Collect'
 			$newCollect = new Collect();
@@ -312,7 +312,10 @@ class AppFixtures extends Fixture
 				->setPublicationDate($faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now'))
 				->setAuthor($users[rand(0, count($users) - 1)]);
 			/// COLLECT_FILM ///
-			// for ($i = 0; $i < rand(0, 1); $i++) $newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+			for ( $l = 0; $l < rand(0, 6); $l++ )
+			{
+				$newCollect->addFilmCollect($films[rand(0, count($films) - 1)]);
+			}
 			$manager->persist($newCollect);
 			$collects[] = $newCollect;
 
@@ -321,17 +324,16 @@ class AppFixtures extends Fixture
 			/// COMMENTS ///
 			////////////////
 
-			for ($k = 0; $k < rand(0, 6); $k++)
+			for ( $m = 0; $m < rand(0, 6); $m++ )
 			{
 				// Création d' un nouveau commentaire
 				$comment = new CommentCollect();
 				$comment
-					->setUser( $faker->randomElement($users) )
-					->setPublicationDate( $faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now') )
-					->setContent( $faker->paragraph(3) )
+					->setUser($faker->randomElement($users))
+					->setPublicationDate($faker->dateTimeBetween($userAdmin->getRegistrationDate(), 'now'))
+					->setContent($faker->paragraph(3))
 					->setCollect($collects[rand(0, count($collects) - 1)])
-					->setActive(true)
-				;
+					->setActive(true);
 				$manager->persist($comment);
 			}
 		}

@@ -486,7 +486,7 @@ form input,
 
 .overlay img
 {
-	width : 25%;
+	width : 65%;
 }
 
 #poster
@@ -502,5 +502,10 @@ form input,
 	.custom-border-radius
 	{
 		border-radius : 0 .6rem .6rem 0 !important;
+	}
+
+	.overlay img
+	{
+		width : 25%;
 	}
 }
