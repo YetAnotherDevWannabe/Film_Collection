@@ -1,5 +1,5 @@
 
-###> symfony/framework-bundle ###
+# symfony
 /.env.local
 /.env.local.php
 /.env.*.local
@@ -7,24 +7,26 @@
 /public/bundles/
 /var/
 /vendor/
-###< symfony/framework-bundle ###
-
-###> symfony/phpunit-bridge ###
+/migrations/*.php
 .phpunit.result.cache
 /phpunit.xml
-###< phpunit/phpunit ###
 
 
+# Ignore nimporte quel dossier .git
+/.git/*
+*/.git/*
 
-###> Ignore PhpStorm's .idea folder ###
-/.idea/
-###< Ignore PhpStorm's .idea folder ###
+# Ignore nimporte quel dossier .vscode
+/.vscode/*
+*/.vscode/*
 
-###> Ignore migration files ###
-/migrations/*.php
-###< Ignore migration files ###
+# Ignore nimporte quel dossier .idea (PHPStorm)
+/.idea/*
+*/.idea/*
 
-###> Ignore user uploaded avatars ###
+# Filtre sur les dossiers / fichiers '._'
+*._*
+
+# Ignore user uploaded avatars
 /public/img/uploads/avatar/*
 !/public/img/uploads/avatar/.gitignore
-###< Ignore user uploaded avatars ###
